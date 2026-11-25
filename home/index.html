@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f0e9e5">
+<link rel="icon" type="image/png" href="../favicon.png">
+<meta property="og:title" content="Jay · 企业 AI 落地 FDE 架构师">
+<meta property="og:description" content="Multi-Agent 工作台，把各部门的重复劳动交给 AI 智能体。">
+<meta property="og:image" content="../logo.jpg">
+<title>Jay · 企业 AI 落地 FDE 架构师</title>
+<meta name="description" content="Jay：企业 AI 落地 FDE 架构师。Multi-Agent 工作台、RAG 企业知识库、私有化部署，按岗位把 AI 做进日常工作。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 暖纸橘光：晒过的米色纸面、白色纸卡、宋体大标题，全站只有一个橘色。浅色是品牌设定，不随系统主题切换。 */
+:root {
+  --canvas: #f0e9e5; --paper: #fbf8f5; --card: #ffffff;
+  --ink: #1e1e1e; --ink-2: #5c5852; --ink-3: #8a847c; --line: #d9cfc6; --line-2: #e8dfd7;
+  --orange: #f07d1a; --orange-deep: #b85a08; --orange-soft: #fde9d6;
+  --sans: "Inter Tight", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --pad: clamp(18px, 4.5vw, 64px);
+  --shadow: 0 1px 3px rgba(70,45,20,.07);
+  --shadow-up: 0 14px 34px rgba(110,60,15,.13);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, ul, dl, dd { margin: 0; padding: 0; }
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.wrap { max-width: 1280px; margin-inline: auto; padding-left: max(var(--pad), env(safe-area-inset-left, 0px)); padding-right: max(var(--pad), env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 2px solid var(--orange-deep); outline-offset: 3px; }
+
+.bar { position: fixed; left: 0; top: 0; height: 3px; width: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0); z-index: 30; }
+.nav { position: sticky; top: 0; z-index: 20; background: rgba(240,233,229,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-2); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 900; font-size: 20px; }
+.brand small { font-family: var(--sans); font-weight: 500; font-size: 12px; color: var(--ink-3); margin-left: -4px; }
+.brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; box-shadow: var(--shadow); }
+.nav-links { display: flex; gap: 30px; font-size: 14px; color: var(--ink-2); }
+.nav-links a { position: relative; padding-block: 6px; transition: color .2s; }
+.nav-links a::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--orange); transform: scaleX(0); transform-origin: 100% 50%; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--ink); border-radius: 9999px; padding: 10px 22px; font-size: 14px; font-weight: 500; white-space: nowrap; transition: background .25s, color .25s, transform .25s, box-shadow .25s; }
+.pill:hover { background: var(--ink); color: #fff; }
+.nav .pill, .pill.solid { background: var(--orange); border-color: var(--orange); color: #fff; }
+.nav .pill:hover, .pill.solid:hover { background: var(--orange-deep); border-color: var(--orange-deep); transform: translateY(-2px); box-shadow: 0 10px 22px rgba(240,125,26,.3); }
+.pill .arr { display: inline-block; transition: transform .25s; }
+.pill:hover .arr { transform: translateX(4px); }
+
+.hero { position: relative; overflow: hidden; isolation: isolate; --mx: 74%; --my: 34%; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(560px circle at var(--mx) var(--my), rgba(240,125,26,.28), transparent 70%); }
+.hero::after { content: ""; position: absolute; z-index: -1; width: 460px; height: 460px; left: -160px; bottom: -40px; border-radius: 50%; background: radial-gradient(circle, rgba(255,196,140,.5), transparent 68%); animation: drift 16s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translate(110px, -70px) scale(1.2); } }
+.hero-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 40px; align-items: center; padding-block: clamp(52px, 9vw, 116px) clamp(44px, 7vw, 88px); }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .1em; color: var(--orange-deep); background: var(--card); padding: 6px 14px; border-radius: 9999px; box-shadow: var(--shadow); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: pulse 1.8s ease-in-out infinite; flex: none; }
+@keyframes pulse { 50% { opacity: .25; } }
+.hero h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 7.2vw, 96px); line-height: 1.12; letter-spacing: -.02em; margin-top: 24px; }
+.ln { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; white-space: nowrap; }
+.ln i { display: block; font-style: normal; animation: up 1s cubic-bezier(.2,.8,.2,1) both; }
+.ln:nth-child(2) i { animation-delay: .12s; } .ln:nth-child(3) i { animation-delay: .24s; color: var(--orange-deep); }
+@keyframes up { from { transform: translateY(112%); } to { transform: none; } }
+.hero .sub { margin-top: 26px; max-width: 31em; color: var(--ink-2); font-size: clamp(16px, 1.5vw, 19px); animation: fade 1s .5s both; }
+.hero .btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; animation: fade 1s .65s both; }
+@keyframes fade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.ava { justify-self: center; position: relative; width: min(330px, 64vw); aspect-ratio: 1; animation: fade 1.2s .3s both; }
+.ava img { width: 100%; height: 100%; border-radius: 50%; display: block; border: 8px solid #fff; box-shadow: 0 26px 60px rgba(120,60,10,.24); animation: bob 5s ease-in-out infinite alternate; }
+.ava::before { content: ""; position: absolute; inset: -22px; border-radius: 50%; border: 1px dashed var(--line); animation: spin 40s linear infinite; }
+.ava::after { content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); top: -28px; left: 50%; margin-left: -6px; transform-origin: 6px calc(min(330px, 64vw) / 2 + 28px); animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ava .tag { position: absolute; left: -14px; bottom: 28px; background: var(--card); color: var(--ink); font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 4px; box-shadow: var(--shadow-up); animation: bob 5s ease-in-out infinite alternate-reverse; }
+@keyframes bob { to { transform: translateY(-9px); } }
+
+.mq { overflow: hidden; white-space: nowrap; border-block: 1px solid var(--line); padding-block: 16px; color: var(--ink-2); }
+.mq div { display: inline-block; animation: mq 34s linear infinite; }
+.mq:hover div { animation-play-state: paused; }
+.mq span { margin-right: 52px; font-size: 15px; }
+.mq span::before { content: "●"; margin-right: 52px; color: var(--orange); font-size: 9px; vertical-align: middle; }
+@keyframes mq { to { transform: translateX(-50%); } }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: clamp(24px, 4vw, 44px) 0 clamp(24px, 4vw, 44px) clamp(16px, 2.4vw, 32px); border-left: 1px solid var(--line); min-width: 0; }
+.stat:first-child { border-left: 0; padding-left: 0; }
+.stat b { display: block; font-family: var(--serif); font-weight: 900; color: var(--orange-deep); font-size: clamp(38px, 5.8vw, 76px); line-height: 1; font-variant-numeric: tabular-nums; }
+.stat span { display: block; margin-top: 12px; font-size: 13px; color: var(--ink-2); }
+
+section { padding-block: clamp(60px, 8.5vw, 116px); }
+section, header { scroll-margin-top: 64px; }
+.sec-head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: clamp(28px, 4.5vw, 56px); }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--orange-deep); display: flex; align-items: center; gap: 10px; }
+.kicker::before { content: ""; width: 24px; height: 2px; background: var(--orange); }
+h2 { font-family: var(--serif); font-weight: 900; font-size: clamp(30px, 4.6vw, 60px); line-height: 1.18; letter-spacing: -.015em; margin-top: 14px; text-wrap: balance; }
+.sec-head p { color: var(--ink-2); max-width: 30em; justify-self: end; }
+.light { background: var(--paper); border-block: 1px solid var(--line-2); }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.step { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 24px; min-width: 0; position: relative; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+.step:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.step .no { font-family: var(--serif); font-weight: 900; font-size: 30px; color: var(--orange); line-height: 1; }
+.step h3 { font-weight: 600; font-size: clamp(18px, 1.7vw, 22px); margin-top: 26px; }
+.step p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.step::before { content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 0; background: var(--orange); transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.step.in::before { width: 100%; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; justify-self: end; }
+.filters button { border: 1px solid var(--line); background: var(--card); border-radius: 9999px; padding: 8px 18px; font-size: 14px; color: var(--ink-2); transition: all .2s; }
+.filters button:hover { border-color: var(--orange); color: var(--orange-deep); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.rows { display: grid; gap: 12px; }
+.row { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); transition: border-color .3s, box-shadow .3s, transform .3s; }
+.row:hover { border-color: var(--orange); box-shadow: var(--shadow-up); transform: translateY(-2px); }
+.row.open { border-color: var(--orange); }
+.row[hidden] { display: none; }
+.row-head { width: 100%; text-align: left; display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, 190px) 108px 24px; gap: 20px; align-items: center; padding: clamp(18px, 2.2vw, 28px) clamp(16px, 2vw, 28px); }
+.row-head .no { font-family: var(--serif); font-weight: 900; font-size: 22px; color: var(--orange); font-variant-numeric: tabular-nums; }
+.row-head .ttl { font-family: var(--serif); font-weight: 600; font-size: clamp(18px, 1.9vw, 26px); line-height: 1.35; min-width: 0; text-wrap: balance; }
+.row-head .ind { font-size: 13px; color: var(--ink-3); }
+.state { font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; color: var(--ink-2); }
+.state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--ink-3)); }
+.state.live { --c: var(--orange); } .state.done { --c: #2f8f5b; } .state.pilot { --c: #3d8ee0; }
+.plus { width: 28px; height: 28px; border-radius: 50%; background: var(--orange-soft); position: relative; justify-self: end; transition: background .3s; }
+.plus::before, .plus::after { content: ""; position: absolute; left: 8px; top: 13.5px; width: 12px; height: 1.5px; background: var(--orange-deep); transition: transform .35s, background .3s; }
+.plus::after { transform: rotate(90deg); }
+.row.open .plus { background: var(--orange); }
+.row.open .plus::before, .row.open .plus::after { background: #fff; }
+.row.open .plus::after { transform: rotate(0); }
+.row-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.8,.2,1); }
+.row.open .row-body { grid-template-rows: 1fr; }
+.row-body > div { overflow: hidden; min-height: 0; }
+.detail { display: grid; grid-template-columns: 48px 1fr 1fr; gap: 20px 40px; padding: 20px clamp(16px, 2vw, 28px) clamp(24px, 3vw, 36px); border-top: 1px dashed var(--line); }
+.detail .pain { grid-column: 2; color: var(--ink-2); }
+.detail .pain b { display: block; font-weight: 600; font-size: 12px; letter-spacing: .12em; color: var(--orange-deep); margin-bottom: 8px; }
+.detail .did { grid-column: 3; display: grid; gap: 10px; align-content: start; }
+.detail .did li { padding-left: 22px; position: relative; color: var(--ink-2); font-size: 15px; }
+.detail .did li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 2px; background: var(--orange); transform: rotate(45deg); }
+.detail .nums { grid-column: 2; display: flex; gap: 36px; flex-wrap: wrap; }
+.detail .nums b { display: block; font-family: var(--serif); font-weight: 900; font-size: 42px; color: var(--orange-deep); line-height: 1; }
+.detail .nums span { font-size: 12px; color: var(--ink-3); }
+.chips { grid-column: 3; display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+.chips span { font-size: 12px; padding: 5px 12px; background: var(--canvas); border-radius: 9999px; color: var(--ink-2); }
+
+.prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.prod { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: clamp(22px, 2.4vw, 32px); min-height: 250px; display: flex; flex-direction: column; min-width: 0; position: relative; overflow: hidden; transition: transform .35s, box-shadow .35s, border-color .35s; }
+.prod::before { content: ""; position: absolute; inset: 0; background: var(--orange-soft); transform: translateY(101%); transition: transform .45s cubic-bezier(.2,.8,.2,1); z-index: 0; }
+.prod:hover::before { transform: none; }
+.prod:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); border-color: var(--orange); }
+.prod > * { position: relative; z-index: 1; }
+.prod .no { font-family: var(--serif); font-weight: 900; font-size: 22px; color: var(--orange); }
+.prod h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.1vw, 28px); margin-top: 14px; }
+.prod p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.prod .who { margin-top: auto; padding-top: 20px; font-size: 12px; color: var(--ink-3); }
+
+.svc { border-top: 1px solid var(--ink); }
+.svc li { display: grid; grid-template-columns: 64px 1fr 1.4fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: baseline; transition: padding .3s, background .3s; }
+.svc li:hover { padding-left: 14px; background: linear-gradient(90deg, var(--orange-soft), transparent 60%); }
+.svc .no { font-family: var(--serif); font-weight: 900; color: var(--orange); }
+.svc h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(19px, 1.9vw, 25px); }
+.svc p { color: var(--ink-2); font-size: 15px; }
+
+.about { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(28px, 6vw, 96px); align-items: start; }
+.about img { width: min(290px, 60vw); border-radius: 50%; border: 8px solid #fff; box-shadow: 0 22px 50px rgba(120,60,10,.2); }
+.about .big { font-family: var(--serif); font-weight: 600; font-size: clamp(21px, 2.4vw, 31px); line-height: 1.55; }
+.about .big em { font-style: normal; color: var(--orange-deep); }
+.facts { margin-top: 32px; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.facts dt { font-size: 13px; font-weight: 600; color: var(--orange-deep); }
+.facts dd { color: var(--ink-2); font-size: 15px; }
+
+.motto { padding-block: clamp(64px, 10vw, 140px); background: var(--orange); color: #fff; position: relative; overflow: hidden; }
+.motto::before { content: ""; position: absolute; right: -140px; top: -140px; width: 460px; height: 460px; border-radius: 50%; border: 60px solid rgba(255,255,255,.13); animation: drift 18s ease-in-out infinite alternate; }
+.motto .cl { display: inline-block; white-space: nowrap; }
+.motto p { font-family: var(--serif); font-weight: 900; font-size: clamp(24px, 6.2vw, 92px); line-height: 1.22; position: relative; }
+.motto .w { display: inline-block; opacity: .28; transition: opacity .6s; }
+.motto.in .w { opacity: 1; }
+
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.way { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 26px; min-width: 0; transition: transform .3s, box-shadow .3s; }
+.way:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.way .no { font-family: var(--serif); font-weight: 900; font-size: 30px; color: var(--orange); line-height: 1; }
+.way h3 { font-weight: 600; font-size: clamp(19px, 1.9vw, 24px); margin-top: 24px; }
+.way p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.way small { display: inline-block; margin-top: 18px; font-size: 12px; color: var(--orange-deep); background: var(--orange-soft); padding: 4px 10px; border-radius: 9999px; }
+.contact { margin-top: clamp(32px, 5vw, 56px); display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; background: var(--ink); color: #fff; padding: clamp(24px, 4vw, 44px); border-radius: 4px; }
+.contact p { font-family: var(--serif); font-weight: 600; font-size: clamp(20px, 2.4vw, 31px); max-width: 22em; }
+.contact span { display: block; font-family: var(--sans); font-weight: 400; font-size: 14px; color: #c9c0b8; margin-top: 10px; }
+.contact .pill { border-color: #fff; color: #fff; }
+.contact .pill:hover { background: #fff; color: var(--ink); }
+
+footer { padding-block: 28px 36px; color: var(--ink-3); font-size: 12px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.js .rv { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+.js .row.rv.in, .js .step.rv.in, .js .prod.rv.in, .js .way.rv.in { transition: opacity .8s, transform .3s, box-shadow .3s, border-color .3s; transition-delay: 0s; }
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .hero-grid, .sec-head, .about { grid-template-columns: 1fr; }
+  .ava { order: -1; justify-self: start; width: 168px; margin: 22px 0 0 22px; }
+  .ava img { border-width: 5px; }
+  .ava::after { transform-origin: 6px 112px; }
+  .ava .tag { left: 14px; bottom: -18px; }
+  .sec-head p, .filters { justify-self: start; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .steps, .ways, .prods { grid-template-columns: 1fr 1fr; }
+  .row-head { grid-template-columns: 30px 1fr 28px; gap: 12px; }
+  .row-head .ind, .row-head .state { display: none; }
+  .detail { grid-template-columns: 1fr; }
+  .detail > * { grid-column: 1 !important; }
+  .svc li { grid-template-columns: 34px 1fr; }
+  .svc p { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  .steps, .ways, .prods { grid-template-columns: 1fr; }
+  .prod { min-height: 0; }
+  .facts div { grid-template-columns: 84px 1fr; }
+  .pill { padding: 9px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .rv { opacity: 1; transform: none; }
+  .motto .w { opacity: 1; }
+}
+
+/* ===== 工作台实拍 ===== */
+.show { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(20px, 3vw, 44px); align-items: start; }
+.show-tabs { display: flex; flex-direction: column; gap: 6px; }
+.stab { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px 1fr; column-gap: 8px; padding: 14px 16px 16px; border-radius: 4px; position: relative; overflow: hidden; border: 1px solid transparent; transition: background .35s, border-color .35s, box-shadow .35s; }
+.stab .no { font-family: var(--serif); font-weight: 900; font-size: 15px; color: var(--ink-3); padding-top: 3px; transition: color .3s; }
+.stab b { font-family: var(--serif); font-weight: 600; font-size: 20px; color: var(--ink-2); transition: color .3s; }
+.stab span.d { grid-column: 2; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.8,.2,1), margin .5s; }
+.stab span.d > i { font-style: normal; overflow: hidden; min-height: 0; }
+.stab em { grid-column: 2; font-style: normal; font-size: 12px; color: var(--ink-3); display: none; margin-top: 8px; }
+.stab .pg { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--orange); transform: scaleX(0); transform-origin: left; }
+.stab:hover b { color: var(--ink); }
+.stab:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.stab.on { background: var(--card); border-color: var(--line-2); box-shadow: var(--shadow-up); }
+.stab.on b { color: var(--ink); } .stab.on .no { color: var(--orange); }
+.stab.on span.d { grid-template-rows: 1fr; margin-top: 6px; } .stab.on em { display: block; }
+
+.stage { position: relative; perspective: 1600px; min-width: 0; }
+.stage::before { content: ""; position: absolute; inset: 8% -4% -10% 4%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(240,125,26,.34), rgba(240,125,26,0) 72%); filter: blur(28px); animation: glow 7s ease-in-out infinite alternate; }
+@keyframes glow { to { transform: translate3d(-3%, 3%, 0) scale(1.06); opacity: .75; } }
+.win { position: relative; z-index: 1; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(60,40,20,.14); box-shadow: 0 2px 4px rgba(70,45,20,.06), 0 30px 70px -18px rgba(110,60,15,.38); transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; will-change: transform; }
+.win-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: linear-gradient(#f7f2ee, #efe8e2); border-bottom: 1px solid var(--line-2); }
+.win-bar .dots { display: flex; gap: 6px; } .win-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #e3d8cf; }
+.win-bar .dots i:first-child { background: #f0876b; } .win-bar .dots i:nth-child(2) { background: #f3bf4f; } .win-bar .dots i:nth-child(3) { background: #7cc86a; }
+.win-bar .url { flex: 1; min-width: 0; text-align: center; font-size: 12.5px; color: var(--ink-2); background: #fff; border: 1px solid var(--line-2); border-radius: 99px; padding: 4px 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.win-bar .live { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--orange-deep); white-space: nowrap; }
+.win-bar .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; transform: scale(.7); } }
+.win-body { position: relative; aspect-ratio: 16 / 10; background: var(--paper); }
+.win-body video, .win-body img.ps { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; opacity: 0; transform: scale(1.025); transition: opacity .6s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.win-body .on { opacity: 1; transform: none; }
+.win-body::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,.22), rgba(255,255,255,0) 28%); }
+.chip { position: absolute; z-index: 2; background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 16px 10px 14px; border-radius: 99px; display: flex; align-items: center; gap: 8px; box-shadow: 0 14px 30px rgba(30,20,10,.28); opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .5s, transform .6s cubic-bezier(.2,1.2,.3,1); white-space: nowrap; pointer-events: none; }
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(240,125,26,.3); }
+.chip.c1 { left: -26px; bottom: 9%; } .chip.c2 { right: -20px; top: 20%; background: #fff; color: var(--ink); }
+.chip.in { opacity: 1; transform: none; } .chip.c2.in { transition-delay: .25s; }
+.chip.in { animation: floaty 5s ease-in-out 1s infinite alternate; } @keyframes floaty { to { translate: 0 -8px; } }
+.show-foot { margin-top: clamp(22px, 3vw, 36px); display: flex; gap: 12px 28px; flex-wrap: wrap; align-items: baseline; font-size: 14px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 18px; }
+.show-foot b { color: var(--ink); font-weight: 600; }
+
+/* 细节画廊 */
+.reel { margin-top: clamp(40px, 6vw, 80px); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.reel-track { display: flex; gap: 22px; width: max-content; animation: reel 70s linear infinite; padding-block: 16px 34px; }
+.reel:hover .reel-track { animation-play-state: paused; }
+@keyframes reel { to { transform: translateX(-50%); } }
+.shot { all: unset; cursor: zoom-in; display: block; width: clamp(280px, 34vw, 460px); flex: none; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid rgba(60,40,20,.12); box-shadow: 0 16px 36px -14px rgba(110,60,15,.3); transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s; }
+.shot:nth-child(even) { transform: translateY(16px); }
+.shot:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 28px 50px -16px rgba(110,60,15,.42); }
+.shot:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+.shot figcaption, .shot .cap { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; font-size: 12.5px; color: var(--ink-2); border-top: 1px solid var(--line-2); }
+.shot .cap b { color: var(--ink); font-weight: 600; }
+.lb { position: fixed; inset: 0; z-index: 200; background: rgba(24,16,10,.82); display: grid; place-items: center; padding: 4vmin; opacity: 0; pointer-events: none; transition: opacity .3s; cursor: zoom-out; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lb.on { opacity: 1; pointer-events: auto; }
+.lb img { max-width: 100%; max-height: 92vh; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.5); transform: scale(.96); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.lb.on img { transform: none; }
+
+@media (max-width: 900px) {
+  .show { grid-template-columns: minmax(0, 1fr); }
+  .show-tabs { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: none; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); scroll-snap-type: x proximity; }
+  .show-tabs::-webkit-scrollbar { display: none; }
+  .stab { display: block; flex: none; padding: 9px 16px 11px; border: 1px solid var(--line); border-radius: 99px; scroll-snap-align: center; }
+  .stab .no, .stab span.d, .stab em, .stab.on em { display: none; }
+  .stab b { font-size: 15px; font-family: var(--sans); }
+  .stab.on { background: var(--ink); border-color: var(--ink); box-shadow: none; } .stab.on b { color: #fff; }
+  .stab .pg { height: 3px; }
+  .win { transform: none !important; border-radius: 9px; }
+  .win-bar { padding: 7px 10px; } .win-bar .live { display: none; } .win-bar .url { font-size: 11px; }
+  .chip { display: none; }
+  .show-desc { display: block !important; }
+}
+.show-desc { display: none; margin-top: 18px; font-size: 14.5px; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) {
+  .reel-track { animation: none; overflow-x: auto; } .reel { overflow-x: auto; }
+  .stage::before, .chip.in, .win-bar .live::before { animation: none; } .win { transform: none !important; }
+}
+
+/* ===== 行业方案 ===== */
+.pl-h { display: flex; gap: 18px; align-items: flex-start; margin: clamp(44px, 6vw, 76px) 0 22px; }
+.sec-head + .pl-h { margin-top: 0; }
+.pl-n { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-family: var(--serif); font-weight: 900; font-size: 20px; }
+.pl-h h3 { font-family: var(--serif); font-weight: 900; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.3; }
+.pl-h p { color: var(--ink-2); font-size: 15px; margin-top: 4px; max-width: 44em; }
+
+.req { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: clamp(16px, 2.4vw, 32px); align-items: stretch; }
+.req-tabs { display: flex; flex-direction: column; gap: 6px; }
+.rtab { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px 1fr 16px; align-items: center; gap: 8px; padding: 15px 16px; border-radius: 4px; border: 1px solid transparent; transition: background .3s, border-color .3s, box-shadow .3s; }
+.rtab .no { font-family: var(--serif); font-weight: 900; font-size: 15px; color: var(--ink-3); }
+.rtab b { font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--ink-2); }
+.rtab small { display: block; font-family: var(--sans); font-weight: 400; font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.rtab .ar { color: var(--orange); opacity: 0; transform: translateX(-6px); transition: opacity .3s, transform .3s; }
+.rtab:hover b { color: var(--ink); }
+.rtab:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.rtab.on { background: var(--card); border-color: var(--line-2); box-shadow: var(--shadow-up); }
+.rtab.on b { color: var(--ink); } .rtab.on .no { color: var(--orange); } .rtab.on .ar { opacity: 1; transform: none; }
+.req-panel { background: var(--card); border: 1px solid var(--line-2); border-radius: 6px; box-shadow: var(--shadow-up); padding: clamp(22px, 3vw, 40px); position: relative; overflow: hidden; min-width: 0; }
+.req-panel::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 3px; background: var(--orange); transform-origin: left; animation: grow .7s cubic-bezier(.2,.8,.2,1); }
+@keyframes grow { from { transform: scaleX(0); } }
+.rp { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 36px; animation: fade .5s both; }
+.rp .q { grid-column: 1 / -1; font-family: var(--serif); font-weight: 600; font-size: clamp(18px, 1.9vw, 24px); line-height: 1.5; padding-left: 18px; border-left: 3px solid var(--orange); }
+.rp .q small { display: block; font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .12em; color: var(--orange-deep); margin-bottom: 6px; }
+.rp h5 { margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: var(--orange-deep); }
+.rp .real { color: var(--ink-2); font-size: 15px; }
+.rp .ag { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 99px; }
+.rp .ag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(240,125,26,.3); }
+.rp .do li { padding-left: 22px; position: relative; color: var(--ink-2); font-size: 15px; margin-bottom: 8px; }
+.rp .do li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 2px; background: var(--orange); transform: rotate(45deg); }
+.rp .ft { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; padding-top: 18px; border-top: 1px dashed var(--line); }
+.rp .ft span { font-size: 12px; padding: 5px 12px; background: var(--canvas); border-radius: 99px; color: var(--ink-2); font-weight: 500; }
+.rp .ft a { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--orange-deep); border-bottom: 1px solid currentColor; }
+
+.arch { background: #1b1a18; color: #fff; border-radius: 12px; padding: clamp(10px, 2vw, 22px) clamp(16px, 2.6vw, 36px); position: relative; overflow: hidden; box-shadow: 0 30px 70px -24px rgba(60,30,5,.5); isolation: isolate; }
+.arch::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 100% 36px, linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 36px 100%, radial-gradient(600px circle at 78% 30%, rgba(240,125,26,.26), transparent 70%); }
+.arch::after { content: ""; position: absolute; left: 0; top: 0; width: 2px; height: 34%; background: linear-gradient(transparent, var(--orange), transparent); animation: flow 4.5s linear infinite; }
+@keyframes flow { from { transform: translateY(-100%); } to { transform: translateY(300%); } }
+.lay { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid rgba(255,255,255,.1); align-items: center; }
+.lay:first-child { border-top: 0; }
+.lb2 i { display: block; font-style: normal; font-size: 11px; letter-spacing: .1em; color: var(--orange); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.lb2 b { display: block; font-family: var(--serif); font-weight: 600; font-size: 19px; margin-top: 2px; }
+.nds { display: flex; flex-wrap: wrap; gap: 10px; }
+.nd { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); border-radius: 8px; padding: 9px 14px; font-size: 14px; font-weight: 500; transition: border-color .3s, background .3s, transform .3s, box-shadow .3s; }
+.nd small { display: block; font-weight: 400; font-size: 11.5px; color: #b3aaa1; margin-top: 2px; }
+.nd:hover { border-color: var(--orange); transform: translateY(-2px); }
+.lay.ag { background: linear-gradient(90deg, rgba(240,125,26,.12), rgba(240,125,26,0)); margin-inline: calc(clamp(16px, 2.6vw, 36px) * -1); padding-inline: clamp(16px, 2.6vw, 36px); }
+.nd.a { border-color: rgba(240,125,26,.55); }
+.nd.orc { background: var(--orange); border-color: var(--orange); color: #fff; } .nd.orc small { color: #ffe3c8; }
+.nd.a.hot { background: var(--orange); color: #fff; box-shadow: 0 0 0 5px rgba(240,125,26,.25), 0 10px 24px rgba(240,125,26,.4); transform: translateY(-3px); }
+
+.road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; position: relative; }
+.ph { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 24px; min-width: 0; display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
+.ph:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.ph .tm { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--orange-deep); background: var(--orange-soft); padding: 4px 12px; border-radius: 99px; }
+.ph h4 { margin: 18px 0 0; font-family: var(--serif); font-weight: 600; font-size: clamp(19px, 1.8vw, 23px); }
+.ph p { color: var(--ink-2); font-size: 14.5px; margin-top: 8px; }
+.ph ul { margin-top: 14px; display: grid; gap: 6px; }
+.ph li { font-size: 14px; padding-left: 16px; position: relative; }
+.ph li::before { content: ""; position: absolute; left: 0; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+.ph em { font-style: normal; margin-top: auto; padding-top: 18px; font-size: 12.5px; color: var(--ink-3); }
+.ph.hot { background: var(--ink); border-color: var(--ink); color: #fff; }
+.ph.hot p { color: #c9c0b8; } .ph.hot em { color: #a39a91; } .ph.hot .tm { background: var(--orange); color: #fff; }
+
+.why { margin-top: clamp(44px, 6vw, 76px); border-top: 1px solid var(--ink); padding-top: 26px; }
+.why-t { display: flex; gap: 8px 18px; align-items: baseline; flex-wrap: wrap; }
+.why-t b { font-family: var(--serif); font-weight: 900; font-size: clamp(22px, 2.6vw, 32px); } .why-t span { color: var(--ink-2); }
+.why-g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 26px; }
+.why-g b { font-family: var(--serif); font-weight: 900; color: var(--orange); font-size: 20px; }
+.why-g h4 { margin: 8px 0 0; font-weight: 600; font-size: 18px; } .why-g p { color: var(--ink-2); font-size: 14.5px; margin-top: 6px; }
+
+.tech { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; animation: fade 1s .8s both; }
+.tech span { font-size: 12.5px; font-weight: 500; padding: 5px 12px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-2); background: rgba(255,255,255,.55); }
+
+@media (max-width: 900px) {
+  .req { grid-template-columns: minmax(0, 1fr); }
+  .req-tabs { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: none; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); }
+  .req-tabs::-webkit-scrollbar { display: none; }
+  .rtab { display: block; flex: none; padding: 9px 16px; border: 1px solid var(--line); border-radius: 99px; }
+  .rtab .no, .rtab small, .rtab .ar { display: none; }
+  .rtab b { font-size: 15px; font-family: var(--sans); }
+  .rtab.on { background: var(--ink); border-color: var(--ink); box-shadow: none; } .rtab.on b { color: #fff; }
+  .rp { grid-template-columns: 1fr; } .rp .ft a { margin-left: 0; }
+  .lay { grid-template-columns: 1fr; gap: 10px; }
+  .nd { font-size: 13px; padding: 8px 11px; }
+  .road, .why-g { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) { .road, .why-g { grid-template-columns: 1fr; } .pl-n { width: 36px; height: 36px; font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { .arch::after { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar"></div>
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="../logo.jpg" alt="">Jay<small>FDE 架构师</small></a>
+    <div class="nav-links"><a href="#plan">场景方案</a><a href="#method">方法</a><a href="#cases">案例</a><a href="#products">工作台</a><a href="#services">服务</a><a href="#about">关于我</a></div>
+    <a class="pill" href="#contact">预约诊断 <span class="arr">→</span></a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>企业 AI 落地 · FDE 前置部署 · Multi-Agent 工作台</div>
+      <h1><span class="ln"><i>把各部门的</i></span><span class="ln"><i>重复劳动</i></span><span class="ln"><i>交给 AI 智能体</i></span></h1>
+      <p class="sub">电商运营、内容获客、销售、研发、采购、财务、人事，一个岗位一个 Agent，底层共用一套企业知识库和数据底座。不交 PPT，不卖空课：先调研，2～3 周上线第一个能用的模块，跑通再扩。</p>
+      <div class="tech"><span>Multi-Agent</span><span>RAG 知识库</span><span>MCP 协议</span><span>Skill 技能库</span><span>Agentic Workflow</span><span>私有化部署</span></div>
+      <div class="btns"><a class="pill solid" href="#plan">看场景方案 <span class="arr">→</span></a><a class="pill" href="#products">看工作台实拍</a></div>
+    </div>
+    <div class="ava"><img src="../logo.jpg" alt="Jay"><div class="tag">Jay · FDE 架构师</div></div>
+  </div>
+  <div class="mq" aria-hidden="true"><div id="mq"></div></div>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b data-n="25" data-x="+">25+</b><span>AI 落地项目</span></div>
+      <div class="stat"><b data-n="6">6</b><span>覆盖行业</span></div>
+      <div class="stat"><b data-n="10" data-x="+">10+</b><span>自研岗位工作台 / Agent</span></div>
+      <div class="stat"><b data-n="31">31</b><span>单个项目交付的 AI 技能数</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="plan">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">场景方案 · 按部门</div><h2>七个部门，<br>AI 工作台这样搭</h2></div>
+      <p class="rv" style="--d:.1s">不管做制造、电商还是贸易，重复劳动都集中在这七个部门。下面是每个部门的典型问题和做法、整体架构，以及分期路线。<br><span style="font-size:13px;color:var(--ink-3)">可按贵司的业务出一版针对性的拆解。</span></p>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">A</span><div><h3>部门场景</h3><p>每个部门先问清楚真正的问题，再决定交给哪个 Agent、接哪些数据。</p></div></div>
+    <div class="req rv">
+      <div class="req-tabs" id="reqTabs" role="tablist" aria-label="七个部门"></div>
+      <div class="req-panel" id="reqPanel" role="tabpanel"></div>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">B</span><div><h3>整体架构</h3><p>七个岗位 Agent 共用一套知识库、数据底座和权限体系，不是七个互不相通的小工具。</p></div></div>
+    <div class="arch rv" id="arch">
+      <div class="lay"><div class="lb2"><i>L5 · Access</i><b>入口层</b></div><div class="nds"><span class="nd">网页工作台</span><span class="nd">企业微信 / 飞书机器人</span><span class="nd">手机端消息推送</span><span class="nd">老板驾驶舱</span></div></div>
+      <div class="lay ag"><div class="lb2"><i>L4 · Multi-Agent</i><b>智能体层</b></div><div class="nds"><span class="nd orc">总控 Orchestrator<small>任务拆解 · 调度 · 结果汇总</small></span><span class="nd a" data-ag="0">电商运营 Agent</span><span class="nd a" data-ag="1">内容获客 Agent</span><span class="nd a" data-ag="2">销售 Agent</span><span class="nd a" data-ag="3">产品研发 Agent</span><span class="nd a" data-ag="4">供应链 Agent</span><span class="nd a" data-ag="5">财务 Agent</span><span class="nd a" data-ag="6">人事行政 Agent</span></div></div>
+      <div class="lay"><div class="lb2"><i>L3 · Capability</i><b>能力层</b></div><div class="nds"><span class="nd">Skill 技能库<small>品牌口吻、流程规范沉淀成可复用技能</small></span><span class="nd">RAG 企业知识库<small>向量检索 · 答案可溯源</small></span><span class="nd">Agentic Workflow<small>多步任务自动编排</small></span><span class="nd">AIGC 引擎<small>文生图 · 图生视频 · 渲染配色</small></span><span class="nd">数据分析与预警<small>规则 + 模型双重判断</small></span><span class="nd">Human-in-the-loop<small>改价、发布、付款必须人确认</small></span></div></div>
+      <div class="lay"><div class="lb2"><i>L2 · Integration</i><b>数据接入层</b></div><div class="nds"><span class="nd">ERP · 进销存 · 财务系统</span><span class="nd">电商平台后台<small>开放 API / RPA 采集</small></span><span class="nd">企业微信 · CRM</span><span class="nd">内容平台<small>公众号 · 小红书 · 抖音 · 视频号</small></span><span class="nd">图纸、合同、票据等文件</span><span class="nd">MCP 协议<small>新系统即插即用</small></span></div></div>
+      <div class="lay"><div class="lb2"><i>L1 · Foundation</i><b>安全底座</b></div><div class="nds"><span class="nd">多模型路由<small>LLM Gateway · 按任务选模型控成本</small></span><span class="nd">私有化 / 混合部署</span><span class="nd">RBAC 权限</span><span class="nd">全程审计日志</span><span class="nd">数据不出企业</span></div></div>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">C</span><div><h3>分期路线</h3><p>每一期都有能用的东西和明确的验收标准，跑通一期再启动下一期。周期为参考节奏，调研后确定。</p></div></div>
+    <div class="road">
+      <div class="ph rv"><span class="tm">第 0 期 · 约 1 周</span><h4>调研诊断</h4><p>岗位问卷加负责人访谈，盘点各系统的数据和接口。</p><ul><li>各岗位 AI 机会清单</li><li>优先级矩阵：见效快慢 × 投入大小</li><li>数据接入方案</li></ul><em>验收：一份分期方案和报价</em></div>
+      <div class="ph hot rv" style="--d:.08s"><span class="tm">第 1 期 · 2～3 周</span><h4>挑一个部门试点</h4><p>选重复劳动最多、离营收最近的那个部门，先做出一个能用的 Agent。</p><ul><li>接真实数据跑</li><li>关键动作人确认</li><li>使用说明和培训</li></ul><em>验收：这个部门每天在用</em></div>
+      <div class="ph rv" style="--d:.16s"><span class="tm">第 2 期 · 3～4 周</span><h4>扩到相邻部门</h4><p>沿着业务流往上下游接，数据打通到一张图上。</p><ul><li>第二、第三个岗位 Agent</li><li>老板驾驶舱与预警推送</li><li>企业知识库上线</li></ul><em>验收：预警准确，报表可直接上会</em></div>
+      <div class="ph rv" style="--d:.24s"><span class="tm">第 3 期 · 持续</span><h4>全员培训与陪跑</h4><p>其余部门上现成工作台，团队学会自己用、自己改。</p><ul><li>按部门的场景化培训</li><li>Skill 和知识库持续沉淀</li><li>按月迭代</li></ul><em>验收：团队自己会用、会改</em></div>
+    </div>
+
+    <div class="why rv">
+      <div class="why-t"><b>同时在比几家服务商？</b><span>可以拿这四条去问每一家。</span></div>
+      <div class="why-g">
+        <div><b>01</b><h4>有没有现成底座</h4><p>下面六个工作台是已经在跑的产品，按你的业务改，不是签完合同才从零写。</p></div>
+        <div><b>02</b><h4>架构师是否亲自到岗位</h4><p>FDE（前置部署工程师）模式：跟着运营、设计、采购把工具做出来，不是交一份方案就走。</p></div>
+        <div><b>03</b><h4>能不能分期验收</h4><p>每期有可用产出，不满意随时停，不用一次押上全部预算。</p></div>
+        <div><b>04</b><h4>数据放在哪</h4><p>支持私有化部署，权限分级、操作留痕；涉及钱和对外发布的动作，一律人确认。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="light" id="method">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">方法</div><h2>四步，把 AI 落到岗位上</h2></div>
+      <p class="rv" style="--d:.1s">每一步都有看得见的产出，老板随时可以叫停，不用一次押上大预算。</p>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="no">01</span><h3>岗位调研</h3><p>线上问卷加访谈，按部门、岗位摸清重复性工作和每周耗时，盘点数据和系统接口，排出优先级矩阵。</p></div>
+      <div class="step rv" style="--d:.08s"><span class="no">02</span><h3>挑一个场景试点</h3><p>从见效最快的一件事切入，1～3 周做出第一个岗位 Agent，接真实数据跑，关键动作人确认。</p></div>
+      <div class="step rv" style="--d:.16s"><span class="no">03</span><h3>分期扩到各部门</h3><p>试点跑通后按模块扩成 Multi-Agent：运营、内容、产品、采购、人事、财务，共用知识库和数据底座。</p></div>
+      <div class="step rv" style="--d:.24s"><span class="no">04</span><h3>培训交付，陪跑</h3><p>手把手教到员工自己会用、会改；经验沉淀成 Skill 和企业知识库，越用越懂你的业务。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">案例</div><h2>做过的事，<br>比说过的话有用</h2></div>
+      <div class="filters rv" role="group" aria-label="按行业筛选" style="--d:.1s">
+        <button type="button" data-f="all" aria-pressed="true">全部</button>
+        <button type="button" data-f="ecom" aria-pressed="false">电商与营销</button>
+        <button type="button" data-f="mfg" aria-pressed="false">制造业</button>
+        <button type="button" data-f="med" aria-pressed="false">医疗器械</button>
+        <button type="button" data-f="hr" aria-pressed="false">人事与管理</button>
+      </div>
+    </div>
+
+    <div class="rows" id="rows">
+      <article class="row open rv" data-tags="ecom mfg">
+        <button class="row-head" type="button" aria-expanded="true"><span class="no">01</span><span class="ttl">电商上架 AI 套件：老板娘一个人就能把新品上架到店铺</span><span class="ind">自动化装备制造企业 · 电商渠道</span><span class="state live">交付培训中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>工业设备参数多、图片杂，详情页靠外包，改一个参数要等好几天；老板懂技术没时间，老板娘懂运营不懂参数。</p>
+          <ul class="did"><li>先做 AI 陪跑，把老板和老板娘的电脑都装好 AI 工具，教会日常用法</li><li>把「看资料 → 定参数 → 写卖点 → 出详情页 → 上架看板」拆成一整套 AI 技能</li><li>老板改参数走变更单，套件自动对照、升版、全部重出，不再改漏</li><li>交付三款主力设备的完整上架资料，配使用说明书和流程图</li></ul>
+          <div class="nums"><div><b>31</b><span>个 AI 技能</span></div><div><b>3</b><span>款设备上架资料</span></div><div><b>1</b><span>人即可操作</span></div></div>
+          <div class="chips"><span>Skill 套件</span><span>上架看板</span><span>使用说明书</span><span>详情页样板</span><span>参数变更流程</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="med ecom">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">02</span><span class="ttl">AI 报价工作台：图纸和询价单丢进去，按公司成本模型出报价单</span><span class="ind">医疗器械 CDMO · 销售报价团队</span><span class="state live">业务员每天在用</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>一个询价要翻历史价、拆 BOM、套成本模型、再按不同客户的模板填表，熟手半天，新人一天。</p>
+          <ul class="did"><li>识别客户图纸和询价参数，自动匹配品类和标准工艺</li><li>按历史价比价、按公司成本模型核算，倒推利润</li><li>每个业务员账号可配专属客户模板，含海外客户的成本分析表</li><li>云端部署，按业务员反馈持续迭代</li></ul>
+          <div class="nums"><div><b>366</b><span>项自动化测试</span></div></div>
+          <div class="chips"><span>云端工作台</span><span>按账号定制模板</span><span>历史价比对</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="med">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">03</span><span class="ttl">体系合规智能体：作业指导书对照注册证和新版法规自动查问题</span><span class="ind">三类医疗器械生产企业 · 约 150 人</span><span class="state pilot">试点运行中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>体系文件上百份，法规一更新就要逐份人工核对；管代一个人顾不过来，审核前临时抱佛脚。</p>
+          <ul class="did"><li>建好法规与体系库，自有文件逐份比对，列出不一致、不可执行、缺口项</li><li>出改进意见，内部协作确认后生成受控版和修订记录</li><li>同时为企业搭销售智能体，客户跟进和回复由 AI 拟稿</li></ul>
+          <div class="chips" style="grid-column:2"><span>合规智能体</span><span>销售智能体</span><span>云服务器部署</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="mfg hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">04</span><span class="ttl">管理层 AI 规划陪跑：新厂从岗位职责到派活机制一次理顺</span><span class="ind">精密制造企业 · 新建厂</span><span class="state done">已交付</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>新厂开张，岗位职责、汇报机制、招聘面试都要从零搭；总经理每天派活靠口头，事情容易掉地上。</p>
+          <ul class="did"><li>一对一带管理层用上 AI，再做一整天「AI 落地实战日」</li><li>用 AI 梳理岗位职责和表单，做成可直接发放的岗位卡</li><li>给总经理做派活决策卡和任务分配体检表，会议纪要有模板可套</li></ul>
+          <div class="chips" style="grid-column:2"><span>岗位卡与表单</span><span>派活决策卡</span><span>任务体检表</span><span>会议纪要模板</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">05</span><span class="ttl">HR 团队 AI 诊断与培训，延伸到 HR 智能体工作台</span><span class="ind">央企地市分公司 · 人力资源部</span><span class="state live">二期需求对齐中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>培训盘点、能力模型、台账全靠 Excel 手工做；人才盘点和选拔缺少统一的评价工具。</p>
+          <ul class="did"><li>一对一诊断 HR 岗位，整理出培训场景的提示词对照表和作战手册</li><li>教会团队用 AI 做岗位能力模型、学习地图、培训台账</li><li>二期：人才盘点、人才评价、人员选拔的 HR 智能体工作台</li></ul>
+          <div class="nums"><div><b>54</b><span>项培训场景提示词</span></div></div>
+          <div class="chips"><span>作战手册</span><span>HR 智能体工作台</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="ecom">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">06</span><span class="ttl">门店运营与售后工单诊断：把每天重复的登记和跟进交给 AI</span><span class="ind">零售门店 · 售后服务</span><span class="state done">已交付</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>售后工单靠手工登记和人工催进度，门店老板想自动化，但不知道从哪下手。</p>
+          <ul class="did"><li>上门式技术诊断，给出门店运营与工单系统的改造路线</li><li>现场装好 AI 工具，一对一教会日常自动化用法</li></ul>
+          <div class="chips" style="grid-column:2"><span>系统诊断报告</span><span>工具部署</span><span>一对一带教</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="ecom hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">07</span><span class="ttl">AI 工具部署与个人工作台搭建：从装好到天天用</span><span class="ind">外贸与电商企业 · 多家</span><span class="state done">持续服务</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>想用 AI 但卡在安装、网络、账号；自己搭的工作台跑不通、找不到头绪。</p>
+          <ul class="did"><li>远程部署主流 AI 编程与办公工具，配好账号和网络</li><li>带做个人工作台，理清业务主线，第一个模块当场跑通</li><li>把课程视频蒸馏成可复用的 AI 技能包，经验变成团队资产</li></ul>
+          <div class="chips" style="grid-column:2"><span>工具部署</span><span>个人工作台</span><span>视频蒸馏技能包</span></div>
+        </div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="products" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">自研工作台 · 实拍</div><h2>六个工作台，<br>都是真在跑的</h2></div>
+      <p class="rv" style="--d:.1s">下面不是效果图，是工作台实际运行时录下来的。都在真实业务里磨过，拿来就能按你的公司改，不用从零开发。<br><span style="font-size:13px;color:var(--ink-3)">画面里的公司、人名和数字均为演示数据。</span></p>
+    </div>
+    <div class="show rv">
+      <div class="show-tabs" id="stabs" role="tablist" aria-label="工作台"></div>
+      <div class="stage">
+        <div class="win" id="win">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url" id="winUrl"></span><span class="live">实拍</span></div>
+          <div class="win-body" id="winBody"></div>
+        </div>
+        <div class="chip c1" id="chip1"></div><div class="chip c2" id="chip2"></div>
+        <p class="show-desc" id="showDesc"></p>
+      </div>
+    </div>
+    <div class="show-foot rv"><span><b>还有一个不方便公开录屏的：老板 AI 总管。</b>微信、企微消息汇总成待办，每天早上自动起草派活清单，周五自动出周报。想看可以约线上演示。</span></div>
+  </div>
+  <div class="reel rv" aria-label="工作台界面细节"><div class="reel-track" id="reelTrack"></div></div>
+</section>
+<div class="lb" id="lb" role="dialog" aria-label="大图"><img alt=""></div>
+
+<section class="light" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">服务</div><h2>能帮你做的事</h2></div>
+      <p class="rv" style="--d:.1s">本机、云服务器或公司内网私有化部署都可以；多模型路由控制成本，RBAC 权限和审计日志按企业要求设计。</p>
+    </div>
+    <ul class="svc">
+      <li class="rv"><span class="no">01</span><h3>AI 工作台定制</h3><p>按岗位定制 Multi-Agent 工作台，通过 API、RPA 和 MCP 协议打通 ERP、财务、电商后台和企微等内部数据。</p></li>
+      <li class="rv"><span class="no">02</span><h3>企业知识库与 Skill 沉淀</h3><p>把产品资料、制度、话术、流程做成 RAG 知识库和可复用的 Skill，新人和 AI 都从同一处取答案。</p></li>
+      <li class="rv"><span class="no">03</span><h3>内容与获客自动化</h3><p>电商详情页、站外种草、短视频脚本、AIGC 出图、GEO 内容批量产出，人只负责把关和发布。</p></li>
+      <li class="rv"><span class="no">04</span><h3>陪跑与全员培训</h3><p>管理层规划加骨干带做，按部门出场景化课程和提示词手册，按月陪跑到团队自己能用、能改。</p></li>
+      <li class="rv"><span class="no">05</span><h3>数据分析与报表</h3><p>店铺数据、销量、报修率、库存，自动汇总成老板驾驶舱、日报周报和预警推送。</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div class="rv"><div class="kicker">关于我</div><img src="../logo.jpg" alt="Jay" style="margin-top:28px"></div>
+    <div class="rv" style="--d:.1s">
+      <p class="big">我是 Jay，专做企业 AI 落地的 FDE（前置部署工程师）架构师。<em>制造业工程师出身，画过图纸、算过报价、写过体系文件，所以知道工厂和业务是怎么跑的，</em>也知道 AI 该放在哪一步才真的省人。</p>
+      <dl class="facts">
+        <div><dt>做事方式</dt><dd>驻到业务一线，跟着岗位把工具做出来，而不是交一份方案就走。</dd></div>
+        <div><dt>自己先用</dt><dd>每天的消息、客户、报价、内容都跑在自己搭的 AI 工作台上，交付给客户的是自己用顺手的东西。</dd></div>
+        <div><dt>技术栈</dt><dd>Multi-Agent 编排、RAG 企业知识库、MCP 协议、Skill 技能库、AIGC、多模型路由，支持私有化部署。</dd></div>
+        <div><dt>保密</dt><dd>案例全部脱敏，客户名称与具体数据不对外公开，可在线上会中演示实际效果。</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div class="motto" id="motto"><div class="wrap"><p id="mottoText">用 AI 把复杂的事做简单，把简单的事做好。</p></div></div>
+
+<section class="light" id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">合作</div><h2>三步开始，<br>看完再决定做不做</h2></div>
+      <p class="rv" style="--d:.1s">先把问题看清楚，再谈做什么、多久见效、要投入多少。</p>
+    </div>
+    <div class="ways">
+      <div class="way rv"><span class="no">01</span><h3>填一份岗位调研</h3><p>5 分钟的线上问卷，按部门和岗位填日常工作、耗时和最头疼的事。</p><small>产出：各岗位的 AI 机会清单</small></div>
+      <div class="way rv" style="--d:.08s"><span class="no">02</span><h3>开一次线上诊断会</h3><p>对着调研结果逐项过，现场演示相近行业的工作台实际怎么用。</p><small>产出：分阶段的落地建议</small></div>
+      <div class="way rv" style="--d:.16s"><span class="no">03</span><h3>挑一个场景试点</h3><p>选见效最快的一件事，1～3 周做出能用的第一版，跑通再扩。</p><small>产出：能用的第一版工作台</small></div>
+    </div>
+    <div class="contact rv">
+      <p>想聊聊你公司的情况？<span>直接回复把这个页面发给你的人，就能约时间。</span></p>
+      <a class="pill" href="#cases">再看一遍案例 <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Jay · 企业 AI 落地 FDE 架构师</span><span>案例已做脱敏处理</span></div></footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 跑马灯
+  var ind = ["Multi-Agent 协同", "RAG 检索增强", "MCP 协议", "Skill 技能库", "Agentic Workflow", "Human-in-the-loop", "AIGC 出图与视频", "GEO 生成式引擎优化", "RPA + API 集成", "多模型路由", "私有化部署", "RBAC 权限与审计"];
+  document.getElementById("mq").innerHTML = ind.concat(ind).map(function (x) { return "<span>" + x + "</span>"; }).join("");
+
+  // 聚光跟随鼠标
+  var hero = document.querySelector(".hero");
+  hero.addEventListener("pointermove", function (e) {
+    var r = hero.getBoundingClientRect();
+    hero.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    hero.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+
+  // 滚动进度
+  var bar = document.getElementById("bar");
+  function onScroll() {
+    var h = root.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // 座右铭拆字
+  var mt = document.getElementById("mottoText"), txt = mt.textContent;
+  var k = 0;
+  mt.innerHTML = txt.split(/(?<=，)/).map(function (cl) {
+    return '<span class="cl">' + cl.split("").map(function (c) {
+      return c === " " ? " " : '<span class="w" style="transition-delay:' + (k++ * 0.045) + 's">' + c + "</span>";
+    }).join("") + "</span>";
+  }).join("");
+
+  // 数字滚动
+  function countUp(el) {
+    var n = +el.dataset.n, x = el.dataset.x || "", t0 = performance.now();
+    (function tick(t) {
+      var p = Math.min(1, (t - t0) / 1200);
+      el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))) + (p === 1 ? x : "");
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+
+  // 滚动出现
+  if ("IntersectionObserver" in window && !reduce) {
+    root.classList.add("js");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        if (e.target.dataset.n) countUp(e.target);
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".rv, .step, .stat b, #motto").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".step, #motto").forEach(function (el) { el.classList.add("in"); });
+  }
+
+  // 案例展开
+  var rows = document.querySelectorAll(".row");
+  rows.forEach(function (r) {
+    var h = r.querySelector(".row-head");
+    h.addEventListener("click", function () {
+      var open = r.classList.toggle("open");
+      h.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
+
+  // 案例筛选
+  var fb = document.querySelectorAll(".filters button");
+  fb.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var f = b.dataset.f;
+      fb.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      rows.forEach(function (r) {
+        r.hidden = !(f === "all" || (" " + r.dataset.tags + " ").indexOf(" " + f + " ") > -1);
+        r.classList.add("in");
+      });
+    });
+  });
+})();
+/* ===== 行业方案：需求拆解 ===== */
+(function(){
+  var R = [{"n": "电商运营", "s": "上架 · 竞品 · 数据 · 调价", "ag": "电商运营 Agent", "q": "运营天天在扒数据、填表、盯竞品，真正想活动和选品的时间没多少。", "real": "多店铺、多平台，数据散在各个后台。竞品一调价，等人发现往往已经晚了。", "todo": ["竞品监控：定时采集对手的价格、主图和活动，一有变动就推送", "各店数据自动汇成日报，异常波动标出来并附上可能原因", "出价、调价给出建议和依据，人点确认后才执行", "上架资料、报活动的表单由 Agent 预填，运营只做核对"], "tech": ["Multi-Agent 协同", "RPA 采集", "电商平台 API", "定时调度", "Human-in-the-loop"], "base": ["电商上架 AI 套件（案例 01）", "#cases"]}, {"n": "内容与获客", "s": "图文 · 短视频 · GEO", "ag": "内容获客 Agent", "q": "每个平台都要内容，文案和设计永远在排队；客户现在还会直接去问 AI。", "real": "同一款产品，每个平台要一套不同的说法和尺寸。品牌不在 AI 搜索的答案里，就等于不在货架上。", "todo": ["一份产品资料，一次出公众号图文、种草卡片、短视频脚本和海报", "品牌口吻、禁用词、卖点库沉淀成 Skill，谁来用都是同一个调性", "GEO：检测品牌在各家 AI 里有没有被推荐，找缺口、补内容、复盘", "所有内容停在发布前，由人把关"], "tech": ["AIGC 文生图 / 图生视频", "GEO 生成式引擎优化", "Skill 技能库", "RAG 企业知识库"], "base": ["内容获客工作台（现成）", 1]}, {"n": "销售", "s": "客户跟进 · 报价 · 回款", "ag": "销售 Agent", "q": "客户都在业务员的微信里，谁跟到哪一步、谁该催了，我看不到。", "real": "跟进靠记性，报价靠熟手。人一走，客户和经验一起带走。", "todo": ["个微、企微客户汇成一本账，漏斗自动更新", "AI 读懂聊天上下文拟好回复，人来点发送", "图纸和询价单丢进去，按公司成本模型出报价单", "今天该跟进谁、哪些快到期，自动排好"], "tech": ["RAG 话术与产品库", "Function Calling", "成本模型核算", "RBAC 权限", "聊天记录不出本机"], "base": ["销售智能体（现成）", 0]}, {"n": "产品与研发", "s": "项目进度 · BOM · 竞品洞察", "ag": "产品研发 Agent", "q": "我问一句「那个项目到哪了、卡在谁那」，要等半天才有人答得上来。", "real": "进度散在十几个文件夹和聊天记录里；新品方向靠经验，销量、评价、售后数据不在一张图上。", "todo": ["每个项目卡在哪、在等谁，一眼看清", "看图澄清、BOM 多家比价、样品数据自动计算", "竞品评价做语义聚类，提炼用户在抱怨什么、想要什么", "周报自动汇总，一键复制"], "tech": ["文档与图纸解析", "评论语义分析", "多源数据融合", "BI 数据看板"], "base": ["研发工程师工作台（现成）", 5]}, {"n": "采购与库存", "s": "库存预警 · 补货 · 跟单", "ag": "供应链 Agent", "q": "要么压货占资金，要么断货丢订单，备多少基本靠拍脑袋。", "real": "库存、在途、销售速度在不同的表里，没人每天把它们对一遍。", "todo": ["对接进销存或 ERP，按销售速度算出每个 SKU 的可售天数", "低于安全库存、滞销超期，自动推送到企业微信", "结合活动和订单给出补货建议", "采购跟单到期提醒"], "tech": ["ERP / 进销存集成", "销量预测", "规则 + 模型双重预警", "企微 / 飞书推送"], "base": ["财务工作台的数据接入与预警（现成）", 4]}, {"n": "财务", "s": "报销 · 发票 · 对账 · 回款", "ag": "财务 Agent", "q": "报销单差几毛钱，会计要对半天；应收账款谁逾期了，月底才知道。", "real": "票据靠人眼核、数据靠人手录，错一处就要从头翻。", "todo": ["报销 AI 初审：缺票、金额不符、超标准自动标出", "发票池、对账付款、应收回款一处管", "催款消息一键起草", "项目成本和毛利自动算，预算与月结有清单"], "tech": ["票据 OCR", "规则引擎", "账龄分析", "审计日志"], "base": ["财务工作台（现成）", 4]}, {"n": "人事行政", "s": "招聘 · 培训 · 考勤 · 制度", "ag": "人事行政 Agent", "q": "招聘、入职、培训、考勤，这些事琐碎但不能出错，占掉人事大半时间。", "real": "台账全在 Excel 里，证照到期、培训漏做，往往要等出了问题才发现。", "todo": ["招聘进度、入职试用、培训矩阵、证照到期一处管", "制度问答机器人，员工自己问，答案带出处", "各类表单一键出 Excel 和 Word", "敏感信息加密存储，按角色分权限"], "tech": ["RAG 制度问答", "表单自动生成", "加密存储", "RBAC 权限"], "base": ["人事工作台（现成）", 3]}];
+  var tabs = document.getElementById('reqTabs'), panel = document.getElementById('reqPanel'); if (!tabs) return;
+  var btns = [], cur = -1, nodes = document.querySelectorAll('#arch .nd.a');
+  function go(i, user){
+    if (i === cur) return; if (cur >= 0) { btns[cur].classList.remove('on'); btns[cur].setAttribute('aria-selected','false'); }
+    cur = i; var r = R[i]; btns[i].classList.add('on'); btns[i].setAttribute('aria-selected','true');
+    var link = typeof r.base[1] === 'number' ? '<a href="#products" data-wb="' + r.base[1] + '">底座：' + r.base[0] + ' →</a>' : '<a href="' + r.base[1] + '">底座：' + r.base[0] + ' →</a>';
+    panel.innerHTML = '<div class="rp"><p class="q"><small>老板常说的一句话</small>' + r.q + '</p>' +
+      '<div><h5>背后真正的问题</h5><p class="real">' + r.real + '</p><span class="ag">交给 ' + r.ag + '</span></div>' +
+      '<div><h5>怎么做</h5><ul class="do">' + r.todo.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>' +
+      '<div class="ft">' + r.tech.map(function(t){ return '<span>' + t + '</span>'; }).join('') + link + '</div></div>';
+    nodes.forEach(function(n){ n.classList.toggle('hot', +n.dataset.ag === i); });
+    var a = panel.querySelector('a[data-wb]'); if (a) a.addEventListener('click', function(){ if (window.__goWB) window.__goWB(+a.dataset.wb); });
+    if (user && innerWidth <= 900 && btns[i].scrollIntoView) btns[i].scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+  }
+  R.forEach(function(r, i){
+    var b = document.createElement('button'); b.className = 'rtab'; b.type = 'button'; b.setAttribute('role','tab');
+    b.innerHTML = '<span class="no">0' + (i+1) + '</span><b>' + r.n + '<small>' + r.s + '</small></b><span class="ar">→</span>';
+    b.addEventListener('click', function(){ go(i, true); }); tabs.appendChild(b); btns.push(b);
+  });
+  nodes.forEach(function(n){ n.style.cursor = 'pointer'; n.addEventListener('click', function(){ go(+n.dataset.ag, true); document.getElementById('reqTabs').scrollIntoView({block:'center', behavior:'smooth'}); }); });
+  go(0);
+})();
+
+/* ===== 工作台实拍 ===== */
+(function(){
+  var WB = [{"id": "sales", "name": "销售智能体", "desc": "客户一本账，AI 读懂聊天上下文拟好回复，人来点发送；客户漏斗自动更新，谁该跟进一眼看到。", "who": "销售团队 · 外贸 · ToB 大客户", "chips": ["AI 拟好回复，人点发送", "今天该跟进谁，自动排好"], "video": "../media/sales.mp4", "poster": "../media/sales.jpg"}, {"id": "content", "name": "内容获客工作台", "desc": "一个选题，一键出公众号图文、X 推文串、小红书卡片和文案，配图封面自动生成，停在发布前给人把关。", "who": "新媒体 · 品牌 · 站外种草", "chips": ["一个选题，三个平台的稿", "配图和封面自动生成"], "video": "../media/content.mp4", "poster": "../media/content.jpg"}, {"id": "geo", "name": "GEO 工作台", "desc": "让品牌在 DeepSeek、豆包等 AI 搜索里被推荐：问题篮检测、找缺口、按已确认的知识写文章、跟踪效果。", "who": "品牌推广 · 线下引流 · 本地生活", "chips": ["AI 提及率 19% → 58%", "每条知识都能回到原文"], "video": "../media/geo.mp4", "poster": "../media/geo.jpg"}, {"id": "hr", "name": "人事工作台", "desc": "招聘、入职试用、培训矩阵、上岗证、考勤绩效一处管；文件一换版，自动算出谁要重新培训。", "who": "人事行政 · 体系专员", "chips": ["文件换版，自动点名补训", "证书到期提前 30 天提醒"], "video": "../media/hr.mp4", "poster": "../media/hr.jpg"}, {"id": "fin", "name": "财务工作台", "desc": "报销 AI 初审、发票池、对账付款、应收回款、项目成本、预算与月结，从真实票据导入，不用重复录。", "who": "会计 · 出纳 · 老板", "chips": ["AI 初审：缺 2 张发票", "催款消息一键起草"], "video": "../media/fin.mp4", "poster": "../media/fin.jpg"}, {"id": "rd", "name": "研发工程师工作台", "desc": "每个项目卡在哪、在等谁一眼看清；看图澄清、BOM 多家比价、样品计算、体系文件齐套率，周报自动写好。", "who": "研发 · 工艺 · 项目经理", "chips": ["卡在哪、在等谁，一眼看清", "周报自动汇总，一键复制"], "video": "../media/rd.mp4", "poster": "../media/rd.jpg"}], SH = [{"src": "../media/s_sales_b.jpg", "th": "../media/t_sales_b.jpg", "wb": "销售智能体", "cap": "客户阶段看板"}, {"src": "../media/s_fin_home2.jpg", "th": "../media/t_fin_home2.jpg", "wb": "财务工作台", "cap": "应收账龄与项目成本"}, {"src": "../media/s_geo_review.jpg", "th": "../media/t_geo_review.jpg", "wb": "GEO 工作台", "cap": "三轮检测对比"}, {"src": "../media/s_rd_bom.jpg", "th": "../media/t_rd_bom.jpg", "wb": "研发工作台", "cap": "四家供应商比价"}, {"src": "../media/s_content_x.jpg", "th": "../media/t_content_x.jpg", "wb": "内容工作台", "cap": "推文串与配图"}, {"src": "../media/s_hr_home.jpg", "th": "../media/t_hr_home.jpg", "wb": "人事工作台", "cap": "首页与 AI 提醒"}, {"src": "../media/s_sales_a.jpg", "th": "../media/t_sales_a.jpg", "wb": "销售智能体", "cap": "首页与今日待办"}, {"src": "../media/s_fin_ar.jpg", "th": "../media/t_fin_ar.jpg", "wb": "财务工作台", "cap": "应收回款与催款"}, {"src": "../media/s_geo_content.jpg", "th": "../media/t_geo_content.jpg", "wb": "GEO 工作台", "cap": "按已确认知识写文章"}, {"src": "../media/s_rd_tests.jpg", "th": "../media/t_rd_tests.jpg", "wb": "研发工作台", "cap": "实测值自动算 Cpk"}, {"src": "../media/s_content_imgs.jpg", "th": "../media/t_content_imgs.jpg", "wb": "内容工作台", "cap": "封面与插画"}, {"src": "../media/s_hr_certs.jpg", "th": "../media/t_hr_certs.jpg", "wb": "人事工作台", "cap": "上岗证到期表"}, {"src": "../media/s_fin_cost.jpg", "th": "../media/t_fin_cost.jpg", "wb": "财务工作台", "cap": "项目成本与毛利"}, {"src": "../media/s_geo_dash.jpg", "th": "../media/t_geo_dash.jpg", "wb": "GEO 工作台", "cap": "驾驶舱"}];
+  var tabs = document.getElementById('stabs'), body = document.getElementById('winBody'), url = document.getElementById('winUrl');
+  var c1 = document.getElementById('chip1'), c2 = document.getElementById('chip2'), desc = document.getElementById('showDesc');
+  if (!tabs) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, cur = -1, visible = false, vids = [], btns = [];
+  WB.forEach(function(w, i){
+    var b = document.createElement('button'); b.className = 'stab'; b.type = 'button'; b.setAttribute('role','tab');
+    b.innerHTML = '<span class="no">0' + (i+1) + '</span><b>' + w.name + '</b><span class="d"><i>' + w.desc + '</i></span><em>' + w.who + '</em><span class="pg"></span>';
+    b.addEventListener('click', function(){ go(i, true); }); tabs.appendChild(b); btns.push(b);
+    var v = document.createElement('video'); v.muted = true; v.playsInline = true; v.setAttribute('playsinline',''); v.setAttribute('muted','');
+    v.preload = 'none'; v.poster = w.poster; v.dataset.src = w.video; v.setAttribute('aria-label', w.name + ' 功能演示');
+    if (reduce) v.controls = true;
+    v.addEventListener('timeupdate', function(){ if (i === cur && v.duration) btns[i].querySelector('.pg').style.transform = 'scaleX(' + (v.currentTime / v.duration) + ')'; });
+    v.addEventListener('ended', function(){ if (i === cur) go((i + 1) % WB.length); });
+    body.appendChild(v); vids.push(v);
+  });
+  function play(v){ if (reduce || !visible) return; if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function go(i, user){
+    if (i === cur) { if (user) { vids[i].currentTime = 0; play(vids[i]); } return; }
+    if (cur >= 0) { btns[cur].classList.remove('on'); btns[cur].setAttribute('aria-selected','false'); btns[cur].querySelector('.pg').style.transform = 'scaleX(0)'; vids[cur].classList.remove('on'); vids[cur].pause(); }
+    cur = i; var w = WB[i];
+    btns[i].classList.add('on'); btns[i].setAttribute('aria-selected','true'); vids[i].classList.add('on');
+    try { vids[i].currentTime = 0; } catch(e){}
+    url.textContent = w.name + ' · 本机运行'; desc.textContent = w.desc;
+    c1.classList.remove('in'); c2.classList.remove('in');
+    setTimeout(function(){ c1.textContent = w.chips[0]; c2.textContent = w.chips[1]; c1.classList.add('in'); c2.classList.add('in'); }, 380);
+    if (user && btns[i].scrollIntoView && innerWidth <= 900) btns[i].scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+    play(vids[i]);
+    var n = vids[(i + 1) % WB.length]; if (visible && !n.src && !reduce) { n.preload = 'auto'; n.src = n.dataset.src; }
+  }
+  go(0); window.__goWB = function(i){ go(i, true); };
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if (visible) play(vids[cur]); else vids[cur].pause(); }, {threshold: .25}).observe(body);
+  else { visible = true; play(vids[0]); }
+  var win = document.getElementById('win'), stage = win.parentNode;
+  if (!reduce && matchMedia('(hover:hover)').matches) {
+    stage.addEventListener('mousemove', function(e){ var r = stage.getBoundingClientRect(); var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; win.style.setProperty('--ry', (x * 5).toFixed(2) + 'deg'); win.style.setProperty('--rx', (-y * 4).toFixed(2) + 'deg'); });
+    stage.addEventListener('mouseleave', function(){ win.style.setProperty('--ry','-2.5deg'); win.style.setProperty('--rx','1.5deg'); });
+    win.style.setProperty('--ry','-2.5deg'); win.style.setProperty('--rx','1.5deg');
+  }
+  var track = document.getElementById('reelTrack'), lb = document.getElementById('lb'), lbi = lb.querySelector('img');
+  function shot(s){ var b = document.createElement('button'); b.className = 'shot'; b.type = 'button'; b.setAttribute('aria-label', '放大看：' + s.wb + ' ' + s.cap);
+    b.innerHTML = '<img loading="lazy" decoding="async" src="' + s.th + '" alt="' + s.wb + ' · ' + s.cap + '"><span class="cap"><b>' + s.wb + '</b><span>' + s.cap + '</span></span>';
+    b.addEventListener('click', function(){ lbi.src = s.src; lbi.alt = s.wb + ' · ' + s.cap; lb.classList.add('on'); }); return b; }
+  SH.forEach(function(s){ track.appendChild(shot(s)); });
+  if (!reduce) SH.forEach(function(s){ var b = shot(s); b.setAttribute('aria-hidden','true'); b.tabIndex = -1; track.appendChild(b); });
+  lb.addEventListener('click', function(){ lb.classList.remove('on'); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') lb.classList.remove('on'); });
+})();
+</script>
+
+</body>
+</html>
