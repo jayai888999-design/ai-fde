@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f0e9e5">
+<link rel="icon" href="logo.jpg">
+<meta property="og:title" content="橘巴拉 · 企业 AI 落地">
+<meta property="og:description" content="把 AI 工作台做进企业每个岗位的日常工作里。">
+<meta property="og:image" content="logo.jpg">
+<title>橘巴拉 · 企业 AI 落地</title>
+<meta name="description" content="橘巴拉：一线落地 FDE 架构师。把 AI 工作台做进企业每个岗位的日常工作里。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<style>
+/* 暖纸橘光：晒过的米色纸面、白色纸卡、宋体大标题，全站只有一个橘色。浅色是品牌设定，不随系统主题切换。 */
+:root {
+  --canvas: #f0e9e5; --paper: #fbf8f5; --card: #ffffff;
+  --ink: #1e1e1e; --ink-2: #5c5852; --ink-3: #8a847c; --line: #d9cfc6; --line-2: #e8dfd7;
+  --orange: #f07d1a; --orange-deep: #b85a08; --orange-soft: #fde9d6;
+  --sans: "Inter Tight", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --pad: clamp(18px, 4.5vw, 64px);
+  --shadow: 0 1px 3px rgba(70,45,20,.07);
+  --shadow-up: 0 14px 34px rgba(110,60,15,.13);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, ul, dl, dd { margin: 0; padding: 0; }
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.wrap { max-width: 1280px; margin-inline: auto; padding-left: max(var(--pad), env(safe-area-inset-left, 0px)); padding-right: max(var(--pad), env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 2px solid var(--orange-deep); outline-offset: 3px; }
+
+.bar { position: fixed; left: 0; top: 0; height: 3px; width: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0); z-index: 30; }
+.nav { position: sticky; top: 0; z-index: 20; background: rgba(240,233,229,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-2); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 900; font-size: 20px; }
+.brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; box-shadow: var(--shadow); }
+.nav-links { display: flex; gap: 30px; font-size: 14px; color: var(--ink-2); }
+.nav-links a { position: relative; padding-block: 6px; transition: color .2s; }
+.nav-links a::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--orange); transform: scaleX(0); transform-origin: 100% 50%; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: 0 50%; }
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--ink); border-radius: 9999px; padding: 10px 22px; font-size: 14px; font-weight: 500; white-space: nowrap; transition: background .25s, color .25s, transform .25s, box-shadow .25s; }
+.pill:hover { background: var(--ink); color: #fff; }
+.nav .pill, .pill.solid { background: var(--orange); border-color: var(--orange); color: #fff; }
+.nav .pill:hover, .pill.solid:hover { background: var(--orange-deep); border-color: var(--orange-deep); transform: translateY(-2px); box-shadow: 0 10px 22px rgba(240,125,26,.3); }
+.pill .arr { display: inline-block; transition: transform .25s; }
+.pill:hover .arr { transform: translateX(4px); }
+
+.hero { position: relative; overflow: hidden; isolation: isolate; --mx: 74%; --my: 34%; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(560px circle at var(--mx) var(--my), rgba(240,125,26,.28), transparent 70%); }
+.hero::after { content: ""; position: absolute; z-index: -1; width: 460px; height: 460px; left: -160px; bottom: -40px; border-radius: 50%; background: radial-gradient(circle, rgba(255,196,140,.5), transparent 68%); animation: drift 16s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: translate(110px, -70px) scale(1.2); } }
+.hero-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 40px; align-items: center; padding-block: clamp(52px, 9vw, 116px) clamp(44px, 7vw, 88px); }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .1em; color: var(--orange-deep); background: var(--card); padding: 6px 14px; border-radius: 9999px; box-shadow: var(--shadow); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: pulse 1.8s ease-in-out infinite; flex: none; }
+@keyframes pulse { 50% { opacity: .25; } }
+.hero h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 7.2vw, 96px); line-height: 1.12; letter-spacing: -.02em; margin-top: 24px; }
+.ln { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; white-space: nowrap; }
+.ln i { display: block; font-style: normal; animation: up 1s cubic-bezier(.2,.8,.2,1) both; }
+.ln:nth-child(2) i { animation-delay: .12s; } .ln:nth-child(3) i { animation-delay: .24s; color: var(--orange-deep); }
+@keyframes up { from { transform: translateY(112%); } to { transform: none; } }
+.hero .sub { margin-top: 26px; max-width: 31em; color: var(--ink-2); font-size: clamp(16px, 1.5vw, 19px); animation: fade 1s .5s both; }
+.hero .btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; animation: fade 1s .65s both; }
+@keyframes fade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.ava { justify-self: center; position: relative; width: min(330px, 64vw); aspect-ratio: 1; animation: fade 1.2s .3s both; }
+.ava img { width: 100%; height: 100%; border-radius: 50%; display: block; border: 8px solid #fff; box-shadow: 0 26px 60px rgba(120,60,10,.24); animation: bob 5s ease-in-out infinite alternate; }
+.ava::before { content: ""; position: absolute; inset: -22px; border-radius: 50%; border: 1px dashed var(--line); animation: spin 40s linear infinite; }
+.ava::after { content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); top: -28px; left: 50%; margin-left: -6px; transform-origin: 6px calc(min(330px, 64vw) / 2 + 28px); animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ava .tag { position: absolute; left: -14px; bottom: 28px; background: var(--card); color: var(--ink); font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 4px; box-shadow: var(--shadow-up); animation: bob 5s ease-in-out infinite alternate-reverse; }
+@keyframes bob { to { transform: translateY(-9px); } }
+
+.mq { overflow: hidden; white-space: nowrap; border-block: 1px solid var(--line); padding-block: 16px; color: var(--ink-2); }
+.mq div { display: inline-block; animation: mq 34s linear infinite; }
+.mq:hover div { animation-play-state: paused; }
+.mq span { margin-right: 52px; font-size: 15px; }
+.mq span::before { content: "●"; margin-right: 52px; color: var(--orange); font-size: 9px; vertical-align: middle; }
+@keyframes mq { to { transform: translateX(-50%); } }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: clamp(24px, 4vw, 44px) 0 clamp(24px, 4vw, 44px) clamp(16px, 2.4vw, 32px); border-left: 1px solid var(--line); min-width: 0; }
+.stat:first-child { border-left: 0; padding-left: 0; }
+.stat b { display: block; font-family: var(--serif); font-weight: 900; color: var(--orange-deep); font-size: clamp(38px, 5.8vw, 76px); line-height: 1; font-variant-numeric: tabular-nums; }
+.stat span { display: block; margin-top: 12px; font-size: 13px; color: var(--ink-2); }
+
+section { padding-block: clamp(60px, 8.5vw, 116px); }
+section, header { scroll-margin-top: 64px; }
+.sec-head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: clamp(28px, 4.5vw, 56px); }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--orange-deep); display: flex; align-items: center; gap: 10px; }
+.kicker::before { content: ""; width: 24px; height: 2px; background: var(--orange); }
+h2 { font-family: var(--serif); font-weight: 900; font-size: clamp(30px, 4.6vw, 60px); line-height: 1.18; letter-spacing: -.015em; margin-top: 14px; text-wrap: balance; }
+.sec-head p { color: var(--ink-2); max-width: 30em; justify-self: end; }
+.light { background: var(--paper); border-block: 1px solid var(--line-2); }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.step { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 24px; min-width: 0; position: relative; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+.step:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.step .no { font-family: var(--serif); font-weight: 900; font-size: 30px; color: var(--orange); line-height: 1; }
+.step h3 { font-weight: 600; font-size: clamp(18px, 1.7vw, 22px); margin-top: 26px; }
+.step p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.step::before { content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 0; background: var(--orange); transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.step.in::before { width: 100%; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; justify-self: end; }
+.filters button { border: 1px solid var(--line); background: var(--card); border-radius: 9999px; padding: 8px 18px; font-size: 14px; color: var(--ink-2); transition: all .2s; }
+.filters button:hover { border-color: var(--orange); color: var(--orange-deep); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.rows { display: grid; gap: 12px; }
+.row { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); transition: border-color .3s, box-shadow .3s, transform .3s; }
+.row:hover { border-color: var(--orange); box-shadow: var(--shadow-up); transform: translateY(-2px); }
+.row.open { border-color: var(--orange); }
+.row[hidden] { display: none; }
+.row-head { width: 100%; text-align: left; display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, 190px) 108px 24px; gap: 20px; align-items: center; padding: clamp(18px, 2.2vw, 28px) clamp(16px, 2vw, 28px); }
+.row-head .no { font-family: var(--serif); font-weight: 900; font-size: 22px; color: var(--orange); font-variant-numeric: tabular-nums; }
+.row-head .ttl { font-family: var(--serif); font-weight: 600; font-size: clamp(18px, 1.9vw, 26px); line-height: 1.35; min-width: 0; text-wrap: balance; }
+.row-head .ind { font-size: 13px; color: var(--ink-3); }
+.state { font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; color: var(--ink-2); }
+.state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--ink-3)); }
+.state.live { --c: var(--orange); } .state.done { --c: #2f8f5b; } .state.pilot { --c: #3d8ee0; }
+.plus { width: 28px; height: 28px; border-radius: 50%; background: var(--orange-soft); position: relative; justify-self: end; transition: background .3s; }
+.plus::before, .plus::after { content: ""; position: absolute; left: 8px; top: 13.5px; width: 12px; height: 1.5px; background: var(--orange-deep); transition: transform .35s, background .3s; }
+.plus::after { transform: rotate(90deg); }
+.row.open .plus { background: var(--orange); }
+.row.open .plus::before, .row.open .plus::after { background: #fff; }
+.row.open .plus::after { transform: rotate(0); }
+.row-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.8,.2,1); }
+.row.open .row-body { grid-template-rows: 1fr; }
+.row-body > div { overflow: hidden; min-height: 0; }
+.detail { display: grid; grid-template-columns: 48px 1fr 1fr; gap: 20px 40px; padding: 20px clamp(16px, 2vw, 28px) clamp(24px, 3vw, 36px); border-top: 1px dashed var(--line); }
+.detail .pain { grid-column: 2; color: var(--ink-2); }
+.detail .pain b { display: block; font-weight: 600; font-size: 12px; letter-spacing: .12em; color: var(--orange-deep); margin-bottom: 8px; }
+.detail .did { grid-column: 3; display: grid; gap: 10px; align-content: start; }
+.detail .did li { padding-left: 22px; position: relative; color: var(--ink-2); font-size: 15px; }
+.detail .did li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 2px; background: var(--orange); transform: rotate(45deg); }
+.detail .nums { grid-column: 2; display: flex; gap: 36px; flex-wrap: wrap; }
+.detail .nums b { display: block; font-family: var(--serif); font-weight: 900; font-size: 42px; color: var(--orange-deep); line-height: 1; }
+.detail .nums span { font-size: 12px; color: var(--ink-3); }
+.chips { grid-column: 3; display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+.chips span { font-size: 12px; padding: 5px 12px; background: var(--canvas); border-radius: 9999px; color: var(--ink-2); }
+
+.prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.prod { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: clamp(22px, 2.4vw, 32px); min-height: 250px; display: flex; flex-direction: column; min-width: 0; position: relative; overflow: hidden; transition: transform .35s, box-shadow .35s, border-color .35s; }
+.prod::before { content: ""; position: absolute; inset: 0; background: var(--orange-soft); transform: translateY(101%); transition: transform .45s cubic-bezier(.2,.8,.2,1); z-index: 0; }
+.prod:hover::before { transform: none; }
+.prod:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); border-color: var(--orange); }
+.prod > * { position: relative; z-index: 1; }
+.prod .no { font-family: var(--serif); font-weight: 900; font-size: 22px; color: var(--orange); }
+.prod h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(22px, 2.1vw, 28px); margin-top: 14px; }
+.prod p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.prod .who { margin-top: auto; padding-top: 20px; font-size: 12px; color: var(--ink-3); }
+
+.svc { border-top: 1px solid var(--ink); }
+.svc li { display: grid; grid-template-columns: 64px 1fr 1.4fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: baseline; transition: padding .3s, background .3s; }
+.svc li:hover { padding-left: 14px; background: linear-gradient(90deg, var(--orange-soft), transparent 60%); }
+.svc .no { font-family: var(--serif); font-weight: 900; color: var(--orange); }
+.svc h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(19px, 1.9vw, 25px); }
+.svc p { color: var(--ink-2); font-size: 15px; }
+
+.about { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(28px, 6vw, 96px); align-items: start; }
+.about img { width: min(290px, 60vw); border-radius: 50%; border: 8px solid #fff; box-shadow: 0 22px 50px rgba(120,60,10,.2); }
+.about .big { font-family: var(--serif); font-weight: 600; font-size: clamp(21px, 2.4vw, 31px); line-height: 1.55; }
+.about .big em { font-style: normal; color: var(--orange-deep); }
+.facts { margin-top: 32px; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.facts dt { font-size: 13px; font-weight: 600; color: var(--orange-deep); }
+.facts dd { color: var(--ink-2); font-size: 15px; }
+
+.motto { padding-block: clamp(64px, 10vw, 140px); background: var(--orange); color: #fff; position: relative; overflow: hidden; }
+.motto::before { content: ""; position: absolute; right: -140px; top: -140px; width: 460px; height: 460px; border-radius: 50%; border: 60px solid rgba(255,255,255,.13); animation: drift 18s ease-in-out infinite alternate; }
+.motto .cl { display: inline-block; white-space: nowrap; }
+.motto p { font-family: var(--serif); font-weight: 900; font-size: clamp(24px, 6.2vw, 92px); line-height: 1.22; position: relative; }
+.motto .w { display: inline-block; opacity: .28; transition: opacity .6s; }
+.motto.in .w { opacity: 1; }
+
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.way { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 26px; min-width: 0; transition: transform .3s, box-shadow .3s; }
+.way:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.way .no { font-family: var(--serif); font-weight: 900; font-size: 30px; color: var(--orange); line-height: 1; }
+.way h3 { font-weight: 600; font-size: clamp(19px, 1.9vw, 24px); margin-top: 24px; }
+.way p { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.way small { display: inline-block; margin-top: 18px; font-size: 12px; color: var(--orange-deep); background: var(--orange-soft); padding: 4px 10px; border-radius: 9999px; }
+.contact { margin-top: clamp(32px, 5vw, 56px); display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; background: var(--ink); color: #fff; padding: clamp(24px, 4vw, 44px); border-radius: 4px; }
+.contact p { font-family: var(--serif); font-weight: 600; font-size: clamp(20px, 2.4vw, 31px); max-width: 22em; }
+.contact span { display: block; font-family: var(--sans); font-weight: 400; font-size: 14px; color: #c9c0b8; margin-top: 10px; }
+.contact .pill { border-color: #fff; color: #fff; }
+.contact .pill:hover { background: #fff; color: var(--ink); }
+
+footer { padding-block: 28px 36px; color: var(--ink-3); font-size: 12px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.js .rv { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+.js .row.rv.in, .js .step.rv.in, .js .prod.rv.in, .js .way.rv.in { transition: opacity .8s, transform .3s, box-shadow .3s, border-color .3s; transition-delay: 0s; }
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .hero-grid, .sec-head, .about { grid-template-columns: 1fr; }
+  .ava { order: -1; justify-self: start; width: 168px; margin: 22px 0 0 22px; }
+  .ava img { border-width: 5px; }
+  .ava::after { transform-origin: 6px 112px; }
+  .ava .tag { left: 14px; bottom: -18px; }
+  .sec-head p, .filters { justify-self: start; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .steps, .ways, .prods { grid-template-columns: 1fr 1fr; }
+  .row-head { grid-template-columns: 30px 1fr 28px; gap: 12px; }
+  .row-head .ind, .row-head .state { display: none; }
+  .detail { grid-template-columns: 1fr; }
+  .detail > * { grid-column: 1 !important; }
+  .svc li { grid-template-columns: 34px 1fr; }
+  .svc p { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  .steps, .ways, .prods { grid-template-columns: 1fr; }
+  .prod { min-height: 0; }
+  .facts div { grid-template-columns: 84px 1fr; }
+  .pill { padding: 9px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .rv { opacity: 1; transform: none; }
+  .motto .w { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar"></div>
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="logo.jpg" alt="">橘巴拉</a>
+    <div class="nav-links"><a href="#method">方法</a><a href="#cases">案例</a><a href="#products">工作台</a><a href="#services">服务</a><a href="#about">关于我</a></div>
+    <a class="pill" href="#contact">预约诊断 <span class="arr">→</span></a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>企业 AI 落地 · FDE 前置部署</div>
+      <h1><span class="ln"><i>让 AI 真正进到</i></span><span class="ln"><i>你公司的</i></span><span class="ln"><i>日常工作里</i></span></h1>
+      <p class="sub">不卖空泛的课，也不交一个没人用的系统。先摸清每个岗位每天在忙什么，挑最耗人的那件事，把 AI 工作台做进去，员工第二天就用得上。</p>
+      <div class="btns"><a class="pill solid" href="#cases">看落地案例 <span class="arr">→</span></a><a class="pill" href="#products">看自研工作台</a></div>
+    </div>
+    <div class="ava"><img src="logo.jpg" alt="橘巴拉 IP 头像"><div class="tag">一线落地 FDE 架构师</div></div>
+  </div>
+  <div class="mq" aria-hidden="true"><div id="mq"></div></div>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b data-n="25" data-x="+">25+</b><span>企业与个人 AI 落地项目</span></div>
+      <div class="stat"><b data-n="6">6</b><span>覆盖行业</span></div>
+      <div class="stat"><b data-n="10" data-x="+">10+</b><span>自研岗位工作台 / 智能体</span></div>
+      <div class="stat"><b data-n="31">31</b><span>单个项目交付的 AI 技能数</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="light" id="method">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">方法</div><h2>四步，把 AI 落到岗位上</h2></div>
+      <p class="rv" style="--d:.1s">每一步都有看得见的产出，老板随时可以叫停，不用一次押上大预算。</p>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="no">01</span><h3>岗位调研</h3><p>线上问卷加访谈，按部门、岗位摸清重复性工作和每周耗时，算出哪里最值得先改。</p></div>
+      <div class="step rv" style="--d:.08s"><span class="no">02</span><h3>挑一个场景试点</h3><p>从见效最快的一件事切入，1～3 周做出能用的第一版，用真实数据跑。</p></div>
+      <div class="step rv" style="--d:.16s"><span class="no">03</span><h3>分期扩到各部门</h3><p>试点跑通后按模块接上：运营、内容、产品、采购、人事、财务，数据互通。</p></div>
+      <div class="step rv" style="--d:.24s"><span class="no">04</span><h3>培训交付，陪跑</h3><p>手把手教到员工自己会用、会改，交付后持续迭代，越用越懂你的业务。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">案例</div><h2>做过的事，<br>比说过的话有用</h2></div>
+      <div class="filters rv" role="group" aria-label="按行业筛选" style="--d:.1s">
+        <button type="button" data-f="all" aria-pressed="true">全部</button>
+        <button type="button" data-f="ecom" aria-pressed="false">电商与营销</button>
+        <button type="button" data-f="mfg" aria-pressed="false">制造业</button>
+        <button type="button" data-f="med" aria-pressed="false">医疗器械</button>
+        <button type="button" data-f="hr" aria-pressed="false">人事与管理</button>
+      </div>
+    </div>
+
+    <div class="rows" id="rows">
+      <article class="row open rv" data-tags="ecom mfg">
+        <button class="row-head" type="button" aria-expanded="true"><span class="no">01</span><span class="ttl">电商上架 AI 套件：老板娘一个人就能把新品上架到店铺</span><span class="ind">自动化装备制造企业 · 电商渠道</span><span class="state live">交付培训中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>工业设备参数多、图片杂，详情页靠外包，改一个参数要等好几天；老板懂技术没时间，老板娘懂运营不懂参数。</p>
+          <ul class="did"><li>先做 AI 陪跑，把老板和老板娘的电脑都装好 AI 工具，教会日常用法</li><li>把「看资料 → 定参数 → 写卖点 → 出详情页 → 上架看板」拆成一整套 AI 技能</li><li>老板改参数走变更单，套件自动对照、升版、全部重出，不再改漏</li><li>交付三款主力设备的完整上架资料，配使用说明书和流程图</li></ul>
+          <div class="nums"><div><b>31</b><span>个 AI 技能</span></div><div><b>3</b><span>款设备上架资料</span></div><div><b>1</b><span>人即可操作</span></div></div>
+          <div class="chips"><span>Skill 套件</span><span>上架看板</span><span>使用说明书</span><span>详情页样板</span><span>参数变更流程</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="med ecom">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">02</span><span class="ttl">AI 报价工作台：图纸和询价单丢进去，按公司成本模型出报价单</span><span class="ind">医疗器械 CDMO · 销售报价团队</span><span class="state live">业务员每天在用</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>一个询价要翻历史价、拆 BOM、套成本模型、再按不同客户的模板填表，熟手半天，新人一天。</p>
+          <ul class="did"><li>识别客户图纸和询价参数，自动匹配品类和标准工艺</li><li>按历史价比价、按公司成本模型核算，倒推利润</li><li>每个业务员账号可配专属客户模板，含海外客户的成本分析表</li><li>云端部署，按业务员反馈持续迭代</li></ul>
+          <div class="nums"><div><b>366</b><span>项自动化测试</span></div></div>
+          <div class="chips"><span>云端工作台</span><span>按账号定制模板</span><span>历史价比对</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="med">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">03</span><span class="ttl">体系合规智能体：作业指导书对照注册证和新版法规自动查问题</span><span class="ind">三类医疗器械生产企业 · 约 150 人</span><span class="state pilot">试点运行中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>体系文件上百份，法规一更新就要逐份人工核对；管代一个人顾不过来，审核前临时抱佛脚。</p>
+          <ul class="did"><li>建好法规与体系库，自有文件逐份比对，列出不一致、不可执行、缺口项</li><li>出改进意见，内部协作确认后生成受控版和修订记录</li><li>同时为企业搭销售智能体，客户跟进和回复由 AI 拟稿</li></ul>
+          <div class="chips" style="grid-column:2"><span>合规智能体</span><span>销售智能体</span><span>云服务器部署</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="mfg hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">04</span><span class="ttl">管理层 AI 规划陪跑：新厂从岗位职责到派活机制一次理顺</span><span class="ind">精密制造企业 · 新建厂</span><span class="state done">已交付</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>新厂开张，岗位职责、汇报机制、招聘面试都要从零搭；总经理每天派活靠口头，事情容易掉地上。</p>
+          <ul class="did"><li>一对一带管理层用上 AI，再做一整天「AI 落地实战日」</li><li>用 AI 梳理岗位职责和表单，做成可直接发放的岗位卡</li><li>给总经理做派活决策卡和任务分配体检表，会议纪要有模板可套</li></ul>
+          <div class="chips" style="grid-column:2"><span>岗位卡与表单</span><span>派活决策卡</span><span>任务体检表</span><span>会议纪要模板</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">05</span><span class="ttl">HR 团队 AI 诊断与培训，延伸到 HR 智能体工作台</span><span class="ind">央企地市分公司 · 人力资源部</span><span class="state live">二期需求对齐中</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>培训盘点、能力模型、台账全靠 Excel 手工做；人才盘点和选拔缺少统一的评价工具。</p>
+          <ul class="did"><li>一对一诊断 HR 岗位，整理出培训场景的提示词对照表和作战手册</li><li>教会团队用 AI 做岗位能力模型、学习地图、培训台账</li><li>二期：人才盘点、人才评价、人员选拔的 HR 智能体工作台</li></ul>
+          <div class="nums"><div><b>54</b><span>项培训场景提示词</span></div></div>
+          <div class="chips"><span>作战手册</span><span>HR 智能体工作台</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="ecom">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">06</span><span class="ttl">门店运营与售后工单诊断：把每天重复的登记和跟进交给 AI</span><span class="ind">零售门店 · 售后服务</span><span class="state done">已交付</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>售后工单靠手工登记和人工催进度，门店老板想自动化，但不知道从哪下手。</p>
+          <ul class="did"><li>上门式技术诊断，给出门店运营与工单系统的改造路线</li><li>现场装好 AI 工具，一对一教会日常自动化用法</li></ul>
+          <div class="chips" style="grid-column:2"><span>系统诊断报告</span><span>工具部署</span><span>一对一带教</span></div>
+        </div></div></div>
+      </article>
+
+      <article class="row rv" data-tags="ecom hr">
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">07</span><span class="ttl">AI 工具部署与个人工作台搭建：从装好到天天用</span><span class="ind">外贸、电商老板与职场人 · 多位</span><span class="state done">持续服务</span><span class="plus"></span></button>
+        <div class="row-body"><div><div class="detail">
+          <p class="pain"><b>痛点</b>想用 AI 但卡在安装、网络、账号；自己搭的工作台跑不通、找不到头绪。</p>
+          <ul class="did"><li>远程部署主流 AI 编程与办公工具，配好账号和网络</li><li>带做个人工作台，理清业务主线，第一个模块当场跑通</li><li>把课程视频蒸馏成可复用的 AI 技能包，经验变成团队资产</li></ul>
+          <div class="chips" style="grid-column:2"><span>工具部署</span><span>个人工作台</span><span>视频蒸馏技能包</span></div>
+        </div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="products" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">自研工作台</div><h2>六个工作台，<br>可以现场演示</h2></div>
+      <p class="rv" style="--d:.1s">都是在真实业务里磨出来的，拿来就能按你的公司改，不用从零开发。</p>
+    </div>
+    <div class="prods">
+      <div class="prod rv"><span class="no">01</span><h3>销售智能体</h3><p>个微、企微客户一本账，AI 读懂上下文拟好回复，人来点发送；客户漏斗自动更新。聊天记录不出本机。</p><div class="who">销售团队 · 外贸 · ToB 大客户</div></div>
+      <div class="prod rv" style="--d:.06s"><span class="no">02</span><h3>内容获客工作台</h3><p>一个选题，一键出公众号图文、X 推文串、小红书卡片和文案，配图封面自动生成，停在发布前给人把关。</p><div class="who">新媒体 · 品牌 · 站外种草</div></div>
+      <div class="prod rv" style="--d:.12s"><span class="no">03</span><h3>GEO 工作台</h3><p>让品牌在 DeepSeek、豆包等 AI 搜索里被推荐：问题篮检测、找缺口、按已确认的知识写文章、跟踪发布效果。</p><div class="who">品牌推广 · 线下引流 · 本地生活</div></div>
+      <div class="prod rv"><span class="no">04</span><h3>人事工作台</h3><p>招聘、入职试用、培训矩阵、考勤绩效一处管；体系表单一键出 Excel 和 Word，敏感信息加密存储。</p><div class="who">人事行政</div></div>
+      <div class="prod rv" style="--d:.06s"><span class="no">05</span><h3>财务工作台</h3><p>报销初审、发票池、对账付款、应收回款、项目成本、预算与月结，从真实票据导入，不用重复录。</p><div class="who">会计 · 出纳</div></div>
+      <div class="prod rv" style="--d:.12s"><span class="no">06</span><h3>老板 AI 总管</h3><p>微信、企微消息汇总成待办，每天早上自动起草派活清单，周五自动生成周报，下班逐条对进度。</p><div class="who">老板 · 部门负责人</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">服务</div><h2>能帮你做的事</h2></div>
+      <p class="rv" style="--d:.1s">本机、云服务器或公司内网部署都可以，数据安全和权限按企业要求设计。</p>
+    </div>
+    <ul class="svc">
+      <li class="rv"><span class="no">01</span><h3>AI 工作台定制</h3><p>按岗位定制工作台和智能体，可打通 ERP、财务、电商后台和企微等内部数据。</p></li>
+      <li class="rv"><span class="no">02</span><h3>企业 AI 陪跑</h3><p>管理层规划加骨干带做，按月陪跑，直到团队自己能用、能改。</p></li>
+      <li class="rv"><span class="no">03</span><h3>内容与获客自动化</h3><p>电商详情页、站外种草、短视频脚本、GEO 内容批量产出，人只负责把关和发布。</p></li>
+      <li class="rv"><span class="no">04</span><h3>全员 AI 培训</h3><p>按部门出场景化课程和提示词手册，用员工自己的工作当练习题。</p></li>
+      <li class="rv"><span class="no">05</span><h3>数据分析与报表</h3><p>店铺数据、销量、报修率、库存，自动汇总成老板看得懂的日报周报和预警。</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div class="rv"><div class="kicker">关于我</div><img src="logo.jpg" alt="橘巴拉" style="margin-top:28px"></div>
+    <div class="rv" style="--d:.1s">
+      <p class="big">我是橘巴拉，一线做 AI 落地的 FDE 架构师。<em>制造业工程师出身，画过图纸、算过报价、写过体系文件，所以知道工厂和业务是怎么跑的，</em>也知道 AI 该放在哪一步才真的省人。</p>
+      <dl class="facts">
+        <div><dt>做事方式</dt><dd>驻到业务一线，跟着岗位把工具做出来，而不是交一份方案就走。</dd></div>
+        <div><dt>自己先用</dt><dd>每天的消息、客户、报价、内容都跑在自己搭的 AI 工作台上，交付给客户的是自己用顺手的东西。</dd></div>
+        <div><dt>公开分享</dt><dd>在抖音和 X 持续分享 AI 工作流、Skill 和落地实操。</dd></div>
+        <div><dt>保密</dt><dd>案例全部脱敏，客户名称与具体数据不对外公开，可在线上会中演示实际效果。</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div class="motto" id="motto"><div class="wrap"><p id="mottoText">用 AI 把复杂的事做简单，把简单的事做好。</p></div></div>
+
+<section class="light" id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">合作</div><h2>三步开始，<br>看完再决定做不做</h2></div>
+      <p class="rv" style="--d:.1s">先把问题看清楚，再谈做什么、多久见效、要投入多少。</p>
+    </div>
+    <div class="ways">
+      <div class="way rv"><span class="no">01</span><h3>填一份岗位调研</h3><p>5 分钟的线上问卷，按部门和岗位填日常工作、耗时和最头疼的事。</p><small>产出：各岗位的 AI 机会清单</small></div>
+      <div class="way rv" style="--d:.08s"><span class="no">02</span><h3>开一次线上诊断会</h3><p>对着调研结果逐项过，现场演示相近行业的工作台实际怎么用。</p><small>产出：分阶段的落地建议</small></div>
+      <div class="way rv" style="--d:.16s"><span class="no">03</span><h3>挑一个场景试点</h3><p>选见效最快的一件事，1～3 周做出能用的第一版，跑通再扩。</p><small>产出：能用的第一版工作台</small></div>
+    </div>
+    <div class="contact rv">
+      <p>想聊聊你公司的情况？<span>直接回复把这个页面发给你的人，就能约时间。</span></p>
+      <a class="pill" href="#cases">再看一遍案例 <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>橘巴拉 · 用 AI 把复杂的事做简单，把简单的事做好。</span><span>案例已做脱敏处理</span></div></footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 跑马灯
+  var ind = ["制造业", "医疗器械", "电商", "央企 HR", "零售门店", "外贸", "个人老板", "体系合规", "销售报价", "内容获客"];
+  document.getElementById("mq").innerHTML = ind.concat(ind).map(function (x) { return "<span>" + x + "</span>"; }).join("");
+
+  // 聚光跟随鼠标
+  var hero = document.querySelector(".hero");
+  hero.addEventListener("pointermove", function (e) {
+    var r = hero.getBoundingClientRect();
+    hero.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    hero.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+
+  // 滚动进度
+  var bar = document.getElementById("bar");
+  function onScroll() {
+    var h = root.scrollHeight - window.innerHeight;
+    bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ")";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // 座右铭拆字
+  var mt = document.getElementById("mottoText"), txt = mt.textContent;
+  var k = 0;
+  mt.innerHTML = txt.split(/(?<=，)/).map(function (cl) {
+    return '<span class="cl">' + cl.split("").map(function (c) {
+      return c === " " ? " " : '<span class="w" style="transition-delay:' + (k++ * 0.045) + 's">' + c + "</span>";
+    }).join("") + "</span>";
+  }).join("");
+
+  // 数字滚动
+  function countUp(el) {
+    var n = +el.dataset.n, x = el.dataset.x || "", t0 = performance.now();
+    (function tick(t) {
+      var p = Math.min(1, (t - t0) / 1200);
+      el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))) + (p === 1 ? x : "");
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+
+  // 滚动出现
+  if ("IntersectionObserver" in window && !reduce) {
+    root.classList.add("js");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        if (e.target.dataset.n) countUp(e.target);
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".rv, .step, .stat b, #motto").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".step, #motto").forEach(function (el) { el.classList.add("in"); });
+  }
+
+  // 案例展开
+  var rows = document.querySelectorAll(".row");
+  rows.forEach(function (r) {
+    var h = r.querySelector(".row-head");
+    h.addEventListener("click", function () {
+      var open = r.classList.toggle("open");
+      h.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
+
+  // 案例筛选
+  var fb = document.querySelectorAll(".filters button");
+  fb.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var f = b.dataset.f;
+      fb.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      rows.forEach(function (r) {
+        r.hidden = !(f === "all" || (" " + r.dataset.tags + " ").indexOf(" " + f + " ") > -1);
+        r.classList.add("in");
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
