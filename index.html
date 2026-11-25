@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f0e9e5">
-<link rel="icon" href="logo.jpg">
+<link rel="icon" type="image/png" href="favicon.png">
 <meta property="og:title" content="橘巴拉 · 企业 AI 落地">
 <meta property="og:description" content="把 AI 工作台做进企业每个岗位的日常工作里。">
 <meta property="og:image" content="logo.jpg">
@@ -229,6 +229,82 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   .js .rv { opacity: 1; transform: none; }
   .motto .w { opacity: 1; }
 }
+
+/* ===== 工作台实拍 ===== */
+.show { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(20px, 3vw, 44px); align-items: start; }
+.show-tabs { display: flex; flex-direction: column; gap: 6px; }
+.stab { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px 1fr; column-gap: 8px; padding: 14px 16px 16px; border-radius: 4px; position: relative; overflow: hidden; border: 1px solid transparent; transition: background .35s, border-color .35s, box-shadow .35s; }
+.stab .no { font-family: var(--serif); font-weight: 900; font-size: 15px; color: var(--ink-3); padding-top: 3px; transition: color .3s; }
+.stab b { font-family: var(--serif); font-weight: 600; font-size: 20px; color: var(--ink-2); transition: color .3s; }
+.stab span.d { grid-column: 2; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.8,.2,1), margin .5s; }
+.stab span.d > i { font-style: normal; overflow: hidden; min-height: 0; }
+.stab em { grid-column: 2; font-style: normal; font-size: 12px; color: var(--ink-3); display: none; margin-top: 8px; }
+.stab .pg { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--orange); transform: scaleX(0); transform-origin: left; }
+.stab:hover b { color: var(--ink); }
+.stab:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.stab.on { background: var(--card); border-color: var(--line-2); box-shadow: var(--shadow-up); }
+.stab.on b { color: var(--ink); } .stab.on .no { color: var(--orange); }
+.stab.on span.d { grid-template-rows: 1fr; margin-top: 6px; } .stab.on em { display: block; }
+
+.stage { position: relative; perspective: 1600px; min-width: 0; }
+.stage::before { content: ""; position: absolute; inset: 8% -4% -10% 4%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(240,125,26,.34), rgba(240,125,26,0) 72%); filter: blur(28px); animation: glow 7s ease-in-out infinite alternate; }
+@keyframes glow { to { transform: translate3d(-3%, 3%, 0) scale(1.06); opacity: .75; } }
+.win { position: relative; z-index: 1; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(60,40,20,.14); box-shadow: 0 2px 4px rgba(70,45,20,.06), 0 30px 70px -18px rgba(110,60,15,.38); transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; will-change: transform; }
+.win-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: linear-gradient(#f7f2ee, #efe8e2); border-bottom: 1px solid var(--line-2); }
+.win-bar .dots { display: flex; gap: 6px; } .win-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #e3d8cf; }
+.win-bar .dots i:first-child { background: #f0876b; } .win-bar .dots i:nth-child(2) { background: #f3bf4f; } .win-bar .dots i:nth-child(3) { background: #7cc86a; }
+.win-bar .url { flex: 1; min-width: 0; text-align: center; font-size: 12.5px; color: var(--ink-2); background: #fff; border: 1px solid var(--line-2); border-radius: 99px; padding: 4px 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.win-bar .live { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--orange-deep); white-space: nowrap; }
+.win-bar .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; transform: scale(.7); } }
+.win-body { position: relative; aspect-ratio: 16 / 10; background: var(--paper); }
+.win-body video, .win-body img.ps { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; opacity: 0; transform: scale(1.025); transition: opacity .6s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.win-body .on { opacity: 1; transform: none; }
+.win-body::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,.22), rgba(255,255,255,0) 28%); }
+.chip { position: absolute; z-index: 2; background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 16px 10px 14px; border-radius: 99px; display: flex; align-items: center; gap: 8px; box-shadow: 0 14px 30px rgba(30,20,10,.28); opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .5s, transform .6s cubic-bezier(.2,1.2,.3,1); white-space: nowrap; pointer-events: none; }
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(240,125,26,.3); }
+.chip.c1 { left: -26px; bottom: 9%; } .chip.c2 { right: -20px; top: 20%; background: #fff; color: var(--ink); }
+.chip.in { opacity: 1; transform: none; } .chip.c2.in { transition-delay: .25s; }
+.chip.in { animation: floaty 5s ease-in-out 1s infinite alternate; } @keyframes floaty { to { translate: 0 -8px; } }
+.show-foot { margin-top: clamp(22px, 3vw, 36px); display: flex; gap: 12px 28px; flex-wrap: wrap; align-items: baseline; font-size: 14px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 18px; }
+.show-foot b { color: var(--ink); font-weight: 600; }
+
+/* 细节画廊 */
+.reel { margin-top: clamp(40px, 6vw, 80px); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.reel-track { display: flex; gap: 22px; width: max-content; animation: reel 70s linear infinite; padding-block: 16px 34px; }
+.reel:hover .reel-track { animation-play-state: paused; }
+@keyframes reel { to { transform: translateX(-50%); } }
+.shot { all: unset; cursor: zoom-in; display: block; width: clamp(280px, 34vw, 460px); flex: none; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid rgba(60,40,20,.12); box-shadow: 0 16px 36px -14px rgba(110,60,15,.3); transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s; }
+.shot:nth-child(even) { transform: translateY(16px); }
+.shot:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 28px 50px -16px rgba(110,60,15,.42); }
+.shot:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+.shot figcaption, .shot .cap { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; font-size: 12.5px; color: var(--ink-2); border-top: 1px solid var(--line-2); }
+.shot .cap b { color: var(--ink); font-weight: 600; }
+.lb { position: fixed; inset: 0; z-index: 200; background: rgba(24,16,10,.82); display: grid; place-items: center; padding: 4vmin; opacity: 0; pointer-events: none; transition: opacity .3s; cursor: zoom-out; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.lb.on { opacity: 1; pointer-events: auto; }
+.lb img { max-width: 100%; max-height: 92vh; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.5); transform: scale(.96); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.lb.on img { transform: none; }
+
+@media (max-width: 900px) {
+  .show { grid-template-columns: minmax(0, 1fr); }
+  .show-tabs { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: none; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); scroll-snap-type: x proximity; }
+  .show-tabs::-webkit-scrollbar { display: none; }
+  .stab { display: block; flex: none; padding: 9px 16px 11px; border: 1px solid var(--line); border-radius: 99px; scroll-snap-align: center; }
+  .stab .no, .stab span.d, .stab em, .stab.on em { display: none; }
+  .stab b { font-size: 15px; font-family: var(--sans); }
+  .stab.on { background: var(--ink); border-color: var(--ink); box-shadow: none; } .stab.on b { color: #fff; }
+  .stab .pg { height: 3px; }
+  .win { transform: none !important; border-radius: 9px; }
+  .win-bar { padding: 7px 10px; } .win-bar .live { display: none; } .win-bar .url { font-size: 11px; }
+  .chip { display: none; }
+  .show-desc { display: block !important; }
+}
+.show-desc { display: none; margin-top: 18px; font-size: 14.5px; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) {
+  .reel-track { animation: none; overflow-x: auto; } .reel { overflow-x: auto; }
+  .stage::before, .chip.in, .win-bar .live::before { animation: none; } .win { transform: none !important; }
+}
 </style>
 </head>
 <body>
@@ -364,19 +440,25 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 <section id="products" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <div class="rv"><div class="kicker">自研工作台</div><h2>六个工作台，<br>可以现场演示</h2></div>
-      <p class="rv" style="--d:.1s">都是在真实业务里磨出来的，拿来就能按你的公司改，不用从零开发。</p>
+      <div class="rv"><div class="kicker">自研工作台 · 实拍</div><h2>六个工作台，<br>都是真在跑的</h2></div>
+      <p class="rv" style="--d:.1s">下面不是效果图，是工作台实际运行时录下来的。都在真实业务里磨过，拿来就能按你的公司改，不用从零开发。<br><span style="font-size:13px;color:var(--ink-3)">画面里的公司、人名和数字均为演示数据。</span></p>
     </div>
-    <div class="prods">
-      <div class="prod rv"><span class="no">01</span><h3>销售智能体</h3><p>个微、企微客户一本账，AI 读懂上下文拟好回复，人来点发送；客户漏斗自动更新。聊天记录不出本机。</p><div class="who">销售团队 · 外贸 · ToB 大客户</div></div>
-      <div class="prod rv" style="--d:.06s"><span class="no">02</span><h3>内容获客工作台</h3><p>一个选题，一键出公众号图文、X 推文串、小红书卡片和文案，配图封面自动生成，停在发布前给人把关。</p><div class="who">新媒体 · 品牌 · 站外种草</div></div>
-      <div class="prod rv" style="--d:.12s"><span class="no">03</span><h3>GEO 工作台</h3><p>让品牌在 DeepSeek、豆包等 AI 搜索里被推荐：问题篮检测、找缺口、按已确认的知识写文章、跟踪发布效果。</p><div class="who">品牌推广 · 线下引流 · 本地生活</div></div>
-      <div class="prod rv"><span class="no">04</span><h3>人事工作台</h3><p>招聘、入职试用、培训矩阵、考勤绩效一处管；体系表单一键出 Excel 和 Word，敏感信息加密存储。</p><div class="who">人事行政</div></div>
-      <div class="prod rv" style="--d:.06s"><span class="no">05</span><h3>财务工作台</h3><p>报销初审、发票池、对账付款、应收回款、项目成本、预算与月结，从真实票据导入，不用重复录。</p><div class="who">会计 · 出纳</div></div>
-      <div class="prod rv" style="--d:.12s"><span class="no">06</span><h3>老板 AI 总管</h3><p>微信、企微消息汇总成待办，每天早上自动起草派活清单，周五自动生成周报，下班逐条对进度。</p><div class="who">老板 · 部门负责人</div></div>
+    <div class="show rv">
+      <div class="show-tabs" id="stabs" role="tablist" aria-label="工作台"></div>
+      <div class="stage">
+        <div class="win" id="win">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url" id="winUrl"></span><span class="live">实拍</span></div>
+          <div class="win-body" id="winBody"></div>
+        </div>
+        <div class="chip c1" id="chip1"></div><div class="chip c2" id="chip2"></div>
+        <p class="show-desc" id="showDesc"></p>
+      </div>
     </div>
+    <div class="show-foot rv"><span><b>还有一个不方便公开录屏的：老板 AI 总管。</b>微信、企微消息汇总成待办，每天早上自动起草派活清单，周五自动出周报。想看可以约线上演示。</span></div>
   </div>
+  <div class="reel rv" aria-label="工作台界面细节"><div class="reel-track" id="reelTrack"></div></div>
 </section>
+<div class="lb" id="lb" role="dialog" aria-label="大图"><img alt=""></div>
 
 <section class="light" id="services">
   <div class="wrap">
@@ -513,6 +595,57 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       });
     });
   });
+})();
+
+/* ===== 工作台实拍 ===== */
+(function(){
+  var WB = [{"id": "sales", "name": "销售智能体", "desc": "客户一本账，AI 读懂聊天上下文拟好回复，人来点发送；客户漏斗自动更新，谁该跟进一眼看到。", "who": "销售团队 · 外贸 · ToB 大客户", "chips": ["AI 拟好回复，人点发送", "今天该跟进谁，自动排好"], "video": "media/sales.mp4", "poster": "media/sales.jpg"}, {"id": "content", "name": "内容获客工作台", "desc": "一个选题，一键出公众号图文、X 推文串、小红书卡片和文案，配图封面自动生成，停在发布前给人把关。", "who": "新媒体 · 品牌 · 站外种草", "chips": ["一个选题，三个平台的稿", "配图和封面自动生成"], "video": "media/content.mp4", "poster": "media/content.jpg"}, {"id": "geo", "name": "GEO 工作台", "desc": "让品牌在 DeepSeek、豆包等 AI 搜索里被推荐：问题篮检测、找缺口、按已确认的知识写文章、跟踪效果。", "who": "品牌推广 · 线下引流 · 本地生活", "chips": ["AI 提及率 19% → 58%", "每条知识都能回到原文"], "video": "media/geo.mp4", "poster": "media/geo.jpg"}, {"id": "hr", "name": "人事工作台", "desc": "招聘、入职试用、培训矩阵、上岗证、考勤绩效一处管；文件一换版，自动算出谁要重新培训。", "who": "人事行政 · 体系专员", "chips": ["文件换版，自动点名补训", "证书到期提前 30 天提醒"], "video": "media/hr.mp4", "poster": "media/hr.jpg"}, {"id": "fin", "name": "财务工作台", "desc": "报销 AI 初审、发票池、对账付款、应收回款、项目成本、预算与月结，从真实票据导入，不用重复录。", "who": "会计 · 出纳 · 老板", "chips": ["AI 初审：缺 2 张发票", "催款消息一键起草"], "video": "media/fin.mp4", "poster": "media/fin.jpg"}, {"id": "rd", "name": "研发工程师工作台", "desc": "每个项目卡在哪、在等谁一眼看清；看图澄清、BOM 多家比价、样品计算、体系文件齐套率，周报自动写好。", "who": "研发 · 工艺 · 项目经理", "chips": ["卡在哪、在等谁，一眼看清", "周报自动汇总，一键复制"], "video": "media/rd.mp4", "poster": "media/rd.jpg"}], SH = [{"src": "media/s_sales_b.jpg", "th": "media/t_sales_b.jpg", "wb": "销售智能体", "cap": "客户阶段看板"}, {"src": "media/s_fin_home2.jpg", "th": "media/t_fin_home2.jpg", "wb": "财务工作台", "cap": "应收账龄与项目成本"}, {"src": "media/s_geo_review.jpg", "th": "media/t_geo_review.jpg", "wb": "GEO 工作台", "cap": "三轮检测对比"}, {"src": "media/s_rd_bom.jpg", "th": "media/t_rd_bom.jpg", "wb": "研发工作台", "cap": "四家供应商比价"}, {"src": "media/s_content_x.jpg", "th": "media/t_content_x.jpg", "wb": "内容工作台", "cap": "推文串与配图"}, {"src": "media/s_hr_home.jpg", "th": "media/t_hr_home.jpg", "wb": "人事工作台", "cap": "首页与 AI 提醒"}, {"src": "media/s_sales_a.jpg", "th": "media/t_sales_a.jpg", "wb": "销售智能体", "cap": "首页与今日待办"}, {"src": "media/s_fin_ar.jpg", "th": "media/t_fin_ar.jpg", "wb": "财务工作台", "cap": "应收回款与催款"}, {"src": "media/s_geo_content.jpg", "th": "media/t_geo_content.jpg", "wb": "GEO 工作台", "cap": "按已确认知识写文章"}, {"src": "media/s_rd_tests.jpg", "th": "media/t_rd_tests.jpg", "wb": "研发工作台", "cap": "实测值自动算 Cpk"}, {"src": "media/s_content_imgs.jpg", "th": "media/t_content_imgs.jpg", "wb": "内容工作台", "cap": "封面与插画"}, {"src": "media/s_hr_certs.jpg", "th": "media/t_hr_certs.jpg", "wb": "人事工作台", "cap": "上岗证到期表"}, {"src": "media/s_fin_cost.jpg", "th": "media/t_fin_cost.jpg", "wb": "财务工作台", "cap": "项目成本与毛利"}, {"src": "media/s_geo_dash.jpg", "th": "media/t_geo_dash.jpg", "wb": "GEO 工作台", "cap": "驾驶舱"}];
+  var tabs = document.getElementById('stabs'), body = document.getElementById('winBody'), url = document.getElementById('winUrl');
+  var c1 = document.getElementById('chip1'), c2 = document.getElementById('chip2'), desc = document.getElementById('showDesc');
+  if (!tabs) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, cur = -1, visible = false, vids = [], btns = [];
+  WB.forEach(function(w, i){
+    var b = document.createElement('button'); b.className = 'stab'; b.type = 'button'; b.setAttribute('role','tab');
+    b.innerHTML = '<span class="no">0' + (i+1) + '</span><b>' + w.name + '</b><span class="d"><i>' + w.desc + '</i></span><em>' + w.who + '</em><span class="pg"></span>';
+    b.addEventListener('click', function(){ go(i, true); }); tabs.appendChild(b); btns.push(b);
+    var v = document.createElement('video'); v.muted = true; v.playsInline = true; v.setAttribute('playsinline',''); v.setAttribute('muted','');
+    v.preload = 'none'; v.poster = w.poster; v.dataset.src = w.video; v.setAttribute('aria-label', w.name + ' 功能演示');
+    if (reduce) v.controls = true;
+    v.addEventListener('timeupdate', function(){ if (i === cur && v.duration) btns[i].querySelector('.pg').style.transform = 'scaleX(' + (v.currentTime / v.duration) + ')'; });
+    v.addEventListener('ended', function(){ if (i === cur) go((i + 1) % WB.length); });
+    body.appendChild(v); vids.push(v);
+  });
+  function play(v){ if (reduce || !visible) return; if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function go(i, user){
+    if (i === cur) { if (user) { vids[i].currentTime = 0; play(vids[i]); } return; }
+    if (cur >= 0) { btns[cur].classList.remove('on'); btns[cur].setAttribute('aria-selected','false'); btns[cur].querySelector('.pg').style.transform = 'scaleX(0)'; vids[cur].classList.remove('on'); vids[cur].pause(); }
+    cur = i; var w = WB[i];
+    btns[i].classList.add('on'); btns[i].setAttribute('aria-selected','true'); vids[i].classList.add('on');
+    try { vids[i].currentTime = 0; } catch(e){}
+    url.textContent = w.name + ' · 本机运行'; desc.textContent = w.desc;
+    c1.classList.remove('in'); c2.classList.remove('in');
+    setTimeout(function(){ c1.textContent = w.chips[0]; c2.textContent = w.chips[1]; c1.classList.add('in'); c2.classList.add('in'); }, 380);
+    if (user && btns[i].scrollIntoView && innerWidth <= 900) btns[i].scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+    play(vids[i]);
+    var n = vids[(i + 1) % WB.length]; if (visible && !n.src && !reduce) { n.preload = 'auto'; n.src = n.dataset.src; }
+  }
+  go(0);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if (visible) play(vids[cur]); else vids[cur].pause(); }, {threshold: .25}).observe(body);
+  else { visible = true; play(vids[0]); }
+  var win = document.getElementById('win'), stage = win.parentNode;
+  if (!reduce && matchMedia('(hover:hover)').matches) {
+    stage.addEventListener('mousemove', function(e){ var r = stage.getBoundingClientRect(); var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; win.style.setProperty('--ry', (x * 5).toFixed(2) + 'deg'); win.style.setProperty('--rx', (-y * 4).toFixed(2) + 'deg'); });
+    stage.addEventListener('mouseleave', function(){ win.style.setProperty('--ry','-2.5deg'); win.style.setProperty('--rx','1.5deg'); });
+    win.style.setProperty('--ry','-2.5deg'); win.style.setProperty('--rx','1.5deg');
+  }
+  var track = document.getElementById('reelTrack'), lb = document.getElementById('lb'), lbi = lb.querySelector('img');
+  function shot(s){ var b = document.createElement('button'); b.className = 'shot'; b.type = 'button'; b.setAttribute('aria-label', '放大看：' + s.wb + ' ' + s.cap);
+    b.innerHTML = '<img loading="lazy" decoding="async" src="' + s.th + '" alt="' + s.wb + ' · ' + s.cap + '"><span class="cap"><b>' + s.wb + '</b><span>' + s.cap + '</span></span>';
+    b.addEventListener('click', function(){ lbi.src = s.src; lbi.alt = s.wb + ' · ' + s.cap; lb.classList.add('on'); }); return b; }
+  SH.forEach(function(s){ track.appendChild(shot(s)); });
+  if (!reduce) SH.forEach(function(s){ var b = shot(s); b.setAttribute('aria-hidden','true'); b.tabIndex = -1; track.appendChild(b); });
+  lb.addEventListener('click', function(){ lb.classList.remove('on'); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') lb.classList.remove('on'); });
 })();
 </script>
 
