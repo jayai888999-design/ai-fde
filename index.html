@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f0e9e5">
 <link rel="icon" type="image/png" href="favicon.png">
-<meta property="og:title" content="橘巴拉 · 企业 AI 落地">
-<meta property="og:description" content="把 AI 工作台做进企业每个岗位的日常工作里。">
+<meta property="og:title" content="Jay · 企业 AI 落地 FDE 架构师">
+<meta property="og:description" content="Multi-Agent 工作台，把各部门的重复劳动交给 AI 智能体。">
 <meta property="og:image" content="logo.jpg">
-<title>橘巴拉 · 企业 AI 落地</title>
-<meta name="description" content="橘巴拉：一线落地 FDE 架构师。把 AI 工作台做进企业每个岗位的日常工作里。">
+<title>Jay · 企业 AI 落地 FDE 架构师</title>
+<meta name="description" content="Jay：企业 AI 落地 FDE 架构师。Multi-Agent 工作台、RAG 企业知识库、私有化部署，按岗位把 AI 做进日常工作。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
 <style>
@@ -39,6 +39,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .nav { position: sticky; top: 0; z-index: 20; background: rgba(240,233,229,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-2); }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-weight: 900; font-size: 20px; }
+.brand small { font-family: var(--sans); font-weight: 500; font-size: 12px; color: var(--ink-3); margin-left: -4px; }
 .brand img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; box-shadow: var(--shadow); }
 .nav-links { display: flex; gap: 30px; font-size: 14px; color: var(--ink-2); }
 .nav-links a { position: relative; padding-block: 6px; transition: color .2s; }
@@ -305,6 +306,96 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   .reel-track { animation: none; overflow-x: auto; } .reel { overflow-x: auto; }
   .stage::before, .chip.in, .win-bar .live::before { animation: none; } .win { transform: none !important; }
 }
+
+/* ===== 行业方案 ===== */
+.pl-h { display: flex; gap: 18px; align-items: flex-start; margin: clamp(44px, 6vw, 76px) 0 22px; }
+.sec-head + .pl-h { margin-top: 0; }
+.pl-n { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-family: var(--serif); font-weight: 900; font-size: 20px; }
+.pl-h h3 { font-family: var(--serif); font-weight: 900; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.3; }
+.pl-h p { color: var(--ink-2); font-size: 15px; margin-top: 4px; max-width: 44em; }
+
+.req { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: clamp(16px, 2.4vw, 32px); align-items: stretch; }
+.req-tabs { display: flex; flex-direction: column; gap: 6px; }
+.rtab { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 34px 1fr 16px; align-items: center; gap: 8px; padding: 15px 16px; border-radius: 4px; border: 1px solid transparent; transition: background .3s, border-color .3s, box-shadow .3s; }
+.rtab .no { font-family: var(--serif); font-weight: 900; font-size: 15px; color: var(--ink-3); }
+.rtab b { font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--ink-2); }
+.rtab small { display: block; font-family: var(--sans); font-weight: 400; font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.rtab .ar { color: var(--orange); opacity: 0; transform: translateX(-6px); transition: opacity .3s, transform .3s; }
+.rtab:hover b { color: var(--ink); }
+.rtab:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.rtab.on { background: var(--card); border-color: var(--line-2); box-shadow: var(--shadow-up); }
+.rtab.on b { color: var(--ink); } .rtab.on .no { color: var(--orange); } .rtab.on .ar { opacity: 1; transform: none; }
+.req-panel { background: var(--card); border: 1px solid var(--line-2); border-radius: 6px; box-shadow: var(--shadow-up); padding: clamp(22px, 3vw, 40px); position: relative; overflow: hidden; min-width: 0; }
+.req-panel::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 3px; background: var(--orange); transform-origin: left; animation: grow .7s cubic-bezier(.2,.8,.2,1); }
+@keyframes grow { from { transform: scaleX(0); } }
+.rp { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 36px; animation: fade .5s both; }
+.rp .q { grid-column: 1 / -1; font-family: var(--serif); font-weight: 600; font-size: clamp(18px, 1.9vw, 24px); line-height: 1.5; padding-left: 18px; border-left: 3px solid var(--orange); }
+.rp .q small { display: block; font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .12em; color: var(--orange-deep); margin-bottom: 6px; }
+.rp h5 { margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: var(--orange-deep); }
+.rp .real { color: var(--ink-2); font-size: 15px; }
+.rp .ag { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 99px; }
+.rp .ag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(240,125,26,.3); }
+.rp .do li { padding-left: 22px; position: relative; color: var(--ink-2); font-size: 15px; margin-bottom: 8px; }
+.rp .do li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 8px; height: 8px; border-radius: 2px; background: var(--orange); transform: rotate(45deg); }
+.rp .ft { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; padding-top: 18px; border-top: 1px dashed var(--line); }
+.rp .ft span { font-size: 12px; padding: 5px 12px; background: var(--canvas); border-radius: 99px; color: var(--ink-2); font-weight: 500; }
+.rp .ft a { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--orange-deep); border-bottom: 1px solid currentColor; }
+
+.arch { background: #1b1a18; color: #fff; border-radius: 12px; padding: clamp(10px, 2vw, 22px) clamp(16px, 2.6vw, 36px); position: relative; overflow: hidden; box-shadow: 0 30px 70px -24px rgba(60,30,5,.5); isolation: isolate; }
+.arch::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 100% 36px, linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 36px 100%, radial-gradient(600px circle at 78% 30%, rgba(240,125,26,.26), transparent 70%); }
+.arch::after { content: ""; position: absolute; left: 0; top: 0; width: 2px; height: 34%; background: linear-gradient(transparent, var(--orange), transparent); animation: flow 4.5s linear infinite; }
+@keyframes flow { from { transform: translateY(-100%); } to { transform: translateY(300%); } }
+.lay { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid rgba(255,255,255,.1); align-items: center; }
+.lay:first-child { border-top: 0; }
+.lb2 i { display: block; font-style: normal; font-size: 11px; letter-spacing: .1em; color: var(--orange); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.lb2 b { display: block; font-family: var(--serif); font-weight: 600; font-size: 19px; margin-top: 2px; }
+.nds { display: flex; flex-wrap: wrap; gap: 10px; }
+.nd { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); border-radius: 8px; padding: 9px 14px; font-size: 14px; font-weight: 500; transition: border-color .3s, background .3s, transform .3s, box-shadow .3s; }
+.nd small { display: block; font-weight: 400; font-size: 11.5px; color: #b3aaa1; margin-top: 2px; }
+.nd:hover { border-color: var(--orange); transform: translateY(-2px); }
+.lay.ag { background: linear-gradient(90deg, rgba(240,125,26,.12), rgba(240,125,26,0)); margin-inline: calc(clamp(16px, 2.6vw, 36px) * -1); padding-inline: clamp(16px, 2.6vw, 36px); }
+.nd.a { border-color: rgba(240,125,26,.55); }
+.nd.orc { background: var(--orange); border-color: var(--orange); color: #fff; } .nd.orc small { color: #ffe3c8; }
+.nd.a.hot { background: var(--orange); color: #fff; box-shadow: 0 0 0 5px rgba(240,125,26,.25), 0 10px 24px rgba(240,125,26,.4); transform: translateY(-3px); }
+
+.road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; position: relative; }
+.ph { background: var(--card); border: 1px solid var(--line-2); border-radius: 4px; box-shadow: var(--shadow); padding: 24px; min-width: 0; display: flex; flex-direction: column; transition: transform .3s, box-shadow .3s; }
+.ph:hover { transform: translateY(-5px); box-shadow: var(--shadow-up); }
+.ph .tm { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--orange-deep); background: var(--orange-soft); padding: 4px 12px; border-radius: 99px; }
+.ph h4 { margin: 18px 0 0; font-family: var(--serif); font-weight: 600; font-size: clamp(19px, 1.8vw, 23px); }
+.ph p { color: var(--ink-2); font-size: 14.5px; margin-top: 8px; }
+.ph ul { margin-top: 14px; display: grid; gap: 6px; }
+.ph li { font-size: 14px; padding-left: 16px; position: relative; }
+.ph li::before { content: ""; position: absolute; left: 0; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+.ph em { font-style: normal; margin-top: auto; padding-top: 18px; font-size: 12.5px; color: var(--ink-3); }
+.ph.hot { background: var(--ink); border-color: var(--ink); color: #fff; }
+.ph.hot p { color: #c9c0b8; } .ph.hot em { color: #a39a91; } .ph.hot .tm { background: var(--orange); color: #fff; }
+
+.why { margin-top: clamp(44px, 6vw, 76px); border-top: 1px solid var(--ink); padding-top: 26px; }
+.why-t { display: flex; gap: 8px 18px; align-items: baseline; flex-wrap: wrap; }
+.why-t b { font-family: var(--serif); font-weight: 900; font-size: clamp(22px, 2.6vw, 32px); } .why-t span { color: var(--ink-2); }
+.why-g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 26px; }
+.why-g b { font-family: var(--serif); font-weight: 900; color: var(--orange); font-size: 20px; }
+.why-g h4 { margin: 8px 0 0; font-weight: 600; font-size: 18px; } .why-g p { color: var(--ink-2); font-size: 14.5px; margin-top: 6px; }
+
+.tech { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; animation: fade 1s .8s both; }
+.tech span { font-size: 12.5px; font-weight: 500; padding: 5px 12px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-2); background: rgba(255,255,255,.55); }
+
+@media (max-width: 900px) {
+  .req { grid-template-columns: minmax(0, 1fr); }
+  .req-tabs { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 6px; scrollbar-width: none; margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad); }
+  .req-tabs::-webkit-scrollbar { display: none; }
+  .rtab { display: block; flex: none; padding: 9px 16px; border: 1px solid var(--line); border-radius: 99px; }
+  .rtab .no, .rtab small, .rtab .ar { display: none; }
+  .rtab b { font-size: 15px; font-family: var(--sans); }
+  .rtab.on { background: var(--ink); border-color: var(--ink); box-shadow: none; } .rtab.on b { color: #fff; }
+  .rp { grid-template-columns: 1fr; } .rp .ft a { margin-left: 0; }
+  .lay { grid-template-columns: 1fr; gap: 10px; }
+  .nd { font-size: 13px; padding: 8px 11px; }
+  .road, .why-g { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) { .road, .why-g { grid-template-columns: 1fr; } .pl-n { width: 36px; height: 36px; font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { .arch::after { display: none; } }
 </style>
 </head>
 <body>
@@ -312,8 +403,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 <div class="bar" id="bar"></div>
 <nav class="nav">
   <div class="wrap">
-    <a class="brand" href="#top"><img src="logo.jpg" alt="">橘巴拉</a>
-    <div class="nav-links"><a href="#method">方法</a><a href="#cases">案例</a><a href="#products">工作台</a><a href="#services">服务</a><a href="#about">关于我</a></div>
+    <a class="brand" href="#top"><img src="logo.jpg" alt="">Jay<small>FDE 架构师</small></a>
+    <div class="nav-links"><a href="#plan">行业方案</a><a href="#method">方法</a><a href="#cases">案例</a><a href="#products">工作台</a><a href="#services">服务</a><a href="#about">关于我</a></div>
     <a class="pill" href="#contact">预约诊断 <span class="arr">→</span></a>
   </div>
 </nav>
@@ -321,24 +412,66 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 <header class="hero" id="top">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow"><span class="dot"></span>企业 AI 落地 · FDE 前置部署</div>
-      <h1><span class="ln"><i>让 AI 真正进到</i></span><span class="ln"><i>你公司的</i></span><span class="ln"><i>日常工作里</i></span></h1>
-      <p class="sub">不卖空泛的课，也不交一个没人用的系统。先摸清每个岗位每天在忙什么，挑最耗人的那件事，把 AI 工作台做进去，员工第二天就用得上。</p>
-      <div class="btns"><a class="pill solid" href="#cases">看落地案例 <span class="arr">→</span></a><a class="pill" href="#products">看自研工作台</a></div>
+      <div class="eyebrow"><span class="dot"></span>企业 AI 落地 · FDE 前置部署 · Multi-Agent 工作台</div>
+      <h1><span class="ln"><i>把各部门的</i></span><span class="ln"><i>重复劳动</i></span><span class="ln"><i>交给 AI 智能体</i></span></h1>
+      <p class="sub">电商运营、内容物料、新品分析、库存预警、人事行政，一个岗位一个 Agent，底层共用一套企业知识库和数据底座。不交 PPT，不卖空课：先调研，2～3 周上线第一个能用的模块，跑通再扩。</p>
+      <div class="tech"><span>Multi-Agent</span><span>RAG 知识库</span><span>MCP 协议</span><span>Skill 技能库</span><span>Agentic Workflow</span><span>私有化部署</span></div>
+      <div class="btns"><a class="pill solid" href="#plan">看行业方案 <span class="arr">→</span></a><a class="pill" href="#products">看工作台实拍</a></div>
     </div>
-    <div class="ava"><img src="logo.jpg" alt="橘巴拉 IP 头像"><div class="tag">一线落地 FDE 架构师</div></div>
+    <div class="ava"><img src="logo.jpg" alt="Jay"><div class="tag">Jay · FDE 架构师</div></div>
   </div>
   <div class="mq" aria-hidden="true"><div id="mq"></div></div>
   <div class="wrap">
     <div class="stats">
-      <div class="stat"><b data-n="25" data-x="+">25+</b><span>企业与个人 AI 落地项目</span></div>
+      <div class="stat"><b data-n="25" data-x="+">25+</b><span>AI 落地项目</span></div>
       <div class="stat"><b data-n="6">6</b><span>覆盖行业</span></div>
-      <div class="stat"><b data-n="10" data-x="+">10+</b><span>自研岗位工作台 / 智能体</span></div>
+      <div class="stat"><b data-n="10" data-x="+">10+</b><span>自研岗位工作台 / Agent</span></div>
       <div class="stat"><b data-n="31">31</b><span>单个项目交付的 AI 技能数</span></div>
     </div>
   </div>
 </header>
 
+<section id="plan">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv"><div class="kicker">行业方案 · 运动健康品牌</div><h2>实体 + 电商 + ToB，<br>AI 工作台这样搭</h2></div>
+      <p class="rv" style="--d:.1s">以一家主营健身器材、按摩椅，同时承接健身房整体方案的品牌为例。六个部门提了六块需求，下面是逐条拆解、整体架构和分期路线。<br><span style="font-size:13px;color:var(--ink-3)">行业与需求来自真实咨询，企业信息已隐去。</span></p>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">A</span><div><h3>需求拆解</h3><p>不照单全收。每一条先问清楚背后的问题，再决定交给哪个 Agent、接哪些数据。</p></div></div>
+    <div class="req rv">
+      <div class="req-tabs" id="reqTabs" role="tablist" aria-label="六块需求"></div>
+      <div class="req-panel" id="reqPanel" role="tabpanel"></div>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">B</span><div><h3>整体架构</h3><p>六个岗位 Agent 共用一套知识库、数据底座和权限体系，不是六个互不相通的小工具。</p></div></div>
+    <div class="arch rv" id="arch">
+      <div class="lay"><div class="lb2"><i>L5 · Access</i><b>入口层</b></div><div class="nds"><span class="nd">网页工作台</span><span class="nd">企业微信 / 飞书机器人</span><span class="nd">手机端消息推送</span><span class="nd">老板驾驶舱</span></div></div>
+      <div class="lay ag"><div class="lb2"><i>L4 · Multi-Agent</i><b>智能体层</b></div><div class="nds"><span class="nd orc">总控 Orchestrator<small>任务拆解 · 调度 · 结果汇总</small></span><span class="nd a" data-ag="0">电商运营 Agent</span><span class="nd a" data-ag="1">引流与 GEO Agent</span><span class="nd a" data-ag="2">内容物料 Agent</span><span class="nd a" data-ag="3">产品洞察 Agent</span><span class="nd a" data-ag="4">供应链 Agent</span><span class="nd a" data-ag="5">人事行政 Agent</span></div></div>
+      <div class="lay"><div class="lb2"><i>L3 · Capability</i><b>能力层</b></div><div class="nds"><span class="nd">Skill 技能库<small>品牌口吻、流程规范沉淀成可复用技能</small></span><span class="nd">RAG 企业知识库<small>向量检索 · 答案可溯源</small></span><span class="nd">Agentic Workflow<small>多步任务自动编排</small></span><span class="nd">AIGC 引擎<small>文生图 · 图生视频 · 渲染配色</small></span><span class="nd">数据分析与预警<small>规则 + 模型双重判断</small></span><span class="nd">Human-in-the-loop<small>改价、发布、付款必须人确认</small></span></div></div>
+      <div class="lay"><div class="lb2"><i>L2 · Integration</i><b>数据接入层</b></div><div class="nds"><span class="nd">电商平台后台<small>开放 API / RPA 采集</small></span><span class="nd">ERP · 进销存</span><span class="nd">内容平台<small>小红书 · 抖音 · 视频号 · B 站</small></span><span class="nd">售后工单与报修</span><span class="nd">本地生活与搜索</span><span class="nd">MCP 协议<small>新系统即插即用</small></span></div></div>
+      <div class="lay"><div class="lb2"><i>L1 · Foundation</i><b>安全底座</b></div><div class="nds"><span class="nd">多模型路由<small>LLM Gateway · 按任务选模型控成本</small></span><span class="nd">私有化 / 混合部署</span><span class="nd">RBAC 权限</span><span class="nd">全程审计日志</span><span class="nd">数据不出企业</span></div></div>
+    </div>
+
+    <div class="pl-h rv"><span class="pl-n">C</span><div><h3>分期路线</h3><p>每一期都有能用的东西和明确的验收标准，跑通一期再启动下一期。周期为参考节奏，调研后确定。</p></div></div>
+    <div class="road">
+      <div class="ph rv"><span class="tm">第 0 期 · 约 1 周</span><h4>调研诊断</h4><p>岗位问卷加负责人访谈，盘点各系统的数据和接口。</p><ul><li>各岗位 AI 机会清单</li><li>优先级矩阵：见效快慢 × 投入大小</li><li>数据接入方案</li></ul><em>验收：一份分期方案和报价</em></div>
+      <div class="ph hot rv" style="--d:.08s"><span class="tm">第 1 期 · 2～3 周</span><h4>电商运营 + 内容物料</h4><p>离营收最近、重复劳动最多，先从这里见效。</p><ul><li>竞品监控与数据日报</li><li>出价调价建议（人确认）</li><li>详情页、种草图文、短视频脚本批量出</li></ul><em>验收：运营和设计每天在用</em></div>
+      <div class="ph rv" style="--d:.16s"><span class="tm">第 2 期 · 3～4 周</span><h4>产品洞察 + 供应链</h4><p>把销量、评价、报修、库存接到一张图上。</p><ul><li>新品机会分析报告</li><li>销量 × 报修率健康度看板</li><li>库存预警推送到企微</li></ul><em>验收：预警准确，报告可直接上会</em></div>
+      <div class="ph rv" style="--d:.24s"><span class="tm">第 3 期 · 持续</span><h4>引流、人事行政与陪跑</h4><p>GEO 与本地引流按轮次做，人事行政上现成工作台。</p><ul><li>GEO 检测 → 内容 → 复盘</li><li>人事工作台上线</li><li>全员培训，按月迭代</li></ul><em>验收：团队自己会用、会改</em></div>
+    </div>
+
+    <div class="why rv">
+      <div class="why-t"><b>同时在比几家服务商？</b><span>可以拿这四条去问每一家。</span></div>
+      <div class="why-g">
+        <div><b>01</b><h4>有没有现成底座</h4><p>下面六个工作台是已经在跑的产品，按你的业务改，不是签完合同才从零写。</p></div>
+        <div><b>02</b><h4>架构师是否亲自到岗位</h4><p>FDE（前置部署工程师）模式：跟着运营、设计、采购把工具做出来，不是交一份方案就走。</p></div>
+        <div><b>03</b><h4>能不能分期验收</h4><p>每期有可用产出，不满意随时停，不用一次押上全部预算。</p></div>
+        <div><b>04</b><h4>数据放在哪</h4><p>支持私有化部署，权限分级、操作留痕；涉及钱和对外发布的动作，一律人确认。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="light" id="method">
   <div class="wrap">
     <div class="sec-head">
@@ -346,10 +479,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       <p class="rv" style="--d:.1s">每一步都有看得见的产出，老板随时可以叫停，不用一次押上大预算。</p>
     </div>
     <div class="steps">
-      <div class="step rv"><span class="no">01</span><h3>岗位调研</h3><p>线上问卷加访谈，按部门、岗位摸清重复性工作和每周耗时，算出哪里最值得先改。</p></div>
-      <div class="step rv" style="--d:.08s"><span class="no">02</span><h3>挑一个场景试点</h3><p>从见效最快的一件事切入，1～3 周做出能用的第一版，用真实数据跑。</p></div>
-      <div class="step rv" style="--d:.16s"><span class="no">03</span><h3>分期扩到各部门</h3><p>试点跑通后按模块接上：运营、内容、产品、采购、人事、财务，数据互通。</p></div>
-      <div class="step rv" style="--d:.24s"><span class="no">04</span><h3>培训交付，陪跑</h3><p>手把手教到员工自己会用、会改，交付后持续迭代，越用越懂你的业务。</p></div>
+      <div class="step rv"><span class="no">01</span><h3>岗位调研</h3><p>线上问卷加访谈，按部门、岗位摸清重复性工作和每周耗时，盘点数据和系统接口，排出优先级矩阵。</p></div>
+      <div class="step rv" style="--d:.08s"><span class="no">02</span><h3>挑一个场景试点</h3><p>从见效最快的一件事切入，1～3 周做出第一个岗位 Agent，接真实数据跑，关键动作人确认。</p></div>
+      <div class="step rv" style="--d:.16s"><span class="no">03</span><h3>分期扩到各部门</h3><p>试点跑通后按模块扩成 Multi-Agent：运营、内容、产品、采购、人事、财务，共用知识库和数据底座。</p></div>
+      <div class="step rv" style="--d:.24s"><span class="no">04</span><h3>培训交付，陪跑</h3><p>手把手教到员工自己会用、会改；经验沉淀成 Skill 和企业知识库，越用越懂你的业务。</p></div>
     </div>
   </div>
 </section>
@@ -426,7 +559,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </article>
 
       <article class="row rv" data-tags="ecom hr">
-        <button class="row-head" type="button" aria-expanded="false"><span class="no">07</span><span class="ttl">AI 工具部署与个人工作台搭建：从装好到天天用</span><span class="ind">外贸、电商老板与职场人 · 多位</span><span class="state done">持续服务</span><span class="plus"></span></button>
+        <button class="row-head" type="button" aria-expanded="false"><span class="no">07</span><span class="ttl">AI 工具部署与个人工作台搭建：从装好到天天用</span><span class="ind">外贸与电商企业 · 多家</span><span class="state done">持续服务</span><span class="plus"></span></button>
         <div class="row-body"><div><div class="detail">
           <p class="pain"><b>痛点</b>想用 AI 但卡在安装、网络、账号；自己搭的工作台跑不通、找不到头绪。</p>
           <ul class="did"><li>远程部署主流 AI 编程与办公工具，配好账号和网络</li><li>带做个人工作台，理清业务主线，第一个模块当场跑通</li><li>把课程视频蒸馏成可复用的 AI 技能包，经验变成团队资产</li></ul>
@@ -464,27 +597,27 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   <div class="wrap">
     <div class="sec-head">
       <div class="rv"><div class="kicker">服务</div><h2>能帮你做的事</h2></div>
-      <p class="rv" style="--d:.1s">本机、云服务器或公司内网部署都可以，数据安全和权限按企业要求设计。</p>
+      <p class="rv" style="--d:.1s">本机、云服务器或公司内网私有化部署都可以；多模型路由控制成本，RBAC 权限和审计日志按企业要求设计。</p>
     </div>
     <ul class="svc">
-      <li class="rv"><span class="no">01</span><h3>AI 工作台定制</h3><p>按岗位定制工作台和智能体，可打通 ERP、财务、电商后台和企微等内部数据。</p></li>
-      <li class="rv"><span class="no">02</span><h3>企业 AI 陪跑</h3><p>管理层规划加骨干带做，按月陪跑，直到团队自己能用、能改。</p></li>
-      <li class="rv"><span class="no">03</span><h3>内容与获客自动化</h3><p>电商详情页、站外种草、短视频脚本、GEO 内容批量产出，人只负责把关和发布。</p></li>
-      <li class="rv"><span class="no">04</span><h3>全员 AI 培训</h3><p>按部门出场景化课程和提示词手册，用员工自己的工作当练习题。</p></li>
-      <li class="rv"><span class="no">05</span><h3>数据分析与报表</h3><p>店铺数据、销量、报修率、库存，自动汇总成老板看得懂的日报周报和预警。</p></li>
+      <li class="rv"><span class="no">01</span><h3>AI 工作台定制</h3><p>按岗位定制 Multi-Agent 工作台，通过 API、RPA 和 MCP 协议打通 ERP、财务、电商后台和企微等内部数据。</p></li>
+      <li class="rv"><span class="no">02</span><h3>企业知识库与 Skill 沉淀</h3><p>把产品资料、制度、话术、流程做成 RAG 知识库和可复用的 Skill，新人和 AI 都从同一处取答案。</p></li>
+      <li class="rv"><span class="no">03</span><h3>内容与获客自动化</h3><p>电商详情页、站外种草、短视频脚本、AIGC 出图、GEO 内容批量产出，人只负责把关和发布。</p></li>
+      <li class="rv"><span class="no">04</span><h3>陪跑与全员培训</h3><p>管理层规划加骨干带做，按部门出场景化课程和提示词手册，按月陪跑到团队自己能用、能改。</p></li>
+      <li class="rv"><span class="no">05</span><h3>数据分析与报表</h3><p>店铺数据、销量、报修率、库存，自动汇总成老板驾驶舱、日报周报和预警推送。</p></li>
     </ul>
   </div>
 </section>
 
 <section id="about">
   <div class="wrap about">
-    <div class="rv"><div class="kicker">关于我</div><img src="logo.jpg" alt="橘巴拉" style="margin-top:28px"></div>
+    <div class="rv"><div class="kicker">关于我</div><img src="logo.jpg" alt="Jay" style="margin-top:28px"></div>
     <div class="rv" style="--d:.1s">
-      <p class="big">我是橘巴拉，一线做 AI 落地的 FDE 架构师。<em>制造业工程师出身，画过图纸、算过报价、写过体系文件，所以知道工厂和业务是怎么跑的，</em>也知道 AI 该放在哪一步才真的省人。</p>
+      <p class="big">我是 Jay，专做企业 AI 落地的 FDE（前置部署工程师）架构师。<em>制造业工程师出身，画过图纸、算过报价、写过体系文件，所以知道工厂和业务是怎么跑的，</em>也知道 AI 该放在哪一步才真的省人。</p>
       <dl class="facts">
         <div><dt>做事方式</dt><dd>驻到业务一线，跟着岗位把工具做出来，而不是交一份方案就走。</dd></div>
         <div><dt>自己先用</dt><dd>每天的消息、客户、报价、内容都跑在自己搭的 AI 工作台上，交付给客户的是自己用顺手的东西。</dd></div>
-        <div><dt>公开分享</dt><dd>在抖音和 X 持续分享 AI 工作流、Skill 和落地实操。</dd></div>
+        <div><dt>技术栈</dt><dd>Multi-Agent 编排、RAG 企业知识库、MCP 协议、Skill 技能库、AIGC、多模型路由，支持私有化部署。</dd></div>
         <div><dt>保密</dt><dd>案例全部脱敏，客户名称与具体数据不对外公开，可在线上会中演示实际效果。</dd></div>
       </dl>
     </div>
@@ -511,7 +644,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   </div>
 </section>
 
-<footer><div class="wrap"><span>橘巴拉 · 用 AI 把复杂的事做简单，把简单的事做好。</span><span>案例已做脱敏处理</span></div></footer>
+<footer><div class="wrap"><span>Jay · 企业 AI 落地 FDE 架构师</span><span>案例已做脱敏处理</span></div></footer>
 
 <script>
 (function () {
@@ -519,7 +652,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // 跑马灯
-  var ind = ["制造业", "医疗器械", "电商", "央企 HR", "零售门店", "外贸", "个人老板", "体系合规", "销售报价", "内容获客"];
+  var ind = ["Multi-Agent 协同", "RAG 检索增强", "MCP 协议", "Skill 技能库", "Agentic Workflow", "Human-in-the-loop", "AIGC 出图与视频", "GEO 生成式引擎优化", "RPA + API 集成", "多模型路由", "私有化部署", "RBAC 权限与审计"];
   document.getElementById("mq").innerHTML = ind.concat(ind).map(function (x) { return "<span>" + x + "</span>"; }).join("");
 
   // 聚光跟随鼠标
@@ -596,6 +729,56 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
     });
   });
 })();
+/* ===== 行业方案：需求拆解 ===== */
+(function(){
+  var R = [
+   {n:'线上推广', s:'电商运营 · 站外种草', ag:'电商运营 Agent', q:'站内推广、产品上下架、竞品分析、各店数据分析、报活动、出价、调价；站外小红书、抖音、视频号、B 站。',
+    real:'多店铺、多平台，运营的时间耗在扒数据、填表和盯竞品上。竞品一调价，等人发现往往已经晚了。',
+    todo:['竞品监控：定时采集对手的价格、主图和活动，一有变动就推送','各店数据自动汇成日报，异常波动标出来并附上可能原因','出价、调价给出建议和依据，人点确认后才执行','上下架和报活动的表单由 Agent 预填，运营只做核对'],
+    tech:['Multi-Agent 协同','RPA 采集','电商平台 API','定时调度','Human-in-the-loop'], base:['电商上架 AI 套件（案例 01）','#cases']},
+   {n:'线下推广', s:'搜索 · GEO · 本地引流', ag:'引流与 GEO Agent', q:'搜索引擎、GEO 内容投放、抖音、大众本地等引流方式。',
+    real:'客户已经在问 AI「家用跑步机哪个牌子好」「健身房器材找谁配」。品牌不在 AI 的答案里，就等于不在货架上。',
+    todo:['问题篮：整理客户会问 AI 的问题，逐个平台检测品牌有没有被推荐','找到缺口，只用已确认的企业知识写内容，不编造','本地生活的门店内容和点评回复由 Agent 拟稿','每一轮复盘 AI 提及率的变化'],
+    tech:['GEO 生成式引擎优化','RAG 企业知识库','多平台检测','内容可溯源'], base:['GEO 工作台（现成）',2]},
+   {n:'文案与设计', s:'图文 · 脚本 · 视频物料', ag:'内容物料 Agent', q:'生产线上、线下的各类文案、脚本、图片、宣传视频物料。',
+    real:'每个部门都在提物料需求，文案和设计永远在排队。同一款产品，每个平台还要一套不同的说法和尺寸。',
+    todo:['一份产品资料，一次出详情页文案、种草卡片、短视频脚本和海报','品牌口吻、禁用词、卖点库沉淀成 Skill，谁来用都是同一个调性','场景图、配色、海报由 AIGC 批量出，设计师负责挑选和精修','所有内容停在发布前，由人把关'],
+    tech:['AIGC 文生图 / 图生视频','Skill 技能库','品牌知识库','Prompt 工程','批量工作流'], base:['内容获客工作台（现成）',1]},
+   {n:'产品部', s:'新品方向 · 销量 · 报修率', ag:'产品洞察 Agent', q:'基于电商竞品分析新品开发方向；了解产品销量、报修率；新品渲染出图、配色。',
+    real:'新品方向靠经验。销量在运营手里，报修在售后手里，产品经理看不到一张完整的图。',
+    todo:['竞品的评价和问答做语义聚类，提炼用户在抱怨什么、想要什么','销量 × 报修率合成产品健康度看板，哪个型号该升级一目了然','新品概念图和配色方案由 AI 渲染，评审前先出十版','定期输出新品机会分析报告'],
+    tech:['评论语义分析','多源数据融合','BI 数据看板','AI 渲染'], base:['研发工程师工作台（现成）',5]},
+   {n:'采购部', s:'库存预警 · 补货提醒', ag:'供应链 Agent', q:'库存预警、库存提醒。',
+    real:'大件商品压货占资金，断货掉排名。大促前到底备多少，常常靠拍脑袋。',
+    todo:['对接进销存或 ERP，按销售速度算出每个 SKU 的可售天数','低于安全库存、滞销超期，自动推送到企业微信','结合活动日历给出补货建议','采购跟单到期提醒'],
+    tech:['ERP / 进销存集成','销量预测','规则 + 模型双重预警','企微 / 飞书推送'], base:['财务工作台的数据接入与预警（现成）',4]},
+   {n:'人资行政', s:'招聘 · 培训 · 考勤 · 制度', ag:'人事行政 Agent', q:'人资、行政常规功能。',
+    real:'招聘、入职、培训、考勤这些事琐碎但不能出错，占掉人事大半时间。',
+    todo:['招聘进度、入职试用、培训矩阵、证照到期一处管','制度问答机器人，员工自己问，答案带出处','各类表单一键出 Excel 和 Word','敏感信息加密存储，按角色分权限'],
+    tech:['RAG 制度问答','表单自动生成','加密存储','RBAC 权限'], base:['人事工作台（现成）',3]}
+  ];
+  var tabs = document.getElementById('reqTabs'), panel = document.getElementById('reqPanel'); if (!tabs) return;
+  var btns = [], cur = -1, nodes = document.querySelectorAll('#arch .nd.a');
+  function go(i, user){
+    if (i === cur) return; if (cur >= 0) { btns[cur].classList.remove('on'); btns[cur].setAttribute('aria-selected','false'); }
+    cur = i; var r = R[i]; btns[i].classList.add('on'); btns[i].setAttribute('aria-selected','true');
+    var link = typeof r.base[1] === 'number' ? '<a href="#products" data-wb="' + r.base[1] + '">底座：' + r.base[0] + ' →</a>' : '<a href="' + r.base[1] + '">底座：' + r.base[0] + ' →</a>';
+    panel.innerHTML = '<div class="rp"><p class="q"><small>需求原话</small>' + r.q + '</p>' +
+      '<div><h5>背后真正的问题</h5><p class="real">' + r.real + '</p><span class="ag">交给 ' + r.ag + '</span></div>' +
+      '<div><h5>怎么做</h5><ul class="do">' + r.todo.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>' +
+      '<div class="ft">' + r.tech.map(function(t){ return '<span>' + t + '</span>'; }).join('') + link + '</div></div>';
+    nodes.forEach(function(n){ n.classList.toggle('hot', +n.dataset.ag === i); });
+    var a = panel.querySelector('a[data-wb]'); if (a) a.addEventListener('click', function(){ if (window.__goWB) window.__goWB(+a.dataset.wb); });
+    if (user && innerWidth <= 900 && btns[i].scrollIntoView) btns[i].scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+  }
+  R.forEach(function(r, i){
+    var b = document.createElement('button'); b.className = 'rtab'; b.type = 'button'; b.setAttribute('role','tab');
+    b.innerHTML = '<span class="no">0' + (i+1) + '</span><b>' + r.n + '<small>' + r.s + '</small></b><span class="ar">→</span>';
+    b.addEventListener('click', function(){ go(i, true); }); tabs.appendChild(b); btns.push(b);
+  });
+  nodes.forEach(function(n){ n.style.cursor = 'pointer'; n.addEventListener('click', function(){ go(+n.dataset.ag, true); document.getElementById('reqTabs').scrollIntoView({block:'center', behavior:'smooth'}); }); });
+  go(0);
+})();
 
 /* ===== 工作台实拍 ===== */
 (function(){
@@ -629,7 +812,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
     play(vids[i]);
     var n = vids[(i + 1) % WB.length]; if (visible && !n.src && !reduce) { n.preload = 'auto'; n.src = n.dataset.src; }
   }
-  go(0);
+  go(0); window.__goWB = function(i){ go(i, true); };
   if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if (visible) play(vids[cur]); else vids[cur].pause(); }, {threshold: .25}).observe(body);
   else { visible = true; play(vids[0]); }
   var win = document.getElementById('win'), stage = win.parentNode;
