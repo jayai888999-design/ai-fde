@@ -35,6 +35,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .wrap { max-width: 1280px; margin-inline: auto; padding-left: max(var(--pad), env(safe-area-inset-left, 0px)); padding-right: max(var(--pad), env(safe-area-inset-right, 0px)); }
 :focus-visible { outline: 2px solid var(--orange-deep); outline-offset: 3px; }
 
+/* 不留孤字：短文本按行均分，长段落避免末行过短 */
+h1, h2, h3, h4, h5, p, li, dd, small, em, figcaption, .ind, .ttl, .nd, .stat span, .stab .d i, .rtab b, .tm, .cap span, .contact span, .show-foot span, .why-t span { text-wrap: balance; }
 .bar { position: fixed; left: 0; top: 0; height: 3px; width: 100%; background: var(--orange); transform-origin: 0 50%; transform: scaleX(0); z-index: 30; }
 .nav { position: sticky; top: 0; z-index: 20; background: rgba(240,233,229,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-2); }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
