@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05080F">
+<title>跨境电商 AI 业务场景案例集 · Jay</title>
+<meta name="description" content="8 个部门、24 个可落地的跨境电商 AI 场景，附 6 段 AI 工作台实操录屏。">
+<link rel="icon" href="../favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&amp;family=Space+Grotesk:wght@500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#05080F}
+a{color:#5CD6FF}a:hover{color:#A99BFF}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+p,dd,li,h4{text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.wrap{max-width:1180px;margin:0 auto;padding-left:24px;padding-right:24px}
+.sec{padding-top:88px;padding-bottom:88px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5CD6FF;display:inline-flex;align-items:center;gap:10px}.eyebrow::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,#5CD6FF,#8B7CFF)}
+.h2{margin:0;font-family:"Space Grotesk","Noto Sans SC",sans-serif;font-size:38px;font-weight:900;line-height:1.25;letter-spacing:-.01em}
+.lede{margin:0;font-size:17px;color:#93A1B8;line-height:1.75}
+.head{display:grid;gap:12px;max-width:760px;margin-bottom:40px}
+.nav a{color:#93A1B8;text-decoration:none;font-size:14px;padding:6px 12px;border-radius:999px;white-space:nowrap;transition:color .2s,background .2s}
+.nav a:hover{color:#F2F5F8;background:rgba(255,255,255,.08)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:48px;align-items:center}
+.figs{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.95fr) minmax(0,1.3fr) minmax(0,1fr);gap:1px;background:rgba(148,163,184,.14);border:1px solid rgba(148,163,184,.16);box-shadow:0 0 40px rgba(92,214,255,.06);border-radius:16px;overflow:hidden;margin-top:32px}
+.fig{background:rgba(8,13,26,.92);padding:16px 14px 14px;min-width:0}
+.frame{border-radius:14px;overflow:hidden;background:#070C18;border:1px solid rgba(92,214,255,.22);box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 80px rgba(92,214,255,.10),0 0 0 6px rgba(255,255,255,.02)}
+.frame-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:#080E1B;border-bottom:1px solid rgba(255,255,255,.08)}
+.frame-bar i{width:9px;height:9px;border-radius:50%;background:#253247;display:inline-block}
+.frame video{display:block;width:100%;height:auto;aspect-ratio:1440/900;background:#0B1628}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#9FB0C7;margin-left:auto;font-family:"IBM Plex Mono",ui-monospace,monospace}
+.live b{width:6px;height:6px;border-radius:50%;background:#FF5A4E;animation:pulse 2s infinite;display:inline-block}
+.wb-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:20px}
+.wbt{display:grid;gap:2px;text-align:left;border:1px solid rgba(148,163,184,.16);background:rgba(255,255,255,.025);color:#93A1B8;border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;transition:all .2s;position:relative;overflow:hidden}
+.wbt:hover{border-color:rgba(92,214,255,.45);color:#E6ECF5}
+.wbt b{font-size:15px;color:#EAF0F7;white-space:nowrap}
+.wbt small{font-size:12px;white-space:nowrap}
+.wbt.on{border-color:rgba(92,214,255,.7);background:linear-gradient(135deg,rgba(92,214,255,.14),rgba(139,124,255,.12));box-shadow:0 0 24px rgba(92,214,255,.16)}
+.wbt.on b{color:#fff}.wbt.on::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;background:linear-gradient(90deg,#5CD6FF,#8B7CFF)}
+.wb-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.75fr);gap:28px;align-items:start}
+.wb-pt{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;font-size:15px;color:#C3CDDC;line-height:1.65}
+.wb-pt .wb-n{font-weight:500;font-style:normal;width:22px;height:22px;border-radius:7px;background:rgba(92,214,255,.12);color:#8FE3FF;font-size:12px;display:grid;place-items:center;font-family:"IBM Plex Mono",ui-monospace,monospace;margin-top:2px}
+.clocks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(148,163,184,.14);margin-top:56px}
+.clock{padding:22px 20px 26px;border-right:1px solid rgba(148,163,184,.14);display:grid;gap:6px;align-content:start}
+.clock:last-child{border-right:0}
+.dot{width:7px;height:7px;border-radius:50%;background:#3CC2BF;animation:pulse 2.4s infinite;display:inline-block}
+.dot.night{background:#8FA2BC;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(60,194,191,.55)}70%{box-shadow:0 0 0 9px rgba(60,194,191,0)}100%{box-shadow:0 0 0 0 rgba(60,194,191,0)}}
+.route{stroke-dasharray:4 8;animation:flow 18s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-480}}
+.chain{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));position:relative}
+.chain-line{position:absolute;left:6%;right:6%;top:31px;height:2px;background:repeating-linear-gradient(90deg,rgba(92,214,255,.35) 0 8px,transparent 8px 16px);background-size:32px 2px;animation:dash 1.6s linear infinite}@keyframes dash{to{background-position:32px 0}}
+.node{position:relative;display:grid;justify-items:center;gap:8px;text-align:center;padding:0 4px;background:none;border:0;cursor:pointer;color:#E6ECF5;font:inherit}
+.node .ic{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.035);border:1px solid rgba(148,163,184,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .25s,border-color .25s,background .25s,box-shadow .25s}
+.node svg{width:28px;height:28px;stroke:#C3CDDC;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.node:hover .ic{transform:translateY(-4px);border-color:rgba(92,214,255,.6);box-shadow:0 0 24px rgba(92,214,255,.18)}
+.node.focus .ic{border-color:rgba(92,214,255,.55);background:rgba(92,214,255,.08)}
+.node.on .ic{background:linear-gradient(135deg,#3FC8FF,#8B7CFF);border-color:transparent;transform:translateY(-4px);box-shadow:0 10px 36px rgba(92,214,255,.35)}
+.node.on svg{stroke:#fff}
+.tab{border:1px solid rgba(148,163,184,.2);background:rgba(255,255,255,.03);color:#93A1B8;border-radius:999px;padding:9px 16px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap;transition:all .2s;min-height:40px}
+.tab:hover{border-color:rgba(92,214,255,.5);color:#E6ECF5}
+.tab.on{background:linear-gradient(135deg,rgba(92,214,255,.18),rgba(139,124,255,.18));border-color:rgba(92,214,255,.6);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));border:1px solid rgba(148,163,184,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:border-color .25s,box-shadow .25s,transform .25s;border-radius:18px;padding:24px;display:grid;grid-template-rows:auto auto 1fr auto;gap:16px;min-width:0;animation:rise .45s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{transform:translateY(10px)}to{transform:none}}
+.tag{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;white-space:nowrap;justify-self:start}
+.tag.box{background:rgba(45,212,191,.12);color:#6EE7D8;border:1px solid rgba(45,212,191,.25)}
+.tag.fde{background:rgba(139,124,255,.14);color:#C2B8FF;border:1px solid rgba(139,124,255,.3)}
+.tag.mix{background:rgba(92,214,255,.12);color:#8FE3FF;border:1px solid rgba(92,214,255,.28)}
+.ba{display:grid;gap:12px;margin:0;font-size:14.5px;line-height:1.65}
+.ba div{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px}
+.ba dt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:#6F7E96;padding-top:3px;white-space:nowrap}
+.ba dd{margin:0;color:#93A1B8}
+.out .otag{font-style:normal;font-size:12px;color:#B3BFD1;background:rgba(255,255,255,.04);border:1px solid rgba(148,163,184,.18);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.demos{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+.mock{background:#fff;border:1px solid #D5DEE8;border-radius:20px;box-shadow:0 1px 2px rgba(14,35,64,.06),0 8px 24px rgba(14,35,64,.06);overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.lang{font:inherit;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;border:1px solid #D5DEE8;background:#fff;color:#44566E;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .2s;min-height:40px}
+.lang.on{border-color:#E2580B;color:#B8460A;background:#FDEBDD}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.step{padding-right:18px}
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.way li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;font-size:15px}
+.path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.ph{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:22px 20px;display:grid;gap:10px;align-content:start;transition:border-color .25s}
+.ph:hover{border-color:rgba(92,214,255,.55);box-shadow:0 0 30px rgba(92,214,255,.10)}
+.qa{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgba(148,163,184,.14)}
+.q{padding:28px 28px 28px 0;border-bottom:1px solid rgba(148,163,184,.14);display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px}
+.q:nth-child(odd){border-right:1px solid rgba(148,163,184,.14)}
+.q:nth-child(even){padding-left:28px}
+.q svg{width:30px;height:30px;stroke:#5CD6FF;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+button:focus-visible,a:focus-visible{outline:2px solid #5CD6FF;outline-offset:3px}
+@media (max-width:1120px){.timeline{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:32px}.wb-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.wb-grid{grid-template-columns:1fr}}
+@media (max-width:1180px){.hero-grid{grid-template-columns:1fr}.hero-vid{max-width:820px}}
+@media (max-width:980px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.path{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.hero-grid,.demos{grid-template-columns:1fr}.hero-grid{gap:32px}.clocks{grid-template-columns:repeat(2,minmax(0,1fr))}.clock:nth-child(2){border-right:0}.clock:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.12)}.chain{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:28px}.chain-line{display:none}.nav{display:none !important}}
+@media (max-width:820px){.ways{grid-template-columns:1fr}}
+@media (max-width:760px){.qa{grid-template-columns:1fr}.q,.q:nth-child(even){padding:22px 0;border-right:0}}
+@media (max-width:680px){.cards{grid-template-columns:1fr}.dept-head{grid-template-columns:1fr !important}.h2{font-size:28px}.h1{font-size:40px !important}.sec{padding-top:64px;padding-bottom:64px}}
+@media (max-width:600px){.timeline{grid-template-columns:1fr;row-gap:24px}.step{padding:0 0 0 18px;border-left:3px solid rgba(92,214,255,.4)}.step .bar{display:none}}
+@media (max-width:620px){.figs{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.path{grid-template-columns:1fr}.wrap{padding-left:16px;padding-right:16px}.clock{padding:16px 12px 18px}.clock time{font-size:24px !important}.node .ic{width:54px;height:54px}.node .nm{font-size:13px !important;white-space:nowrap}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.brand-sub{display:none}}
+/* ---------- motion ---------- */
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@property --n{syntax:"<integer>";initial-value:0;inherits:false}
+.grad{background-size:200% 100%;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:-200% 0}}
+.aurora{position:absolute;inset:-20%;pointer-events:none;filter:blur(60px);opacity:.9}
+.aurora i{position:absolute;border-radius:50%;mix-blend-mode:screen}
+.aurora i:nth-child(1){width:46vw;height:46vw;left:48%;top:-8%;background:radial-gradient(circle,rgba(63,200,255,.30),transparent 65%);animation:drift1 16s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:40vw;height:40vw;left:4%;top:20%;background:radial-gradient(circle,rgba(139,124,255,.26),transparent 65%);animation:drift2 19s ease-in-out infinite alternate}
+.aurora i:nth-child(3){width:30vw;height:30vw;left:62%;top:44%;background:radial-gradient(circle,rgba(192,139,255,.18),transparent 65%);animation:drift3 13s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(-14vw,8vh) scale(1.15)}}
+@keyframes drift2{to{transform:translate(16vw,-6vh) scale(.9)}}
+@keyframes drift3{to{transform:translate(-10vw,-10vh) scale(1.2)}}
+.twinkle{animation:tw 3.2s ease-in-out infinite}
+.twinkle:nth-child(2n){animation-delay:-1.1s}.twinkle:nth-child(3n){animation-delay:-2.2s}
+@keyframes tw{50%{opacity:.25}}
+.halo{transform-origin:1180px 270px;animation:halo 3s ease-out infinite}
+@keyframes halo{from{transform:scale(.6);opacity:.9}to{transform:scale(2.6);opacity:0}}
+.flow-border{position:relative}
+.flow-border::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--ang),transparent 0 62%,rgba(92,214,255,.9) 76%,rgba(139,124,255,.9) 86%,transparent 96%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;pointer-events:none;z-index:2}
+@keyframes spin{to{--ang:360deg}}
+.hero-vid .frame{transform:perspective(1400px) rotateY(-7deg) rotateX(3deg);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.hero-vid:hover .frame{transform:perspective(1400px) rotateY(0) rotateX(0)}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{50%{translate:0 -8px}}
+.chain-line::after{content:"";position:absolute;top:-3px;width:60px;height:8px;border-radius:8px;background:radial-gradient(closest-side,#fff,rgba(92,214,255,.9) 40%,transparent);filter:blur(1px);animation:packet 3.6s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes packet{from{left:-4%}to{left:100%}}
+.node .ic{position:relative;overflow:hidden}
+.node.on .ic::after{content:"";position:absolute;inset:-40%;background:conic-gradient(from var(--ang),transparent 0 70%,rgba(255,255,255,.55) 85%,transparent);animation:spin 2.4s linear infinite;mix-blend-mode:overlay}
+.btn-pri{position:relative;overflow:hidden}
+.btn-pri::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);animation:sweep 3.2s ease-in-out infinite}
+@keyframes sweep{60%,100%{left:130%}}
+.card,.ph,.way,.wbt,.q{--mx:50%;--my:0%}
+.card::after,.ph::after,.way::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(380px circle at var(--mx) var(--my),rgba(92,214,255,.12),transparent 45%)}
+.card,.ph,.way{position:relative}
+.card:hover::after,.ph:hover::after,.way:hover::after{opacity:1}
+.cnt{counter-reset:n var(--n);animation:count 1.8s cubic-bezier(.2,.7,.2,1) .3s both}
+.cnt::before{content:counter(n)}
+@keyframes count{from{--n:0}to{--n:var(--to)}}
+.cursor-glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(92,214,255,.09),rgba(139,124,255,.05) 35%,transparent 65%);transition:opacity .4s;mix-blend-mode:screen}
+.hero-in>*{animation:heroIn .9s cubic-bezier(.2,.7,.2,1) both}
+.hero-in>*:nth-child(2){animation-delay:.1s}.hero-in>*:nth-child(3){animation-delay:.2s}.hero-in>*:nth-child(4){animation-delay:.3s}.hero-in>*:nth-child(5){animation-delay:.4s}
+@keyframes heroIn{from{opacity:0;transform:translateY(24px);filter:blur(6px)}}
+.hero-vid{animation:vidIn 1.2s cubic-bezier(.2,.7,.2,1) .25s both}
+@keyframes vidIn{from{opacity:0;transform:translateX(40px) scale(.96);filter:blur(8px)}}
+@supports (animation-timeline:view()){
+ .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+ .rv-kids>*{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+ @keyframes rv{from{opacity:0;transform:translateY(46px) scale(.97);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}html{scroll-behavior:auto}.cnt::before{content:counter(n)}.cnt{counter-reset:n var(--to)}.cursor-glow,.scan,.aurora{display:none}}
+.page{position:relative;isolation:isolate}
+.page::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(148,163,184,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.045) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.25) 18%,#000 40%,rgba(0,0,0,.25) 62%,#000 82%,rgba(0,0,0,.3));mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.25) 18%,#000 40%,rgba(0,0,0,.25) 62%,#000 82%,rgba(0,0,0,.3))}
+.sec{position:relative;border-top:1px solid rgba(148,163,184,.08)}
+.sec::before{content:"";position:absolute;top:-1px;left:50%;width:min(560px,60%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(92,214,255,.55),rgba(139,124,255,.55),transparent)}
+.grad{background:linear-gradient(90deg,#5CD6FF,#8B7CFF 60%,#C08BFF);-webkit-background-clip:text;background-clip:text;color:transparent !important}
+.card:hover{border-color:rgba(92,214,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 36px rgba(92,214,255,.10);transform:translateY(-2px)}
+.btn-pri{background:linear-gradient(135deg,#3FC8FF,#8B7CFF) !important;color:#05080F !important;border-color:transparent !important;font-weight:700}
+.btn-pri:hover{box-shadow:0 0 28px rgba(92,214,255,.4)}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));border:1px solid rgba(148,163,184,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.scan{position:absolute;left:0;right:0;height:120px;top:-120px;background:linear-gradient(180deg,transparent,rgba(92,214,255,.07),transparent);animation:scan 7s linear infinite;pointer-events:none}
+@keyframes scan{to{top:100%}}
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+
+<div class="page" style="font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; font-size: 16px; line-height: 1.7; color: #E6ECF5; background: radial-gradient(1100px 620px at 88% -4%, rgba(63,200,255,.16), transparent 62%), radial-gradient(900px 560px at -5% 22%, rgba(139,124,255,.12), transparent 60%), radial-gradient(1000px 700px at 105% 48%, rgba(63,200,255,.08), transparent 60%), radial-gradient(900px 600px at -5% 74%, rgba(139,124,255,.09), transparent 60%), radial-gradient(1000px 500px at 70% 102%, rgba(63,200,255,.08), transparent 60%), #05080F; -webkit-font-smoothing: antialiased; overflow-wrap: anywhere;">
+
+<!-- 顶栏 -->
+<header style="position: sticky; top: 0; z-index: 20; background: rgba(5,8,15,.72); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border-bottom: 1px solid rgba(148,163,184,.12);">
+  <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px;">
+    <a href="#top" style="display: flex; align-items: center; gap: 10px; color: #F2F5F8; text-decoration: none; font-weight: 700; white-space: nowrap;">
+      <img src="../logo.jpg" alt="" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(92,214,255,.4), 0 0 16px rgba(92,214,255,.3);">
+      <span>Jay</span>
+      <span class="brand-sub mono" style="font-weight: 400; font-size: 11px; letter-spacing: .12em; color: #8391A8;">FDE 架构师 · 企业 AI 落地</span>
+    </a>
+    <nav class="nav" aria-label="页面导航" style="display: flex; gap: 4px;">
+      <a href="#workbench">工作台案例</a><a href="#map">业务链路</a><a href="#scenes">部门场景</a><a href="#story">大促串联</a><a href="#ways">落地方式</a><a href="#path">推进路径</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<div id="top" style="color: #E6ECF5; position: relative; overflow: hidden; padding-top: 72px;">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="scan" aria-hidden="true"></div>
+  <svg aria-hidden="true" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .6; pointer-events: none;">
+    <defs>
+      <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><rect x="10" y="10" width="1.3" height="1.3" fill="rgba(148,163,184,.22)"></rect></pattern>
+    </defs>
+    <rect width="1440" height="640" fill="url(#dots)"></rect>
+    <g fill="none" stroke="rgba(92,214,255,.32)" stroke-width="1.2">
+      <path class="route" d="M1180 270 Q 680 -20 170 245"></path>
+      <path class="route" d="M1180 270 Q 930 90 690 190"></path>
+      <path class="route" d="M1180 270 Q 1240 170 1300 230"></path>
+      <path class="route" d="M1180 270 Q 800 300 430 400"></path>
+      <path class="route" d="M1180 270 Q 1040 360 890 450"></path>
+      <path class="route" d="M690 190 Q 430 80 170 245"></path>
+    </g>
+    <g fill="rgba(238,243,249,.8)">
+      <circle class="twinkle" cx="170" cy="245" r="3"></circle><circle class="twinkle" cx="690" cy="190" r="3"></circle><circle class="twinkle" cx="1300" cy="230" r="3"></circle><circle class="twinkle" cx="430" cy="400" r="3"></circle><circle class="twinkle" cx="890" cy="450" r="3"></circle>
+    </g>
+    <circle cx="1180" cy="270" r="5" fill="#5CD6FF"></circle>
+    <circle cx="1180" cy="270" r="14" fill="none" stroke="#8B7CFF" stroke-opacity=".5"></circle><circle class="halo" cx="1180" cy="270" r="14" fill="none" stroke="#5CD6FF" stroke-width="1.5"></circle>
+  </svg>
+  <div class="wrap" style="position: relative;">
+    <div class="hero-grid">
+      <div class="hero-in">
+        <div class="eyebrow">Cross-border E-commerce · AI Playbook</div>
+        <h1 class="h1" style="margin: 16px 0 0; font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 56px; font-weight: 900; line-height: 1.15; letter-spacing: -.02em;">跨境电商<br>AI 业务场景<span class="grad">案例集</span></h1>
+        <p style="margin: 20px 0 0; font-size: 18px; color: #93A1B8; max-width: 560px;">从选品、内容、上架、投放到客服、补货、对账，<b style="color: #fff; font-weight: 500;">8 个部门、24 个可以直接落地的</b><span style="white-space: nowrap;"><b style="color: #fff; font-weight: 500;">场景</b>。</span>通用工作交给 WorkBuddy 企业版，对接店铺后台和 ERP 的部分由 FDE 工程师定制。</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px;">
+          <sc-for list="{{ platforms }}" as="pf" hint-placeholder-count="6">
+            <span class="mono" style="font-size: 12px; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(148,163,184,.22); background: rgba(255,255,255,.03); color: #B3BFD1; white-space: nowrap;">{{ pf }}</span>
+          </sc-for>
+        </div>
+      <div class="figs">
+        <div class="fig"><b style="display: block; font-family: 'Space Grotesk', sans-serif; font-size: 36px; line-height: 1; white-space: nowrap;"><span class="cnt" style="--to: 8;"></span></b><small style="display: block; margin-top: 8px; color: #8391A8; font-size: 13px;">覆盖部门</small></div>
+        <div class="fig"><b style="display: block; font-family: 'Space Grotesk', sans-serif; font-size: 36px; line-height: 1; white-space: nowrap;"><span class="cnt" style="--to: 24;"></span></b><small style="display: block; margin-top: 8px; color: #8391A8; font-size: 13px;">可落地场景</small></div>
+        <div class="fig"><b style="display: block; font-family: 'Space Grotesk', sans-serif; font-size: 36px; line-height: 1; white-space: nowrap;"><span style="color: #6EE7D8;">{{ nBox }}</span>+<span style="color: #B3A6FF;">{{ nFde }}</span></b><small style="display: block; margin-top: 8px; color: #8391A8; font-size: 13px;">开箱即用 + 定制</small></div>
+        <div class="fig"><b style="display: block; font-family: 'Space Grotesk', sans-serif; font-size: 36px; line-height: 1; white-space: nowrap;">2<span class="grad">周</span></b><small style="display: block; margin-top: 8px; color: #8391A8; font-size: 13px;">首期试点可上手</small></div>
+      </div>
+      </div>
+      <div class="hero-vid">
+        <div class="float">
+        <div class="frame flow-border">
+          <div class="frame-bar"><i></i><i></i><i></i><span class="mono" style="font-size: 11px; color: #7286A0; margin-left: 10px;">AI 工作台 · 经营驾驶舱</span><span class="live"><b></b>演示录屏</span></div>
+          <video data-wb="hero" src="media/dash.mp4" poster="media/dash.jpg" autoplay muted loop playsinline preload="auto"></video>
+        </div>
+        <p style="margin: 12px 0 0; font-size: 13px; color: #8391A8;">落地后的样子：6 家店的数据早上自动汇总，异常点开就有 AI 分析，问 AI 助手直接给原因和建议。<a href="#workbench" style="color: #7DDCFF; white-space: nowrap;">看 6 个模块 →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="clocks rv-kids">
+      <sc-for list="{{ clocks }}" as="ck" hint-placeholder-count="4">
+        <div class="clock">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #8391A8;"><span>{{ ck.c }}</span><span class="mono" style="font-size: 11px; letter-spacing: .1em;">{{ ck.code }}</span></div>
+          <time class="mono" style="font-size: 30px; line-height: 1.1; color: #fff; text-shadow: 0 0 18px rgba(92,214,255,.35);">{{ ck.time }}</time>
+          <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #8391A8;"><span class="{{ ck.dot }}"></span>{{ ck.state }}</span>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #C3CDDC; min-height: 3.2em;">{{ ck.task }}</p>
+        </div>
+      </sc-for>
+    </div>
+    <p class="mono" style="margin: 0; padding: 0 0 20px; font-size: 12px; color: #6F7E96;">↑ 各站点当地时间实时显示，任务为示意：国内下班后，AI 仍按各站点时区处理工作，结果第二天早上交给员工确认。</p>
+  </div>
+</div>
+
+<!-- 工作台案例 -->
+<section id="workbench" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">工作台案例 · 演示录屏</div>
+      <h2 class="h2">落地之后，员工每天打开的是这样一个工作台</h2>
+      <p class="lede">把 24 个场景装进一个 AI 工作台：店铺后台、ERP、企业微信接在一起，AI 出稿，人确认后生效。下面 6 段是真实操作录屏，数据为演示数据。</p>
+    </div>
+    <div class="wb-tabs rv-kids" role="tablist" aria-label="选择工作台模块">
+      <sc-for list="{{ wbTabs }}" as="w" hint-placeholder-count="6">
+        <button type="button" role="tab" class="{{ w.cls }}" aria-selected="{{ w.sel }}" onClick="{{ w.pick }}"><b>{{ w.nm }}</b><small>{{ w.dept }}</small></button>
+      </sc-for>
+    </div>
+    <div class="wb-grid rv">
+      <div class="frame flow-border">
+        <div class="frame-bar"><i></i><i></i><i></i><span class="mono" style="font-size: 11px; color: #7286A0; margin-left: 10px;">AI 工作台 · {{ wb.nm }}</span><span class="live"><b></b>{{ wb.dur }}</span></div>
+        <video key="{{ wb.key }}" data-wb="main" src="{{ wb.src }}" poster="{{ wb.poster }}" autoplay muted loop playsinline preload="auto" controls></video>
+      </div>
+      <div style="display: grid; gap: 18px; align-content: start;">
+        <div>
+          <div class="mono" style="font-size: 12px; color: #5CD6FF; letter-spacing: .08em;">{{ wb.no }} / 06 · {{ wb.dept }}</div>
+          <h3 style="margin: 8px 0 0; font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 28px; font-weight: 900; line-height: 1.3;">{{ wb.nm }}</h3>
+          <p style="margin: 8px 0 0; color: #93A1B8; font-size: 15px;">{{ wb.sub }}</p>
+        </div>
+        <div style="display: grid; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(148,163,184,.14);">
+          <div class="mono" style="font-size: 12px; color: #7286A0;">视频里发生了什么</div>
+          <sc-for list="{{ wb.pts }}" as="pt" hint-placeholder-count="3">
+            <div class="wb-pt"><b class="wb-n">{{ pt.n }}</b><p style="margin: 0; min-width: 0;">{{ pt.t }}</p></div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 14px 16px; border-radius: 12px; background: linear-gradient(135deg, rgba(92,214,255,.10), rgba(139,124,255,.10)); border: 1px solid rgba(92,214,255,.28);">
+          <b class="grad" style="font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 24px; line-height: 1.2;">{{ wb.g }}</b>
+          <small style="color: #B3BFD1; font-size: 13px;">{{ wb.gs }}</small>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="tab" style="background: transparent;" onClick="{{ wbPrev }}">← 上一个</button>
+          <button type="button" class="tab btn-pri" onClick="{{ wbNext }}">下一个 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 业务链路 -->
+<section id="map" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">业务链路</div>
+      <h2 class="h2">一件商品从选出来到回款，经过 8 个部门</h2>
+      <p class="lede">点任一环节，直接看这个部门可以用 AI 做什么。发光描边的新媒体部、策划部是本次重点。</p>
+    </div>
+    <div class="chain rv-kids">
+      <div class="chain-line"></div>
+      <button type="button" class="{{ nc.pick }}" onClick="{{ go.pick }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path><path d="M9 11h4M11 9v4"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">选品</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">选品开发</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.plan }}" onClick="{{ go.plan }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path><path d="M8 14h3"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">策划</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">策划部</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.media }}" onClick="{{ go.media }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"></rect><path d="M16 10l5-3v10l-5-3"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">内容</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">新媒体部</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.design }}" onClick="{{ go.design }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"></path><path d="M14 6l3 3"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">素材</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">设计部</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.shop }}" onClick="{{ go.shop }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16l-1 12H5z"></path><path d="M9 8V6a3 3 0 016 0v2"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">上架</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">运营部</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.ads }}" onClick="{{ go.ads }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4l10 5V5z"></path><path d="M14 9a3 3 0 010 6"></path><path d="M7 14l1 5"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">投放</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">广告投放</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.cs }}" onClick="{{ go.cs }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v10H9l-5 4z"></path><path d="M8 10h8M8 13h5"></path></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">售后</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">客服</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+      <button type="button" class="{{ nc.chain }}" onClick="{{ go.chain }}"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="8" width="12" height="9" rx="1"></rect><path d="M14 11h4l3 3v3h-7"></path><circle cx="6" cy="18" r="1.6"></circle><circle cx="17" cy="18" r="1.6"></circle></svg></span><span class="mono" style="font-size: 11px; color: #6F7E96; letter-spacing: .08em;">履约 · 回款</span><span class="nm" style="font-weight: 700; font-size: 15px; line-height: 1.3;">供应链财务</span><span style="font-size: 12px; color: #6F7E96;">3 个场景</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 部门场景 -->
+<section id="scenes" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">部门场景</div>
+      <h2 class="h2">每个部门 3 个场景，看清用 AI 前后的差别</h2>
+      <p class="lede">标签说明落地方式。青色是 WorkBuddy 开箱即用，配置好就能用；紫色要对接店铺后台、ERP 或表格数据，由 FDE 定制。</p>
+    </div>
+    <div role="tablist" aria-label="选择部门" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="8">
+        <button type="button" role="tab" class="{{ tb.cls }}" aria-selected="{{ tb.sel }}" onClick="{{ tb.pick }}">{{ tb.nm }}<sc-if value="{{ tb.star }}" hint-placeholder-val="{{ false }}"><span aria-label="重点" style="color: #5CD6FF; margin-left: 5px; text-shadow: 0 0 8px rgba(92,214,255,.8);">●</span></sc-if></button>
+      </sc-for>
+    </div>
+    <div role="tabpanel">
+      <div class="dept-head" style="display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 24px; align-items: end; padding-bottom: 24px; border-bottom: 1px solid rgba(148,163,184,.14); margin-bottom: 28px;">
+        <div>
+          <h3 style="margin: 0; font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 32px; font-weight: 900; line-height: 1.25;">{{ dept.nm }}</h3>
+          <p style="margin: 8px 0 0; color: #93A1B8; max-width: 640px;">{{ dept.intro }}</p>
+        </div>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: #93A1B8;">
+          <span style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i style="width: 10px; height: 10px; border-radius: 3px; background: #2DD4BF;"></i>开箱即用</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i style="width: 10px; height: 10px; border-radius: 3px; background: #8B7CFF;"></i>定制对接</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i style="width: 10px; height: 10px; border-radius: 3px; background: #5CD6FF;"></i>开箱 + 定制</span>
+        </div>
+      </div>
+      <div class="cards rv-kids">
+        <sc-for list="{{ cards }}" as="cd" hint-placeholder-count="3">
+          <article class="card" key="{{ cd.key }}">
+            <span class="{{ cd.tagCls }}">{{ cd.tag }}</span>
+            <h4 style="margin: 0; font-size: 19px; line-height: 1.4; font-weight: 700;">{{ cd.t }}</h4>
+            <dl class="ba">
+              <div><dt>现在</dt><dd>{{ cd.b }}</dd></div>
+              <div><dt style="color: #5CD6FF;">用 AI</dt><dd style="color: #E6ECF5;">{{ cd.a }}</dd></div>
+            </dl>
+            <div>
+              <div class="out" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <sc-for list="{{ cd.o }}" as="o" hint-placeholder-count="3"><em class="otag">{{ o }}</em></sc-for>
+              </div>
+              <div style="margin-top: 14px; border-top: 1px dashed rgba(148,163,184,.2); padding-top: 14px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                <b class="grad" style="font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 22px; line-height: 1.2;">{{ cd.g }}</b>
+                <small style="color: #8391A8; font-size: 12.5px;">{{ cd.gs }}</small>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+    <p style="margin: 24px 0 0; font-size: 12.5px; color: #6F7E96;">效果数字是同类场景的经验估算，用来说明量级，以贵司试点实测为准。AI 产出的对外内容（文案、回复、调价）都保留人工确认这一步。</p>
+  </div>
+</section>
+
+<!-- 大促串联 -->
+<section id="story" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">大促串联 · 以黑五为例</div>
+      <h2 class="h2">一次黑五大促，AI 怎么把 8 个部门串起来</h2>
+      <p class="lede">部门各自提效之外，更大的价值是信息在部门之间不再靠人传话：策划定下的节奏，会自动变成每个部门的任务和素材需求。</p>
+    </div>
+    <div class="timeline rv-kids">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="6">
+        <div class="step">
+          <div class="mono" style="font-size: 13px; color: #5CD6FF; font-weight: 500;">{{ st.when }}</div>
+          <div class="bar" style="height: 2px; background: linear-gradient(90deg, #5CD6FF, #8B7CFF); margin: 12px 0 18px; border-radius: 2px; box-shadow: 0 0 12px rgba(92,214,255,.45);"></div>
+          <h4 style="margin: 0 0 8px; font-size: 17px; line-height: 1.4;">{{ st.h }}</h4>
+          <p style="margin: 0; font-size: 14px; color: #93A1B8;">{{ st.p }}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 12px;">
+            <sc-for list="{{ st.who }}" as="w" hint-placeholder-count="2"><span style="font-size: 11.5px; padding: 1px 8px; border-radius: 999px; background: rgba(148,163,184,.12); color: #B3BFD1; white-space: nowrap;">{{ w }}</span></sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- 落地方式 -->
+<section id="ways" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">落地方式</div>
+      <h2 class="h2">能直接用的先用起来，必须对接系统的再定制</h2>
+      <p class="lede">这样首期投入最小、见效最快。三分之一的场景不需要开发，配置好专属的 AI 专家和技能就能上岗。</p>
+    </div>
+    <div class="ways rv-kids">
+      <div class="way" style="border-radius: 20px; padding: 32px; border: 1px solid rgba(148,163,184,.15); border-top: 2px solid #2DD4BF; background: linear-gradient(180deg, rgba(45,212,191,.07), rgba(255,255,255,.012) 40%); display: grid; gap: 18px; align-content: start; min-width: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 24px; font-weight: 900;">WorkBuddy 开箱即用</h3><span class="mono" style="font-size: 13px; color: #8391A8;">{{ nBox }} 个场景直接可用</span></div>
+        <p style="margin: 0; color: #93A1B8;">腾讯 WorkBuddy 企业版作为全员 AI 办公平台，按部门配置专属专家和技能，接企业微信、腾讯文档、腾讯会议。</p>
+        <ul style="margin: 0; padding: 0; list-style: none; display: grid; gap: 10px;">
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #2DD4BF;"></i><span>文案、脚本、调研报告、活动方案等通用写作和分析</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #2DD4BF;"></i><span>企业知识库：产品参数、品牌手册、客服话术统一入库</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #2DD4BF;"></i><span>上传报表就能做的分析：广告诊断、评论挖掘、选品测算</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #2DD4BF;"></i><span>后台统一管理账号、权限和使用情况</span></li>
+        </ul>
+      </div>
+      <div class="way" style="border-radius: 20px; padding: 32px; border: 1px solid rgba(148,163,184,.15); border-top: 2px solid #8B7CFF; background: linear-gradient(180deg, rgba(139,124,255,.09), rgba(255,255,255,.012) 40%); display: grid; gap: 18px; align-content: start; min-width: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif; font-size: 24px; font-weight: 900;">FDE 定制对接</h3><span class="mono" style="font-size: 13px; color: #8391A8;">{{ nOnlyFde }} 个定制 + {{ nMix }} 个混合</span></div>
+        <p style="margin: 0; color: #93A1B8;">FDE（前线部署工程师）驻场梳理流程，把 AI 接进贵司已有的系统和数据，做成每天自动运行的工作流。</p>
+        <ul style="margin: 0; padding: 0; list-style: none; display: grid; gap: 10px;">
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #8B7CFF;"></i><span>店铺后台、ERP 数据自动汇总，日报和预警推到企业微信</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #8B7CFF;"></i><span>批量出图、批量改版、批量上架这类重复量大的流程</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #8B7CFF;"></i><span>补货测算、利润核算等要用到贵司真实数据的计算</span></li>
+          <li><i style="width: 8px; height: 8px; border-radius: 2px; margin-top: 9px; background: #8B7CFF;"></i><span>按岗位共建工作流，上线后持续调优</span></li>
+        </ul>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <sc-for list="{{ systems }}" as="sy" hint-placeholder-count="5"><span class="mono" style="font-size: 12px; border: 1px dashed rgba(148,163,184,.3); border-radius: 6px; padding: 2px 8px; color: #B3BFD1; white-space: nowrap;">{{ sy }}</span></sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 推进路径 -->
+<section id="path" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">推进路径</div>
+      <h2 class="h2">从一份问卷开始，两周看到第一版</h2>
+      <p class="lede">不需要一次性全上。先挑 2～3 个痛点最明显的部门试点，跑出效果再推广。</p>
+    </div>
+    <div class="path rv-kids">
+      <sc-for list="{{ phases }}" as="ph" hint-placeholder-count="5">
+        <div class="ph">
+          <div class="mono grad" style="font-size: 12px; justify-self: start;">{{ ph.no }}</div>
+          <h4 style="margin: 0; font-size: 18px;">{{ ph.h }}</h4>
+          <div class="mono" style="font-size: 12px; color: #8391A8;">{{ ph.dur }}</div>
+          <p style="margin: 0; font-size: 14px; color: #A6B2C5;">{{ ph.p }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- 股东关心 -->
+<section id="qa" class="sec">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">股东关心的问题</div>
+      <h2 class="h2">投入、风险和边界，提前说清楚</h2>
+    </div>
+    <div class="qa rv-kids">
+      <div class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg><div><h4 style="margin: 0 0 6px; font-size: 18px;">数据安不安全</h4><p style="margin: 0; color: #93A1B8; font-size: 15px;">WorkBuddy 企业版支持内部部署，账号和权限在后台统一管理。店铺和财务数据只在贵司授权的范围内读取，不外传。</p></div></div>
+      <div class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 15l3-4 3 2 5-6"></path></svg><div><h4 style="margin: 0 0 6px; font-size: 18px;">投入怎么算</h4><p style="margin: 0; color: #93A1B8; font-size: 15px;">平台账号按实际使用人数开；定制部分按模块报价，首期只做试点部门。先看到效果，再决定要不要扩大。</p></div></div>
+      <div class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg><div><h4 style="margin: 0 0 6px; font-size: 18px;">会不会替代员工</h4><p style="margin: 0; color: #93A1B8; font-size: 15px;">AI 接手的是整理、起草、汇总这些重复劳动，对外发出的内容和调价决定仍由员工确认。同样的人手能管更多店铺和站点。</p></div></div>
+      <div class="q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><div><h4 style="margin: 0 0 6px; font-size: 18px;">承诺什么，不承诺什么</h4><p style="margin: 0; color: #93A1B8; font-size: 15px;">我们承诺交付的功能和工作流按约定上线可用；不承诺销售额或排名，这些取决于产品和市场。效率提升以试点实测数据为准。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer style="padding-top: 40px; padding-bottom: 40px; border-top: 1px solid rgba(148,163,184,.12); color: #6F7E96; font-size: 13px;">
+  <div class="wrap" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center;">
+    <span style="display: flex; align-items: center; gap: 10px; color: #E6ECF5; font-weight: 700;"><img src="../logo.jpg" alt="" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover;">Jay<span style="font-weight: 400; color: #6F7E96; font-size: 12px;">FDE 架构师 · 把 AI 落到每个岗位</span></span>
+    <span>企业 AI 落地 · FDE 服务 ｜ 页面中的产品、数字为演示示例</span>
+  </div>
+</footer>
+
+</div>
+</template>
+<script>
+// 极简模板运行时：支持 {{ path }}、<sc-for list as>、<sc-if value>、onClick、DCLogic.setState
+(function () {
+  var HOLD = /\{\{\s*([^}]+?)\s*\}\}/g;
+  var ONE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
+  function get(s, p) {
+    p = p.trim();
+    if (p === 'false') return false;
+    if (p === 'true') return true;
+    var ks = p.split('.'), o = s;
+    for (var i = 0; i < ks.length; i++) { if (o == null) return undefined; o = o[ks[i]]; }
+    return o;
+  }
+  function str(v) { return v == null || v === false ? '' : String(v); }
+  function sig(v) { return JSON.stringify(v, function (k, x) { return typeof x === 'function' ? undefined : x; }); }
+  function child(s, k, v) { var c = Object.create(s); c[k] = v; return c; }
+
+  function inst(nodes, ups, parent) {
+    for (var i = 0; i < nodes.length; i++) walk(nodes[i], parent, ups);
+  }
+  function walk(n, parent, ups) {
+    if (n.nodeType === 3) {
+      var txt = n.nodeValue;
+      var tn = document.createTextNode(txt);
+      parent.appendChild(tn);
+      if (txt.indexOf('{{') >= 0) ups.push(function (s) {
+        var v = txt.replace(HOLD, function (m, p) { return str(get(s, p)); });
+        if (tn.nodeValue !== v) tn.nodeValue = v;
+      });
+      return;
+    }
+    if (n.nodeType !== 1) return;
+    var tag = n.localName;
+    if (tag === 'sc-for' || tag === 'sc-if') {
+      var a = document.createComment(tag), b = document.createComment('/' + tag);
+      parent.appendChild(a); parent.appendChild(b);
+      var kids = Array.prototype.slice.call(n.childNodes);
+      var path = (n.getAttribute(tag === 'sc-for' ? 'list' : 'value') || '').replace(HOLD, '$1');
+      var as = n.getAttribute('as'), last = null, items = [];
+      ups.push(function (s) {
+        var v = get(s, path);
+        var list = tag === 'sc-for' ? (v || []) : (v ? [true] : []);
+        var g = sig(list);
+        if (g !== last) {
+          last = g;
+          while (a.nextSibling !== b) a.parentNode.removeChild(a.nextSibling);
+          items = list.map(function (it) {
+            var sc = tag === 'sc-for' ? child(s, as, it) : s;
+            var f = document.createDocumentFragment(), u = [];
+            inst(kids, u, f);
+            u.forEach(function (fn) { fn(sc); });
+            b.parentNode.insertBefore(f, b);
+            return u;
+          });
+        } else {
+          list.forEach(function (it, i) {
+            var sc = tag === 'sc-for' ? child(s, as, it) : s;
+            items[i].forEach(function (fn) { fn(sc); });
+          });
+        }
+      });
+      return;
+    }
+    var el = document.importNode(n, false);
+    var attrs = Array.prototype.slice.call(n.attributes);
+    attrs.forEach(function (at) {
+      var name = at.name, val = at.value;
+      if (name.indexOf('hint-') === 0 || name === 'key') { el.removeAttribute(name); return; }
+      if (val.indexOf('{{') < 0) return;
+      el.removeAttribute(name);
+      if (name === 'onclick') {
+        var p = val.replace(HOLD, '$1'), fn = null;
+        ups.push(function (s) { fn = get(s, p); });
+        el.addEventListener('click', function (e) { if (typeof fn === 'function') fn(e); });
+        return;
+      }
+      var one = val.match(ONE);
+      ups.push(function (s) {
+        var v = one ? str(get(s, one[1])) : val.replace(HOLD, function (m, q) { return str(get(s, q)); });
+        if (el.getAttribute(name) !== v) el.setAttribute(name, v);
+      });
+    });
+    inst(Array.prototype.slice.call(n.childNodes), ups, el);
+    parent.appendChild(el);
+  }
+
+  function DCLogic(props) { this.props = props || {}; this.state = {}; }
+  DCLogic.prototype.setState = function (p) {
+    var self = this;
+    Object.assign(this.state, typeof p === 'function' ? p(this.state) : p);
+    if (!this._q) { this._q = true; Promise.resolve().then(function () { self._q = false; self._render(); }); }
+  };
+  window.DCLogic = DCLogic;
+
+  window.mountDC = function (C, props) {
+    var tpl = document.getElementById('tpl');
+    var app = document.getElementById('app');
+    var c = new C(props || {});
+    var ups = [], f = document.createDocumentFragment();
+    inst(Array.prototype.slice.call(tpl.content.childNodes), ups, f);
+    c._render = function () { var v = c.renderVals(); ups.forEach(function (fn) { fn(v); }); };
+    c._render();
+    app.appendChild(f);
+    if (c.componentDidMount) c.componentDidMount();
+  };
+})();
+
+</script>
+<script>
+
+var DEPTS = [
+ {id:'media',nm:'新媒体部',star:true,
+  intro:'TikTok、Instagram、YouTube、Facebook 多平台多语种出内容，核心难点是产能和对海外语境的把握。',
+  s:[
+   {t:'爆款视频拆解与多语言脚本',w:'box',b:'每天刷 TikTok 找对标视频，手记钩子和卖点，一人一天写 2～3 条脚本，外语版还要再找人翻。',a:'贴入对标视频链接或文案，AI 拆出钩子、结构和卖点，按自家产品改写成英、西、德等语言脚本，附上分镜和字幕。',o:['脚本','分镜表','多语字幕'],g:'约 3 倍',gs:'单人日均脚本产能'},
+   {t:'达人建联与跟进',w:'mix',b:'在达人平台手动筛选，逐个写英文开发信，谁回了、谈到哪一步记在表格里，经常漏跟。',a:'按品类、粉丝量、互动率整理达人清单，批量生成个性化开发信和跟进节奏；回复自动分成感兴趣、要报价、拒绝三类。',o:['达人清单','开发信','跟进看板'],g:'1 人管 200+',gs:'同时跟进的达人数'},
+   {t:'评论区与舆情日报',w:'fde',b:'各账号评论多语种混杂，看不过来，负面评论常常几天后才发现。',a:'每天汇总各账号评论，翻译后分成好评、产品问题、购买意向三类，给出回复建议，负面集中时立刻提醒。',o:['舆情日报','回复建议','负面预警'],g:'当天发现',gs:'负面舆情响应'}
+  ]},
+ {id:'plan',nm:'策划部',star:true,
+  intro:'大促节点多、站点多，方案和调研的工作量大，还要把节奏同步给每个部门。',
+  s:[
+   {t:'大促营销日历与活动方案',w:'box',b:'黑五、网一、Prime Day、圣诞各站点节点各不相同，每次从头写方案、拆预算、开会对任务。',a:'按站点生成全年大促日历，提前 8 周倒排；输入目标和预算，出活动方案、预算拆分和各部门任务清单。',o:['大促日历','活动方案','任务清单'],g:'方案初稿半天',gs:'原来 2～3 天'},
+   {t:'海外市场与竞品调研',w:'box',b:'进新站点或新品类前，靠人搜集资料、截图整理，一份调研报告要 3～5 天。',a:'输入站点和品类，汇总公开信息：价格带、头部竞品卖点、差评痛点、季节性，直接生成调研报告和 PPT。',o:['调研报告','竞品对比表','PPT'],g:'3～5 天 → 1 天',gs:'含人工核对'},
+   {t:'品牌口吻与多语言术语统一',w:'box',b:'各部门、各外包写的文案口吻不一，同一卖点在不同站点翻译得五花八门。',a:'品牌手册、卖点和术语表放进企业知识库，所有部门出文案时自动按同一口吻和术语输出。',o:['品牌知识库','多语术语表'],g:'全员统一',gs:'对外文案口径'}
+  ]},
+ {id:'shop',nm:'运营部',
+  intro:'多平台、多站点、多店铺，Listing 维护和数据汇总占掉大量时间。',
+  s:[
+   {t:'Listing 多语言生成与优化',w:'mix',b:'读产品资料写标题、五点、描述，再找翻译，逐站点检查字符限制和违禁词，一条约 2 小时。',a:'读产品资料，按各平台规则和字符限制生成英、德、法、日等版本，自动查违禁词和关键词覆盖，可批量处理。',o:['标题','五点描述','关键词'],g:'2 小时 → 20 分钟',gs:'单条，含人工审核'},
+   {t:'多店铺经营日报',w:'fde',b:'每天早上各店导报表、贴进汇总表、算环比，要 1 小时以上，异常全靠人眼发现。',a:'从店铺后台和 ERP 自动取数，汇总销量、花费、ACOS、库存，8:30 推到企业微信，异常波动附上可能原因。',o:['经营日报','异常提醒'],g:'每天省 1 小时+',gs:'每位运营'},
+   {t:'竞品价格与排名监控',w:'fde',b:'隔几天手动看一次竞品，降价、换图、上新经常后知后觉。',a:'每天抓取竞品公开页面的价格、排名、评分和促销变化，生成简报，跌破控价线时截图提醒，人工复核。',o:['竞品简报','控价提醒'],g:'每日更新',gs:'原来每周一次'}
+  ]},
+ {id:'ads',nm:'广告投放',
+  intro:'Amazon 广告、Meta、Google 报表量大，调词调价依赖经验，夜里抢量还要人盯。',
+  s:[
+   {t:'广告报表诊断与调价建议',w:'mix',b:'下载搜索词报告逐行看，凭经验否词和调价，几十个广告活动根本看不过来。',a:'上传或自动拉取报表，找出高花费低转化的词，给出否词和调价幅度，按优先级列清单，投放确认后执行。',o:['诊断清单','否词建议','调价建议'],g:'全量覆盖',gs:'原来只看头部活动'},
+   {t:'广告素材多版本生成',w:'box',b:'一个卖点只写一两版广告文案，A/B 测试做不起来。',a:'同一卖点生成多语种、多角度的标题和文案，记录每版测试结果，表现好的写回知识库。',o:['广告文案','测试记录'],g:'5～10 版',gs:'每个卖点'},
+   {t:'投放周报与预算复盘',w:'fde',b:'周报要从多个平台导数、做图、写结论，周一上午基本交代在这里。',a:'自动汇总各平台花费、ROAS、TACOS，按产品线出周报和预算使用建议。',o:['投放周报','预算建议'],g:'自动生成',gs:'每周一早上'}
+  ]},
+ {id:'design',nm:'设计部',
+  intro:'主图、A+、站外素材、大促改版，各站点尺寸和语言不同，重复劳动最多。',
+  s:[
+   {t:'主图与场景图批量生成',w:'fde',b:'每款产品都要拍场景图或找人做图，成本高、周期长，节日主题还要重做一遍。',a:'用白底实拍图生成客厅、户外、节日等场景图，保持产品外形和比例不变，建场景模板库反复使用。',o:['场景图','节日主题图'],g:'单图分钟级',gs:'原来以天计'},
+   {t:'大促素材与多站点批量改版',w:'fde',b:'大促改价、改权益，每个站点、每个尺寸都要设计师一张张改。',a:'主图、A+、活动页模板化，改一张表就批量出图，多语言、多尺寸一次出齐。',o:['批量主图','A+ 页面'],g:'一张表出全套',gs:'多站点多尺寸'},
+   {t:'视频素材粗剪',w:'fde',b:'达人素材和自拍素材堆在网盘里，找镜头、对口播、粗剪都靠人。',a:'口播转字幕、镜头切片打标签、素材按关键词检索，按脚本自动拼出粗剪时间线。',o:['素材库','粗剪时间线'],g:'找素材秒级',gs:'按关键词检索'}
+  ]},
+ {id:'pick',nm:'选品开发',
+  intro:'选品决定后面所有部门的工作量，决策依据要快、要全。',
+  s:[
+   {t:'竞品差评挖掘',w:'box',b:'翻几百条竞品差评，凭印象总结痛点，容易漏掉关键问题。',a:'导入竞品评论，AI 按问题归类并统计频次，输出痛点清单和产品改良建议。',o:['痛点清单','改良建议'],g:'千条评论 10 分钟',gs:'归类统计'},
+   {t:'选品评估卡与利润测算',w:'box',b:'每个候选品单独算市场、竞争、利润，口径不统一，评审会讨论效率低。',a:'统一模板：市场容量、价格带、竞争度，利润测算含佣金、FBA 费、头程和汇率，直接出评估卡。',o:['评估卡','利润测算表'],g:'口径统一',gs:'评审直接比较'},
+   {t:'供应商询价与比价',w:'box',b:'逐个发询价、收报价，再手工整理对比表。',a:'生成中英文询价单，收到的报价自动汇总成对比表，标出价格、起订量、交期的差异。',o:['询价单','比价表'],g:'当天出比价',gs:'原来 2～3 天'}
+  ]},
+ {id:'cs',nm:'客服',
+  intro:'多语种、跨时区，买家消息集中在国内夜间，响应时效直接影响店铺绩效。',
+  s:[
+   {t:'多语种邮件与站内信回复',w:'fde',b:'客服要看懂德语、日语邮件再写回复，夜间消息第二天才处理。',a:'结合知识库和订单信息起草回复，客服上班后确认即发；常见问题按模板分类处理。',o:['回复草稿','问题分类'],g:'24 小时内回复',gs:'满足平台考核'},
+   {t:'差评与退货原因分析',w:'mix',b:'差评和退货原因散在各平台，产品部拿不到系统的反馈。',a:'每周汇总差评和退货原因，按产品和问题归类，自动推给产品开发和供应链。',o:['退货分析','改进清单'],g:'每周闭环',gs:'客服 → 产品部'},
+   {t:'售后时效预警',w:'fde',b:'哪条消息快超时只能靠人盯，节假日最容易出问题。',a:'按平台考核要求监控未回复消息，临近超时提醒到具体客服。',o:['超时提醒'],g:'零超时',gs:'目标'}
+  ]},
+ {id:'chain',nm:'供应链财务',
+  intro:'备货太多压资金，太少断货掉排名；多币种、多店铺的利润算不清。',
+  s:[
+   {t:'FBA 补货预警',w:'fde',b:'每周导出库存和销量，在表格里算可售天数，海运、空运怎么配全凭经验。',a:'按近期销量、在途库存和头程时效算断货日期和建议补货量，提前推送，并给出海运、空运的搭配建议。',o:['补货建议','断货预警'],g:'提前 4～6 周',gs:'预警断货'},
+   {t:'物流在途异常提醒',w:'fde',b:'头程物流各家货代各一个系统，延误了才知道。',a:'汇总各货代在途数据，延误、卡关、签收异常自动提醒供应链负责人。',o:['在途看板','异常提醒'],g:'异常当天知道',gs:'原来事后发现'},
+   {t:'多店铺多币种利润核算',w:'fde',b:'月底各平台账单格式不一，按 SKU 算利润要财务对好几天。',a:'自动汇总各平台结算单，按 SKU 扣除佣金、FBA、广告、头程和汇率，出利润表和对账差异。',o:['SKU 利润表','对账差异'],g:'几天 → 半天',gs:'月度核算'}
+  ]}
+];
+var WAY = {box:['tag box','WorkBuddy 开箱即用'],fde:['tag fde','FDE 定制对接'],mix:['tag mix','开箱 + 定制']};
+var CITIES = [
+ {c:'深圳',code:'CN · UTC+8',tz:'Asia/Shanghai',day:'员工在岗：确认 AI 起草的回复，审核 Listing 和调价建议',night:'国内已下班：AI 汇总美国站昨日订单和广告数据，生成早报'},
+ {c:'洛杉矶',code:'US · PST',tz:'America/Los_Angeles',day:'美国买家活跃：站内信和邮件一进来就分类，起草英文回复',night:'美区夜间：监控竞品价格和排名变化，记进明日简报'},
+ {c:'法兰克福',code:'DE · CET',tz:'Europe/Berlin',day:'欧洲站白天：德语、法语咨询起草回复，退货原因归类',night:'欧洲夜间：整理各站广告报表，标出高花费低转化的词'},
+ {c:'东京',code:'JP · JST',tz:'Asia/Tokyo',day:'日本站白天：日语评论翻译分类，差评即⁠时⁠提⁠醒',night:'日本夜间：按销量和在途库存测算补货，生成建议'}
+];
+var STEPS = [
+ {when:'T − 8 周',h:'定节奏和预算',p:'策划部按各站点大促日历倒排，出活动方案、预算拆分和各部门任务清单。',who:['策划部','选品开发']},
+ {when:'T − 6 周',h:'备货下单',p:'按历史大促销量和头程时效算备货量，生成采购单和发货计划。',who:['供应链','财务']},
+ {when:'T − 4 周',h:'内容和素材',p:'新媒体出多语言短视频脚本、联系达人；设计部改一张表，批量出齐各站点大促主图。',who:['新媒体部','设计部']},
+ {when:'T − 2 周',h:'上架与预热',p:'运营批量更新 Listing 和优惠设置；投放按预算建好广告组，素材多版本测试。',who:['运营部','广告投放']},
+ {when:'大促当周',h:'盯盘和接待',p:'每 2 小时一份销售和花费快报；多语种咨询量翻倍，客服用 AI 起草回复、人工确认。',who:['运营部','客服','广告投放']},
+ {when:'T + 1 周',h:'复盘入库',p:'自动出各店利润核算和复盘报告，经验写进企业知识库，下一次大促直接调用。',who:['财务','策划部']}
+];
+var PHASES = [
+ {no:'STEP 1',h:'岗位调研',dur:'1～3 天',p:'按岗位发线上问卷，每人 5 分钟，收集各部门每天最耗时的工作。'},
+ {no:'STEP 2',h:'场景诊断',dur:'约 1 周',p:'整理成需求清单，逐项标出开箱即用还是要定制，给出方案和分期。'},
+ {no:'STEP 3',h:'首期试点',dur:'2 周',p:'选 2～3 个部门，配置专家和技能、搭知识库，交付可试用的第一版。'},
+ {no:'STEP 4',h:'推广与培训',dur:'按部门推进',p:'其余部门逐个上线，按岗位培训，定制工作流陆续接入。'},
+ {no:'STEP 5',h:'持续运维',dur:'上线之后',p:'模型升级适配、流程调整、新场景接入，定期复盘使用数据。'}
+];
+var WB = [
+ {id:'dash',nm:'经营驾驶舱',dept:'运营 · 管理层',src:'media/dash.mp4',poster:'media/dash.jpg',dur:'18 秒',
+  sub:'6 家店、4 个站点的数据每天早上自动汇总，不用再一张张导报表。',
+  pts:['销售额、订单、ACOS、断货风险一屏看完，站点之间直接对比','点开「德国站转化率下跌」，AI 给出原因：竞品同日降价 12%，并生成调价建议','直接问 AI 助手「德国站为什么掉单」，回答附数据来源'],g:'每天省 1 小时+',gs:'每位运营，不再手工汇总日报'},
+ {id:'inbox',nm:'待确认',dept:'全部门',src:'media/inbox.mp4',poster:'media/inbox.jpg',dur:'20 秒',
+  sub:'AI 出的 Listing、调价、客服回复、脚本、补货建议都排在这里，人确认后才生效。',
+  pts:['德语客服邮件：AI 按知识库起草回复，附中文对照，客服点「通过」即发送','调价建议标出「低于控价线需审批」，规则不满足时 AI 会停下','低风险项可以批量通过，每次通过、修改、驳回都留痕'],g:'平均 38 秒',gs:'确认一项，原来人工写约 25 分钟'},
+ {id:'content',nm:'新媒体内容工厂',dept:'新媒体部',src:'media/content.mp4',poster:'media/content.jpg',dur:'17 秒',
+  sub:'贴一条对标视频，AI 拆出钩子、结构、卖点，改写成自家产品的多语言脚本。',
+  pts:['对标视频 230 万播放：AI 拆成钩子、结构、卖点、可借鉴四步','按露营灯改写脚本，带分镜和时间轴','英语、西语、德语一键切换，送去待确认'],g:'约 3 倍',gs:'单人日均脚本产能'},
+ {id:'promo',nm:'大促作战室',dept:'策划部',src:'media/promo.mp4',poster:'media/promo.jpg',dur:'14 秒',
+  sub:'策划部定下的黑五节奏，自动拆成每个部门的任务，进度、预算、库存在一张图上看。',
+  pts:['从 T−8 周到 T+1 周，10 个部门的任务排在一条时间线上','点部门名，只看这个部门今天要盯的事','一键把 64 项任务同步到企业微信，负责人直接收到'],g:'方案初稿半天',gs:'原来 2～3 天，部门对齐不再靠开会'},
+ {id:'listing',nm:'Listing 工厂',dept:'运营部',src:'media/listing.mp4',poster:'media/listing.jpg',dur:'12 秒',
+  sub:'8 个 SKU × 5 个站点，一次生成 40 条 Listing，自动查字符限制和违禁词。',
+  pts:['点「批量生成」，40 条 Listing 逐条生成并校验','38 条通过，2 条有问题自动标橙，运营只看这 2 条','美国、德国、日本版本切换查看，字符数和核心词覆盖实时显示'],g:'2 小时 → 20 分钟',gs:'单条 Listing，含人工审核'},
+ {id:'supply',nm:'补货与利润',dept:'供应链 · 财务',src:'media/supply.mp4',poster:'media/supply.jpg',dur:'16 秒',
+  sub:'按销量、在途和头程时效算断货日期；利润按 SKU 扣掉佣金、FBA、广告、头程和汇率。',
+  pts:['榨汁杯 19 天后断货：AI 写清算法，建议空运 600 件 + 海运 1,800 件','滞销的收纳架建议暂不补货、做促销，避免压资金','切到利润：一件商品从售价到净利，每一项扣了多少一目了然'],g:'提前 4～6 周',gs:'预警断货，月度利润核算几天 → 半天'}
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dept: 'media', wb: 0, now: Date.now() };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 15000);
+    this.kick();
+    setTimeout(() => this.kick(), 600);
+    this.fx();
+  }
+  fx() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
+    var glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    glow.style.opacity = '0';
+    var host = document.querySelector('.page') || document.body;
+    host.appendChild(glow);
+    this.glow = glow;
+    this.onMove = function (e) {
+      glow.style.opacity = '1';
+      glow.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
+      var el = e.target && e.target.closest ? e.target.closest('.card,.ph,.way') : null;
+      if (el) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }
+    };
+    this.onLeave = function () { glow.style.opacity = '0'; };
+    document.addEventListener('pointermove', this.onMove, { passive: true });
+    document.addEventListener('pointerleave', this.onLeave);
+  }
+  kick() {
+    var vs = document.querySelectorAll('video[data-wb]');
+    for (var i = 0; i < vs.length; i++) {
+      var v = vs[i];
+      v.muted = true;
+      if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    }
+  }
+  setWb(i) {
+    var n = WB.length;
+    this.setState({ wb: ((i % n) + n) % n });
+    var self = this;
+    setTimeout(function () { self.kick(); }, 80);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.onMove) document.removeEventListener('pointermove', this.onMove);
+    if (this.onLeave) document.removeEventListener('pointerleave', this.onLeave);
+    if (this.glow && this.glow.parentNode) this.glow.parentNode.removeChild(this.glow);
+  }
+  pick(id, scroll) {
+    this.setState({ dept: id });
+    if (scroll) {
+      var el = document.getElementById('scenes');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  renderVals() {
+    var self = this;
+    var cur = DEPTS.find(function (d) { return d.id === self.state.dept; }) || DEPTS[0];
+    var all = [];
+    DEPTS.forEach(function (d) { all = all.concat(d.s); });
+    var nBox = all.filter(function (s) { return s.w === 'box'; }).length;
+    var nMix = all.filter(function (s) { return s.w === 'mix'; }).length;
+    var nOnlyFde = all.filter(function (s) { return s.w === 'fde'; }).length;
+
+    var nc = {}, go = {};
+    DEPTS.forEach(function (d) {
+      nc[d.id] = 'node' + (d.id === cur.id ? ' on' : (d.star ? ' focus' : ''));
+      go[d.id] = function () { self.pick(d.id, true); };
+    });
+
+    var now = new Date(this.state.now);
+    var clocks = CITIES.map(function (x) {
+      var time = new Intl.DateTimeFormat('zh-CN', { timeZone: x.tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
+      var h = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: x.tz, hour: 'numeric', hour12: false }).format(now), 10) % 24;
+      var day = h >= 9 && h < 21;
+      return { c: x.c, code: x.code, time: time, dot: day ? 'dot' : 'dot night', state: day ? '当地白天' : '当地夜间', task: day ? x.day : x.night };
+    });
+
+    var W0 = WB[this.state.wb];
+    var wbTabs = WB.map(function (w, i) {
+      var on = i === self.state.wb;
+      return { nm: w.nm, dept: w.dept, cls: on ? 'wbt on' : 'wbt', sel: on ? 'true' : 'false', pick: function () { self.setWb(i); } };
+    });
+
+    return {
+      platforms: ['Amazon', 'TikTok Shop', 'Shopify', 'Temu', 'Meta Ads', 'EN · DE · FR · JP · ES'],
+      systems: ['Amazon SP-API', 'Shopify', '领星 / 马帮 / 积加等 ERP', '金蝶 / 用友', '企业微信'],
+      nBox: nBox, nFde: all.length - nBox, nMix: nMix, nOnlyFde: nOnlyFde,
+      nc: nc, go: go,
+      clocks: clocks,
+      tabs: DEPTS.map(function (d) {
+        var on = d.id === cur.id;
+        return { nm: d.nm, star: !!d.star, cls: on ? 'tab on' : 'tab', sel: on ? 'true' : 'false', pick: function () { self.pick(d.id, false); } };
+      }),
+      dept: { nm: cur.nm, intro: cur.intro },
+      cards: cur.s.map(function (s, i) {
+        return { key: cur.id + i, t: s.t, b: s.b, a: s.a, o: s.o, g: s.g, gs: s.gs, tagCls: WAY[s.w][0], tag: WAY[s.w][1] };
+      }),
+      wbTabs: wbTabs,
+      wb: { key: W0.id, nm: W0.nm, dept: W0.dept, src: W0.src, poster: W0.poster, dur: W0.dur, sub: W0.sub, g: W0.g, gs: W0.gs, no: '0' + (this.state.wb + 1),
+            pts: W0.pts.map(function (p, i) { return { n: i + 1, t: p }; }) },
+      wbPrev: function () { self.setWb(self.state.wb - 1); },
+      wbNext: function () { self.setWb(self.state.wb + 1); },
+      steps: STEPS,
+      phases: PHASES
+    };
+  }
+}
+
+mountDC(Component, {"$preview":{"width":1440,"height":6600}});
+</script>
+</body>
+</html>
